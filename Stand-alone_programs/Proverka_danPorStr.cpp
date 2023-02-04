@@ -34,7 +34,7 @@ double *PravGranPoromVer(double *, int);
 double *LevGranPoromVer(double *, double *, int);
 double **vybRasPorRazVer(double *, int, int, int, int);
 //----------------
-//Вермикулит
+//Г‚ГҐГ°Г¬ГЁГЄГіГ«ГЁГІ
 double *PravGranPoromVer(double *rapo, int n)
 { int k=0; double ko=1e-6;
 rapo[k]=13e1; k++; rapo[k]=12e1; k++; rapo[k]=11e1; k++; rapo[k]=1e2; k++; rapo[k]=9e1; k++;
@@ -108,14 +108,14 @@ return rapo;
 double *NapMasRaspVer(int vfv, int n, int vysove, int vpkf, double *raspr)
 { int k=0;
 if ((!vysove) || (vysove==2)) { 
-if (!vfv) raspr=rasPorpoRazmVerI207(raspr, dmsrpv); //для фракции 2-0,7 мм, исходный
-else if (vfv==1) { if (!vpkf) raspr=rasPorpoRazmVerIs84(raspr, dmsrpv); //для фракции 8-4 мм, исходный
-else if (vpkf==1) raspr=rasPorpoRazmVerIn84(raspr, dmsrpv); } //для фракции 8-4 мм, исходный, другая пористость
-else if (vfv==2) raspr=rasPorpoRazmVerI16035(raspr, dmsrpv); } //для фракции 1,6-0,35 мм, исходный
+if (!vfv) raspr=rasPorpoRazmVerI207(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 2-0,7 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©
+else if (vfv==1) { if (!vpkf) raspr=rasPorpoRazmVerIs84(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©
+else if (vpkf==1) raspr=rasPorpoRazmVerIn84(raspr, dmsrpv); } //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©, Г¤Г°ГіГЈГ Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј
+else if (vfv==2) raspr=rasPorpoRazmVerI16035(raspr, dmsrpv); } //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 1,6-0,35 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©
 if (vysove==1) {
-if ((vfv==2) || (!vfv)) raspr=rasPorpoRazmVerO16035(raspr, dmsrpv); //для фракции 1,6-0,35 мм и 2-0,7 мм, после обжига
-else if (vfv==1) raspr=rasPorpoRazmVerO84(raspr, dmsrpv); //для фракции 8-4 мм, после обжига
-else { cout << "Net takoy fraktsii!"; k=getchar(); exit(1); } } //только для фракции 8-4 мм
+if ((vfv==2) || (!vfv)) raspr=rasPorpoRazmVerO16035(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 1,6-0,35 Г¬Г¬ ГЁ 2-0,7 Г¬Г¬, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
+else if (vfv==1) raspr=rasPorpoRazmVerO84(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
+else { cout << "Net takoy fraktsii!"; k=getchar(); exit(1); } } //ГІГ®Г«ГјГЄГ® Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬
 return raspr; }
 double **NapMasRasLePrVer(int vfv, int vysove, int vpkf, int nom, double **mu)
 { int k, n=dmsrpv, q;
@@ -133,7 +133,7 @@ m=0.0; for (k=0; k<n; k++) m=m+ht; k=0; mm[k]=m;
 t=0.0; r=0.0; for (k=0; k<n; k++) { t=t+srra[k]*raspr[k]; r=r+raspr[k]; } 
 k=0; if (fabs(r)>0.0) t=t/r; else t=0.0; ms[k]=t;
 k=0; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=prgr; k++; mu[k]=legr; k++; mu[k]=ms; k++; mu[k]=mm;
-return mu; } //средний размер каждого из диапазонов
+return mu; } //Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў
 double *vybRasPorRazmVer(double *rpr, int vysove, int vfv, int vpkf, int n)
 {
 if ((!vysove) || (vysove==1)) {
@@ -145,7 +145,7 @@ if (vysove==2) { if ((!vfv) || (vfv==2)) rpr=rasPorpoRazmVerO16035(rpr,n);
 else if (vfv==1) rpr=rasPorpoRazmVerO84(rpr,n); }
 return rpr;
 }
-double **rasPorpoRazVer(double poris, int vfv, int vyvyzn, int vysove, int isrp, int vpkf) //0 - старые, 1 - новые значения
+double **rasPorpoRazVer(double poris, int vfv, int vyvyzn, int vysove, int isrp, int vpkf) //0 - Г±ГІГ Г°Г»ГҐ, 1 - Г­Г®ГўГ»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї
 { int k=0, n=0, j=0, qg=0, nm=cvym;
 double *legr=NULL, *prgr=NULL, *raspr=NULL, *srra=NULL, ht=1e0, s=0.0, e=1e-1;
 double rpn=1e0, dp=1e0, ras0=0.0, marp=0.0, srp=0.0, **mu=NULL, *po=NULL, r=0.0;
@@ -165,10 +165,10 @@ po=mu[k]; marp=po[j]; if (po) delete[]po;
 k=0; s=e; while (s<marp) { s=s+ht; k++; } qg=k; cout << "qg = " << qg << "\tsrp = " << srp << "\tisrp = " << isrp << endl;
 k=1; double *ms=new double[k], *mm=new double[k];
 if (!isrp) { s=0.0; r=0.0;
-for (k=0; k<qg; k++) { srra[k]=(p+l)/2e0; //расчет характеристик пористой структуры при условии пор в форме прямоугольного параллелепипеда
+for (k=0; k<qg; k++) { srra[k]=(p+l)/2e0; //Г°Г Г±Г·ГҐГІ ГµГ Г°Г ГЄГІГҐГ°ГЁГ±ГІГЁГЄ ГЇГ®Г°ГЁГ±ГІГ®Г© Г±ГІГ°ГіГЄГІГіГ°Г» ГЇГ°ГЁ ГіГ±Г«Г®ГўГЁГЁ ГЇГ®Г° Гў ГґГ®Г°Г¬ГҐ ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­Г®ГЈГ® ГЇГ Г°Г Г«Г«ГҐГ«ГҐГЇГЁГЇГҐГ¤Г 
 s=s+srra[k]*raspr[k]; r=r+raspr[k]; legr[k]=l; p=p+h; l=l+h; } 
 k=0; if (fabs(r)>0.0) s=s/r; else r=0.0; } 
-else if (isrp==1) { //расчет характеристик пористой структуры при условии шарообразных пор
+else if (isrp==1) { //Г°Г Г±Г·ГҐГІ ГµГ Г°Г ГЄГІГҐГ°ГЁГ±ГІГЁГЄ ГЇГ®Г°ГЁГ±ГІГ®Г© Г±ГІГ°ГіГЄГІГіГ°Г» ГЇГ°ГЁ ГіГ±Г«Г®ГўГЁГЁ ГёГ Г°Г®Г®ГЎГ°Г Г§Г­Г»Гµ ГЇГ®Г°
 double sz=0.0, sch=sz, dv=sz, vpre=sz, vtek=sz, rtek=sz, rpre=sz; l=0.0; p=1e-6;
 for (k=0; k<qg; k++) { rtek=(p+l)/2e0; srra[k]=rtek; 
 vtek=(pi/6e0)*pow(rtek,3e0); vpre=(pi/6e0)*pow(rpre,3e0); dv=fabs(vtek-vpre);
@@ -317,7 +317,7 @@ double *legr00=new double[n], m=0.0, t=0.0, ht=1e0;
 int k=0, q=0, p=0, j=0, jk=0, qg=0;
 for (k=0; k<n; k++) prgr00[k]=prgr0[k]*koef;
 legr00[0]=0.0; for (k=1; k<n; k++) legr00[k]=prgr00[k-1]; //for (k=0; k<n; k++) cout << "prgr ( " << k << " ) = " << prgr00[k] << "\tras = " << raspr0[k] << "\t"; 
-s=0.0; for (k=0; k<n; k++) if (prgr00[k]<(ht+e)) { p=k; s=s+raspr0[k]; } //cout << "\np = " << p << "\ts = " << s << "\t"; //размер пор до 1 мкм
+s=0.0; for (k=0; k<n; k++) if (prgr00[k]<(ht+e)) { p=k; s=s+raspr0[k]; } //cout << "\np = " << p << "\ts = " << s << "\t"; //Г°Г Г§Г¬ГҐГ° ГЇГ®Г° Г¤Г® 1 Г¬ГЄГ¬
 roo->rprm=s; roo->slel=NULL; rpr01=roo; q=0; rprp01=roo; roo->prel=NULL;
 for (k=p; k<n; k++) { 
     r=prgr00[k]-legr00[k];
