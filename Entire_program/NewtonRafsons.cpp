@@ -35,32 +35,32 @@ void napstrNR()
 snmnr[k]='N'; k++; snmnr[k]='o'; k++; snmnr[k]='_'; k++; snmnr[k]='m'; k++; 
 snmnr[k]='e'; k++; snmnr[k]='m'; k++; snmnr[k]='o'; k++; snmnr[k]='r'; k++; 
 snmnr[k]='y'; k++; snmnr[k]='!'; k++; snmnr[k]='\0'; }
-void PrintMatr(double **mas, int m) { // Функция вывода матрицы
+void PrintMatr(double **mas, int m) { // Г”ГіГ­ГЄГ¶ГЁГї ГўГ»ГўГ®Г¤Г  Г¬Г ГІГ°ГЁГ¶Г»
   int k, j; for (k = 0; k<m; k++) { for (j = 0; j<m; j++) cout << mas[k][j] << "\t"; cout << endl; } }
-double **GetMatr(double **mas, double **p, int i, int j, int m) { //Получение матрицы без i-й строки и j-го столбца
+double **GetMatr(double **mas, double **p, int i, int j, int m) { //ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ Г¬Г ГІГ°ГЁГ¶Г» ГЎГҐГ§ i-Г© Г±ГІГ°Г®ГЄГЁ ГЁ j-ГЈГ® Г±ГІГ®Г«ГЎГ¶Г 
   int ki, kj, di, dj;
   di = 0;
-  for (ki = 0; ki<(m-1); ki++) { // проверка индекса строки
+  for (ki = 0; ki<(m-1); ki++) { // ГЇГ°Г®ГўГҐГ°ГЄГ  ГЁГ­Г¤ГҐГЄГ±Г  Г±ГІГ°Г®ГЄГЁ
     if (ki == i) di = 1;
     dj = 0;
-    for (kj = 0; kj<(m-1); kj++) { // проверка индекса столбца
+    for (kj = 0; kj<(m-1); kj++) { // ГЇГ°Г®ГўГҐГ°ГЄГ  ГЁГ­Г¤ГҐГЄГ±Г  Г±ГІГ®Г«ГЎГ¶Г 
       if (kj == j) dj = 1;
       p[ki][kj] = mas[ki + di][kj + dj];
 }  } return p; }
-double Determinant(double **mas, int m) { // Рекурсивное вычисление определителя
+double Determinant(double **mas, int m) { // ГђГҐГЄГіГ°Г±ГЁГўГ­Г®ГҐ ГўГ»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гї
   int i;
   double **p, k=1., d=0.0, *po;
   p=new double*[m]; if (!p) { cout << snmnr << endl; i=getchar(); exit(1); }
   for (i=0; i<m; i++) { po=new double[m]; if (!po) { cout << snmnr << endl; i=getchar(); exit(1); } p[i]=po; }
   d=0;
-  if (m<1) cout << "Определитель вычислить невозможно!";
+  if (m<1) cout << "ГЋГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гј ГўГ»Г·ГЁГ±Г«ГЁГІГј Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г®!";
   if (m==1) { d = mas[0][0]; return (d); } 
   if (m==2) { d = mas[0][0]*mas[1][1]-mas[1][0]*mas[0][1]; return(d); } 
   if (m>2) {
 	for (i=0; i<m; i++) {
 		p=GetMatr(mas, p, i, 0, m); 
-		d=d+k*mas[i][0]*Determinant(p, m-1); //разложение по строкам по первому столбцу
-		k=-k; } } //(-1) в степени i
+		d=d+k*mas[i][0]*Determinant(p, m-1); //Г°Г Г§Г«Г®Г¦ГҐГ­ГЁГҐ ГЇГ® Г±ГІГ°Г®ГЄГ Г¬ ГЇГ® ГЇГҐГ°ГўГ®Г¬Гі Г±ГІГ®Г«ГЎГ¶Гі
+		k=-k; } } //(-1) Гў Г±ГІГҐГЇГҐГ­ГЁ i
 for (i=0; i<m; i++) { po=p[i]; delete []po; } return (d); }
 double *reshMetKram(double **mat, double *ssc, int rm)
 { int n=rm, j;
@@ -91,28 +91,28 @@ mp=0.0; for (k=0; k<n; k++) { t=fabs(xp[k]-x[k]); if (t>mp) { mp=t; } }
 delete []pr; //cout << "pr = " << m << endl; //return mp; 
 return m; } 
 double vychopred(double  **mas, int m) {
-  double d=Determinant(mas, m); //Вычисление определителя
+  double d=Determinant(mas, m); //Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гї
   return d; }
-void vyvodmatr(double **a, double *b, int n) // Вывод системы уравнений
+void vyvodmatr(double **a, double *b, int n) // Г‚Г»ГўГ®Г¤ Г±ГЁГ±ГІГҐГ¬Г» ГіГ°Г ГўГ­ГҐГ­ГЁГ©
 { int i, j; for (i=0; i<n; i++) { for (j=0; j<n; j++) { cout << a[i][j] << "\t";} 
 cout << " --- " << b[i] << endl; } }
 double *MetodGaussa(double **a, double *y, int n, double *xs) 
 { double maxi, temp=0.0, *x=new double[n]; int k=0, index=0, i=0, j=0, q;
 if (!x) { cout << snmnr << endl; i=getchar(); exit(1); } 
 for (j=0; j<n; j++) x[j]=xs[j];
-k=0; while (k<n) { // Поиск строки с максимальным a[i][k]
+k=0; while (k<n) { // ГЏГ®ГЁГ±ГЄ Г±ГІГ°Г®ГЄГЁ Г± Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г»Г¬ a[i][k]
     maxi=fabs(a[k][k]); index=k;
     for (i=k+1; i<n; i++) if (fabs(a[i][k])>maxi) { maxi=fabs(a[i][k]); index=i; } 
     if (!(fabs(maxi))) { for (q=0; q<n; q++) x[q]=0.0; return x; //cout << "Resheniye poluchit nevozmozhno iz-za nulevogo stolbtsa " << index << " matritsy A" << endl; k=getchar(); exit(1); 
-	} //нет ненулевых диагональных элементов
-    for (j=0; j<n; j++) { temp=a[k][j]; a[k][j]=a[index][j]; a[index][j]=temp; } temp=y[k]; y[k]=y[index]; y[index]=temp; //Перестановка строк
+	} //Г­ГҐГІ Г­ГҐГ­ГіГ«ГҐГўГ»Гµ Г¤ГЁГ ГЈГ®Г­Г Г«ГјГ­Г»Гµ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
+    for (j=0; j<n; j++) { temp=a[k][j]; a[k][j]=a[index][j]; a[index][j]=temp; } temp=y[k]; y[k]=y[index]; y[index]=temp; //ГЏГҐГ°ГҐГ±ГІГ Г­Г®ГўГЄГ  Г±ГІГ°Г®ГЄ
     for (i=k; i<n; i++) {
-      temp=a[i][k]; if (!(fabs(temp))) continue; // для нулевого коэффициента пропустить
+      temp=a[i][k]; if (!(fabs(temp))) continue; // Г¤Г«Гї Г­ГіГ«ГҐГўГ®ГЈГ® ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ  ГЇГ°Г®ГЇГіГ±ГІГЁГІГј
       for (j=0; j<n; j++) if (fabs(temp)>0.0) a[i][j]=a[i][j]/temp; else a[i][j]=0.0;
 	  if (fabs(temp)>0.0) y[i]=y[i]/temp; else y[i]=0.0;
-      if (i==k) continue; // уравнение не вычитать само из себя
+      if (i==k) continue; // ГіГ°Г ГўГ­ГҐГ­ГЁГҐ Г­ГҐ ГўГ»Г·ГЁГІГ ГІГј Г±Г Г¬Г® ГЁГ§ Г±ГҐГЎГї
       for (j=0; j<n; j++) a[i][j]=a[i][j]-a[k][j]; y[i]=y[i]-y[k]; } k++; }
-for (k=n-1; k>=0; k--) { // обратная подстановка
+for (k=n-1; k>=0; k--) { // Г®ГЎГ°Г ГІГ­Г Гї ГЇГ®Г¤Г±ГІГ Г­Г®ГўГЄГ 
 	x[k]=y[k]; for (i=0; i<k; i++) y[i]=y[i]-a[i][k]*x[k]; } 
 return x; }
 double *reshMetGau(double **a, double *y, int n, double *x) 
