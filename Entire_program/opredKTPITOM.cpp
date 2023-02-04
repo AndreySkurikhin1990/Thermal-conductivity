@@ -18,12 +18,12 @@ const int dsi = 60, ks = 10, dmkoosci = 14, dmkvoitom = 28, dmkoi = 3;
 const int N = 13, vtin = 0, nnxti = 0, nxti = 30, vybitom=3, vmik=1;
 const char nfi = 'B';
 struct derevo {
-	int otre; //1 - отражение или 0 - пропускание
-	int ste; //номер стенки
-	int vis; //видимость: 1 - виден, 0 - нет
-	int lev; //номер уровня
-	struct derevo *back; //указатель назад
-	struct derevo *next; //указатель вперед
+	int otre; //1 - Г®ГІГ°Г Г¦ГҐГ­ГЁГҐ ГЁГ«ГЁ 0 - ГЇГ°Г®ГЇГіГ±ГЄГ Г­ГЁГҐ
+	int ste; //Г­Г®Г¬ГҐГ° Г±ГІГҐГ­ГЄГЁ
+	int vis; //ГўГЁГ¤ГЁГ¬Г®Г±ГІГј: 1 - ГўГЁГ¤ГҐГ­, 0 - Г­ГҐГІ
+	int lev; //Г­Г®Г¬ГҐГ° ГіГ°Г®ГўГ­Гї
+	struct derevo *back; //ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г Г§Г Г¤
+	struct derevo *next; //ГіГЄГ Г§Г ГІГҐГ«Гј ГўГЇГҐГ°ГҐГ¤
 };
 class KoePog { public: double alp, tem; KoePog *nex; };
 void RasKTPItom();
@@ -103,7 +103,7 @@ void zadrktITOMNac()
 	k=31; x = 0.0; for (j = 0; j < cei; j++) if (j <= k) x = x + srra[j] * rapo[j]; else break; //for (j=0; j<k; j++) cout << "sr_ra = " << srra[j] << "\tlegr = " << legr[j] << endl;
 	//--------------
 	dkospi = RaschAlphaTvKaritom(); vtik=cemi;
-	for (vti = vtin; vti<vtik; vti++) { //пробегаем по температуре
+	for (vti = vtin; vti<vtik; vti++) { //ГЇГ°Г®ГЎГҐГЈГ ГҐГ¬ ГЇГ® ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°ГҐ
 		ko = srp; cout << "Sred razm por = " << ko << "\t";
 		r = d; t = ko; ko = KorrZnachVozdPrositom(ko, r, poritom, 0); cout << "Korr sred razm por = " << ko << "\t";
 		r = d; ko = t; p = KorrZnachVozdPrositom(ko, r, poritom, 1); cout << "Dol Plo = " << p << "\t";
@@ -114,9 +114,9 @@ void zadrktITOMNac()
 		}
 		hvoit = hvna; hitom = hvoit*(1e0 - poritom) / poritom;
 		while (hvoit <= hvko) {
-			j = jn; hkitom = hnitom*dhk; //пробегаем по размерам пор
+			j = jn; hkitom = hnitom*dhk; //ГЇГ°Г®ГЎГҐГЈГ ГҐГ¬ ГЇГ® Г°Г Г§Г¬ГҐГ°Г Г¬ ГЇГ®Г°
 			while ((j < jk) && (hkitom < y0itom)) {
-				cout << "hk = " << hkitom << "\tte = " << etei[vti] << endl; sctxi = j; //пробегаем по координате
+				cout << "hk = " << hkitom << "\tte = " << etei[vti] << endl; sctxi = j; //ГЇГ°Г®ГЎГҐГЈГ ГҐГ¬ ГЇГ® ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГҐ
 				mu = RaschRTAitom(ks, hitom, 0.0, 0.0, 1, vti, hvoit, 0, etei[vti], 0, 0, 1);
 				qk=0;	Raitom = mu[qk]; qk++; Taitom = mu[qk]; qk++; Aaitom = mu[qk]; qk++; 
 						Ritom = mu[qk];  qk++; Titom = mu[qk];  qk++; Aitom = mu[qk];  qk++;
@@ -143,18 +143,18 @@ void napstritom()
 {
 	if ((!sfati) || (!sfoi) || (!sni) || (!ssi) || (!skpti) || (!svsi) || (!snmi) || (!sfnoi)) { cout << "No_memory!" << endl; getchar(); exit(1); }
 	int k = 0;
-	sni[k] = 'D'; k++; sni[k] = ':';   k++; sni[k] = '\\'; k++; sni[k] = '\\'; k++; sni[k] = '_';  k++; sni[k] = 'А';  k++;
-	sni[k] = 'с'; k++; sni[k] = 'п';   k++; sni[k] = 'и';  k++; sni[k] = 'р';  k++; sni[k] = 'а';  k++; sni[k] = 'н';  k++;
-	sni[k] = 'т';  k++; sni[k] = 'у';  k++; sni[k] = 'р';  k++; sni[k] = 'а';  k++; sni[k] = '\\'; k++; sni[k] = '\\'; k++;
+	sni[k] = 'D'; k++; sni[k] = ':';   k++; sni[k] = '\\'; k++; sni[k] = '\\'; k++; sni[k] = '_';  k++; sni[k] = 'ГЂ';  k++;
+	sni[k] = 'Г±'; k++; sni[k] = 'ГЇ';   k++; sni[k] = 'ГЁ';  k++; sni[k] = 'Г°';  k++; sni[k] = 'Г ';  k++; sni[k] = 'Г­';  k++;
+	sni[k] = 'ГІ';  k++; sni[k] = 'Гі';  k++; sni[k] = 'Г°';  k++; sni[k] = 'Г ';  k++; sni[k] = '\\'; k++; sni[k] = '\\'; k++;
 	sni[k] = 't';  k++; sni[k] = 'm';  k++; sni[k] = 'p';  k++; sni[k] = '\\'; k++; sni[k] = '\\'; k++; sni[k] = '\0';
 	k = 0;
 	ssi[k] = 'C';  k++; ssi[k] = ':';  k++; ssi[k] = '\\'; k++; ssi[k] = '\\'; k++; ssi[k] = 'U';   k++; ssi[k] = 's';  k++;
-	ssi[k] = 'e';  k++; ssi[k] = 'r';  k++; ssi[k] = 's';  k++; ssi[k] = '\\'; k++; ssi[k] = '\\';  k++; ssi[k] = 'А';  k++;
-	ssi[k] = 'н';  k++; ssi[k] = 'д';  k++; ssi[k] = 'р';  k++; ssi[k] = 'е';  k++; ssi[k] = 'й';   k++; ssi[k] = '\\'; k++;
+	ssi[k] = 'e';  k++; ssi[k] = 'r';  k++; ssi[k] = 's';  k++; ssi[k] = '\\'; k++; ssi[k] = '\\';  k++; ssi[k] = 'ГЂ';  k++;
+	ssi[k] = 'Г­';  k++; ssi[k] = 'Г¤';  k++; ssi[k] = 'Г°';  k++; ssi[k] = 'ГҐ';  k++; ssi[k] = 'Г©';   k++; ssi[k] = '\\'; k++;
 	ssi[k] = '\\'; k++; ssi[k] = 'D';  k++; ssi[k] = 'o';  k++; ssi[k] = 'c';  k++; ssi[k] = 'u';   k++; ssi[k] = 'm';  k++;
 	ssi[k] = 'e';  k++; ssi[k] = 'n';  k++; ssi[k] = 't';  k++; ssi[k] = 's';  k++; ssi[k] = '\\';  k++; ssi[k] = '\\'; k++;
-	ssi[k] = '_';  k++; ssi[k] = 'А';  k++; ssi[k] = 'с';  k++; ssi[k] = 'п';  k++; ssi[k] = 'и';   k++; ssi[k] = 'р';  k++;
-	ssi[k] = 'а';  k++; ssi[k] = 'н';  k++; ssi[k] = 'т';  k++; ssi[k] = 'у';  k++; ssi[k] = 'р';   k++; ssi[k] = 'а';  k++;
+	ssi[k] = '_';  k++; ssi[k] = 'ГЂ';  k++; ssi[k] = 'Г±';  k++; ssi[k] = 'ГЇ';  k++; ssi[k] = 'ГЁ';   k++; ssi[k] = 'Г°';  k++;
+	ssi[k] = 'Г ';  k++; ssi[k] = 'Г­';  k++; ssi[k] = 'ГІ';  k++; ssi[k] = 'Гі';  k++; ssi[k] = 'Г°';   k++; ssi[k] = 'Г ';  k++;
 	ssi[k] = '\\'; k++; ssi[k] = '\\'; k++; ssi[k] = 't';  k++; ssi[k] = 'm';  k++; ssi[k] = 'p';   k++; ssi[k] = '\\'; k++;
 	ssi[k] = '\\'; k++; ssi[k] = '\0';
 	k = 0;
@@ -195,29 +195,29 @@ void initarritom(int koel)
 	if ((!dkoscim) || (!dkoscit)) { cout << snmi << endl; k = getchar(); exit(1); }
 	double tnd = 6e2, dtd = 2e2, tm; k=0; dkoscit[k] = tnd; for (k = 1; k < dkoscil; k++) dkoscit[k] = dkoscit[k - 1] + dtd;
 	if (!vybitom) {
-		saloi = 26e0*ko; smgoi = 22e0*ko; ssioi = 52e0*ko; poritom = pori440; //для трехкомпонентной смеси
-		wal = 23e0*ko; wmg = 19e0*ko; wsi = 49e0*ko; //для многокомпонентной смеси
+		saloi = 26e0*ko; smgoi = 22e0*ko; ssioi = 52e0*ko; poritom = pori440; //Г¤Г«Гї ГІГ°ГҐГµГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ­Г®Г© Г±Г¬ГҐГ±ГЁ
+		wal = 23e0*ko; wmg = 19e0*ko; wsi = 49e0*ko; //Г¤Г«Гї Г¬Г­Г®ГЈГ®ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ­Г®Г© Г±Г¬ГҐГ±ГЁ
 		k = 0; dkoscim[k] = 6.07; k++; dkoscim[k] = 5.36; k++; dkoscim[k] = 6.19; k++; 
 		dkoscim[k] = 13.48; k++; dkoscim[k] = 19.93; k++; dkoscim[k] = 27.69;
-	} //ИТОМ-440
+	} //Г€Г’ГЋГЊ-440
 	else if (vybitom == 1) {
 		saloi = 29e0*ko; smgoi = 16e0*ko; ssioi = 55e0*ko;
 		wal = 26e0*ko; wmg = 15e0*ko; wsi = 5e1*ko; poritom = pori620;
 		k = 0; dkoscim[k] = 6.41; k++; dkoscim[k] = 5.53; k++; dkoscim[k] = 6.32; k++; 
 		dkoscim[k] = 13.56; k++; dkoscim[k] = 19.86; k++; dkoscim[k] = 27.66;
-	} //ИТОМ-620
+	} //Г€Г’ГЋГЊ-620
 	else if (vybitom == 2) {
 		saloi = 33e0*ko; smgoi = 11e0*ko; ssioi = 56e0*ko;
 		wal = 3e1*ko; wmg = 1e1*ko; wsi = 52e0*ko; poritom = pori860;
 		k = 0; dkoscim[k] = 7.28; k++; dkoscim[k] = 6.1; k++; dkoscim[k] = 6.83; k++; 
 		dkoscim[k] = 14.02; k++; dkoscim[k] = 19.86; k++; dkoscim[k] = 27.22;
-	} //ИТОМ-860
+	} //Г€Г’ГЋГЊ-860
 	else if (vybitom == 3) {
 		saloi = 35e0*ko; smgoi = 9e0*ko; ssioi = 56e0*ko; 
 		wal = 33e0*ko; wmg = 7e0*ko; wsi = 53e0*ko; poritom = pori1000;
 		k = 0; dkoscim[k] = 7.45; k++; dkoscim[k] = 6.24; k++; dkoscim[k] = 6.95; k++; 
 		dkoscim[k] = 14.15; k++; dkoscim[k] = 19.89; k++; dkoscim[k] = 27.09;
-	} //ИТОМ-1000
+	} //Г€Г’ГЋГЊ-1000
 	else { cout << "Net takoy marki ITOM! (initarr)" << endl; k = getchar(); exit(1); }
 	for (k = 0; k < dkoscil; k++) {
 		tm = dkoscim[k]*ko; dkoscim[k] = 1e0 - tm; //cout << "dko = " <<dkoscim[k] << "\t";
@@ -290,7 +290,7 @@ void RasKTPItom()
 	int k, no = 0, f = 4;
 	double *sv = new double[f], *kktpi, kk=1e-2;
 	k=0; sv[k] = 6e1; k++; sv[k] = 5e1; k++; sv[k] = 25.0; k++; sv[k] = 2e1; 
-	for (k = 0; k < f; k++) sv[k] = sv[k] * kk; //содержание вермикулита
+	for (k = 0; k < f; k++) sv[k] = sv[k] * kk; //Г±Г®Г¤ГҐГ°Г¦Г Г­ГЁГҐ ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
 	kktpi = poisMasKoefItom(no);
 	delete[]sv;
 }
@@ -308,8 +308,8 @@ double *poisMasKoefItom(int no)
 	else if (no == 1) {
 		double *kitom620 = new double[f], *ktpit = new double[f];
 		if ((!kitom620) || (!ktpit)) { cout << snmi << endl; getchar(); exit(1); } 
-		//ktpit[0] = 12.0*1e-2; ktpit[1] = 139.0*1e-3; //из Диссертации
-		k=0; ktpit[k] = 18.0*kk; k++; ktpit[k] = 19.0*kk; //Данные 2017 года
+		//ktpit[0] = 12.0*1e-2; ktpit[1] = 139.0*1e-3; //ГЁГ§ Г„ГЁГ±Г±ГҐГ°ГІГ Г¶ГЁГЁ
+		k=0; ktpit[k] = 18.0*kk; k++; ktpit[k] = 19.0*kk; //Г„Г Г­Г­Г»ГҐ 2017 ГЈГ®Г¤Г 
 		kitom620[1] = (ktpit[1] - ktpit[0]) / (te380 - te200); 
 		kitom620[0] = ktpit[1] - kitom620[1] * te380;
 		kti = kitom620; delete[]ktpit;
@@ -317,16 +317,16 @@ double *poisMasKoefItom(int no)
 	else if (no == 2) {
 		double *kitom860 = new double[f], *ktpit = new double[f];
 		if ((!kitom860) || (!ktpit)) { cout << snmi << endl; getchar(); exit(1); } 
-		//ktpit[0] = 18.3*kk; ktpit[1] = 19.4*kk; //из Диссертации
-		ktpit[0] = 26.0*kk; ktpit[1] = 37.0*kk; //Данные 2017 года
+		//ktpit[0] = 18.3*kk; ktpit[1] = 19.4*kk; //ГЁГ§ Г„ГЁГ±Г±ГҐГ°ГІГ Г¶ГЁГЁ
+		ktpit[0] = 26.0*kk; ktpit[1] = 37.0*kk; //Г„Г Г­Г­Г»ГҐ 2017 ГЈГ®Г¤Г 
 		kitom860[1] = (ktpit[1] - ktpit[0]) / (te380 - te200); kitom860[0] = ktpit[1] - kitom860[1] * te380;
 		kti = kitom860; delete[]ktpit;
 	}
 	else if (no == 3) {
 		double *kitom1000 = new double[f], *ktpit = new double[f];
 		if ((!kitom1000) || (!ktpit)) { cout << snmi << endl; getchar(); exit(1); } 
-		//ktpit[0] = 23.0*kk; ktpit[1] = 25.0*kk; //из Диссертации
-		ktpit[0] = 42.0*kk; ktpit[1] = 52.0*kk; //Данные 2017 года
+		//ktpit[0] = 23.0*kk; ktpit[1] = 25.0*kk; //ГЁГ§ Г„ГЁГ±Г±ГҐГ°ГІГ Г¶ГЁГЁ
+		ktpit[0] = 42.0*kk; ktpit[1] = 52.0*kk; //Г„Г Г­Г­Г»ГҐ 2017 ГЈГ®Г¤Г 
 		kitom1000[1] = (ktpit[1] - ktpit[0]) / (te380 - te200); kitom1000[0] = ktpit[1] - kitom1000[1] * te380;
 		kti = kitom1000; delete[]ktpit;
 	}
@@ -368,8 +368,8 @@ double RaschAlphaTvKaritom()
 	else { cout << snmi << endl; j = getchar(); exit(1); }
 	long lt; unsigned int st; lt = time(NULL); st = (unsigned int)(lt - (lt % 2)) / 2; srand(st);
 	for (k = 0; k < l; k++) {
-		x = RasFracXeffitom63(k); //размер частицы
-		rcf[k] = x*1e-6; y = x*pori; //размер поры
+		x = RasFracXeffitom63(k); //Г°Г Г§Г¬ГҐГ° Г·Г Г±ГІГЁГ¶Г»
+		rcf[k] = x*1e-6; y = x*pori; //Г°Г Г§Г¬ГҐГ° ГЇГ®Г°Г»
 		for (j = 0; j < d; j++) pn[j] = 0.0;
 		for (j = 0; j < jk; j++) {
 			pj = rand(); prf = 0.0; for (h = 0; h < pj; h++) prf = prf + hf; pr = prf / rmf;
@@ -399,7 +399,7 @@ double RaschAlphaTvKaritom()
 	x = 0.0; yp = 0.0; for (j = 0; j < cfk; j++) { x = x + alsf[j]; yp = yp + hf; } 
 	x = x / yp; for (j=0; j<cfk; j++) cout << "j = " << j << "\tal_sr = " << alsf[j] << endl; 
 	delete[]rapo; delete[]srra; delete[]rcf; delete[]pn; delete[]alx; delete[]alsf; delete[]legr; delete[]prgr;
-	x = (x / altc); printf("sr_okp = %0.20lf\n", x); //ослабление КП за счет пористой структуры вермикулита
+	x = (x / altc); printf("sr_okp = %0.20lf\n", x); //Г®Г±Г«Г ГЎГ«ГҐГ­ГЁГҐ ГЉГЏ Г§Г  Г±Г·ГҐГІ ГЇГ®Г°ГЁГ±ГІГ®Г© Г±ГІГ°ГіГЄГІГіГ°Г» ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
 	return x;
 }
 double **RaschRTAitom(int kost, double htm, double kta, double ktb, int izm, int vyte, double hvo, int v, double ti, int c, int w, int u)
@@ -478,10 +478,10 @@ double *kopoitom(double ta, double tb, int vyb, double tl, int kost, int vyte, d
 		}
 		j = 1; p = new double[j]; if (p) p[0] = t; else { cout << snmi << endl; j = getchar(); exit(1); }
 	}
-	kp = roo; while (kp) { ne = kp->nex; delete kp; kp = ne; } //удаление списка
+	kp = roo; while (kp) { ne = kp->nex; delete kp; kp = ne; } //ГіГ¤Г Г«ГҐГ­ГЁГҐ Г±ГЇГЁГ±ГЄГ 
 	return p;
 }
-double **izmRTAitom(double *tere, int kost, int izm, double *Ra, double *Ta, double *Aa, double *Rb, double *Tb, double *Ab, int v) //izm = 0 - нет изменений, izm - учитываются изменения //поиск изменения степени черноты или безразмерного коэффициента поглощения
+double **izmRTAitom(double *tere, int kost, int izm, double *Ra, double *Ta, double *Aa, double *Rb, double *Tb, double *Ab, int v) //izm = 0 - Г­ГҐГІ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГ©, izm - ГіГ·ГЁГІГ»ГўГ ГѕГІГ±Гї ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї //ГЇГ®ГЁГ±ГЄ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г±ГІГҐГЇГҐГ­ГЁ Г·ГҐГ°Г­Г®ГІГ» ГЁГ«ГЁ ГЎГҐГ§Г°Г Г§Г¬ГҐГ°Г­Г®ГЈГ® ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ  ГЇГ®ГЈГ«Г®Г№ГҐГ­ГЁГї
 {
 	double **mu, ko, dkosci; int k, rt = dmkoosci;
 	for (k = 0; k < kost; k++) {
@@ -516,11 +516,11 @@ double *oprRasTemNachitom(int ce, int cee, double *teks, double *koe, int kost, 
 	}
 	else if (w == 1) { hkx = y0itom / 2e0; koe[0] = a; koe[1] = b; tmai = b; tmii = b - a*y0itom; }
 	xi[0] = hkx + htch / 2e0; ht = hvozd + htch;
-	for (k = 1; k < kost; k++) xi[k] = xi[k - 1] + ht; //массив середин каждой из стенок по толщине
-	for (k = 0; k < kost; k++) teks[k] = koe[0] * xi[k] + koe[1]; //for (k=0; k<kost; k++) cout << "k = " << k << "\txk = " << xi[k] << "\ttex = " << teks[k] << endl; //линеаризация поля температур
+	for (k = 1; k < kost; k++) xi[k] = xi[k - 1] + ht; //Г¬Г Г±Г±ГЁГў Г±ГҐГ°ГҐГ¤ГЁГ­ ГЄГ Г¦Г¤Г®Г© ГЁГ§ Г±ГІГҐГ­Г®ГЄ ГЇГ® ГІГ®Г«Г№ГЁГ­ГҐ
+	for (k = 0; k < kost; k++) teks[k] = koe[0] * xi[k] + koe[1]; //for (k=0; k<kost; k++) cout << "k = " << k << "\txk = " << xi[k] << "\ttex = " << teks[k] << endl; //Г«ГЁГ­ГҐГ Г°ГЁГ§Г Г¶ГЁГї ГЇГ®Г«Гї ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°
 	qobitom = opredKTPTKTochSha(qobi, etei, (teks[0] + teks[kost - 1]) / 2e0, ce); if (qobitom < 0.0) qobitom = 0.0; return teks;
 }
-void opredtemphcitom(double *efktpv, double *eftev, double *tgv, double *thv, double *qon, int dlma, int n, double h) //n=3 - длина массива коэффициентов приближающего многочлена, tgv - температура горячей стенки, thv - температура холодной стенки, dlma - длина массива ЭКТП
+void opredtemphcitom(double *efktpv, double *eftev, double *tgv, double *thv, double *qon, int dlma, int n, double h) //n=3 - Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ  ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў ГЇГ°ГЁГЎГ«ГЁГ¦Г ГѕГ№ГҐГЈГ® Г¬Г­Г®ГЈГ®Г·Г«ГҐГ­Г , tgv - ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°Г  ГЈГ®Г°ГїГ·ГҐГ© Г±ГІГҐГ­ГЄГЁ, thv - ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°Г  ГµГ®Г«Г®Г¤Г­Г®Г© Г±ГІГҐГ­ГЄГЁ, dlma - Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ  ГќГЉГ’ГЏ
 {
 	int k = 0, j; double *koeq = new double[n], *kho = new double[n], *kgo = new double[n];
 	double *tsv = new double[n], t = tei0, ts, g, p, hf = 1e0, r, s;
@@ -645,27 +645,27 @@ double KorrZnachVozdPrositom(double hps, double ksf, double por, int vy)
 {
 	int j = 0, k = 1000; double pa = 1e-2, pb = 1e0, *po, pc, ra = fabs(pa - pb), e = tocrasitom, hf = 1e0;
 	double fa, fb, fc, ta, tb, tc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	while ((ra > e) && (j < k)) { //подтягиваем пористость к значению, которое задали изначально, во время подстройки ЭКТП
+	while ((ra > e) && (j < k)) { //ГЇГ®Г¤ГІГїГЈГЁГўГ ГҐГ¬ ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј ГЄ Г§Г­Г Г·ГҐГ­ГЁГѕ, ГЄГ®ГІГ®Г°Г®ГҐ Г§Г Г¤Г Г«ГЁ ГЁГ§Г­Г Г·Г Г«ГјГ­Г®, ГўГ® ГўГ°ГҐГ¬Гї ГЇГ®Г¤Г±ГІГ°Г®Г©ГЄГЁ ГќГЉГ’ГЏ
 		pc = (pa + pb) / 2e0;
 		kc = hps*pc / por;
-		po = oprEffDoliTepPerenitom(kc, ksf, pc); tc = po[0]; delete[]po; //при 373 К
+		po = oprEffDoliTepPerenitom(kc, ksf, pc); tc = po[0]; delete[]po; //ГЇГ°ГЁ 373 ГЉ
 		tcc = kc*(hf - pc) / pc;
 		fc = (hf - tc)*kc / (kc + tcc) - por;
 		ka = hps*pa / por;
-		po = oprEffDoliTepPerenitom(ka, ksf, pa); ta = po[0]; delete[]po; //определяем долю площади сечения перемычки
+		po = oprEffDoliTepPerenitom(ka, ksf, pa); ta = po[0]; delete[]po; //Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГ¬ Г¤Г®Г«Гѕ ГЇГ«Г®Г№Г Г¤ГЁ Г±ГҐГ·ГҐГ­ГЁГї ГЇГҐГ°ГҐГ¬Г»Г·ГЄГЁ
 		tca = ka*(hf - pa) / pa;
 		fa = (hf - ta)*ka / (ka + tca) - por;
 		kb = hps*pb / por;
-		po = oprEffDoliTepPerenitom(kb, ksf, pb); tb = po[0]; delete[]po; //через перемычку тепло распространяется чистой теплопроводностью
+		po = oprEffDoliTepPerenitom(kb, ksf, pb); tb = po[0]; delete[]po; //Г·ГҐГ°ГҐГ§ ГЇГҐГ°ГҐГ¬Г»Г·ГЄГі ГІГҐГЇГ«Г® Г°Г Г±ГЇГ°Г®Г±ГІГ°Г Г­ГїГҐГІГ±Гї Г·ГЁГ±ГІГ®Г© ГІГҐГЇГ«Г®ГЇГ°Г®ГўГ®Г¤Г­Г®Г±ГІГјГѕ
 		tcb = kb*(hf - pb) / pb;
 		fb = (hf - tb)*kb / (kb + tcb) - por;
 		if ((fc*fb > 0.0) && (fa*fc<0.0)) pb = pc; if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
 		j++; ra = fabs(pa - pb);
 	}
 	dpcti = tc; //cout << "Dol Plo CTP = " << tc << endl;
-	if (!vy) return kc; //скорректированное значение толщины воздушной прослойки (размер поры), когда ввели перемычку
+	if (!vy) return kc; //Г±ГЄГ®Г°Г°ГҐГЄГІГЁГ°Г®ГўГ Г­Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ ГІГ®Г«Г№ГЁГ­Г» ГўГ®Г§Г¤ГіГёГ­Г®Г© ГЇГ°Г®Г±Г«Г®Г©ГЄГЁ (Г°Г Г§Г¬ГҐГ° ГЇГ®Г°Г»), ГЄГ®ГЈГ¤Г  ГўГўГҐГ«ГЁ ГЇГҐГ°ГҐГ¬Г»Г·ГЄГі
 	else if (vy == 1) return tc;
-} //доля площади, через которую происходит перенос тепла чистой теплопроводностью
+} //Г¤Г®Г«Гї ГЇГ«Г®Г№Г Г¤ГЁ, Г·ГҐГ°ГҐГ§ ГЄГ®ГІГ®Г°ГіГѕ ГЇГ°Г®ГЁГ±ГµГ®Г¤ГЁГІ ГЇГҐГ°ГҐГ­Г®Г± ГІГҐГЇГ«Г  Г·ГЁГ±ГІГ®Г© ГІГҐГЇГ«Г®ГЇГ°Г®ГўГ®Г¤Г­Г®Г±ГІГјГѕ
 double *oprEffDoliTepPerenitom(double ko, double d, double por)
 {
 	int k, j, f, kost = ks, ksu = 2 * ks; double hvozd = ko, htch, hf = 1e0, e = tocrasitom;
@@ -676,8 +676,8 @@ double *oprEffDoliTepPerenitom(double ko, double d, double por)
 	hvozd = ko; htch = hvozd*(hf - por) / por;
 	k = 1; for (j = 0; j < cemi; j++) if (qobi[j] < e) k = 0;
 	if (!k) opredtemphcitom(ektpi, etei, tgori, tholi, qobi, cemi, dmkoi, y0itom); //cout << "hvoz = " << hvozd << "\tht = " << htch << endl;
-	for (j = 0; j < cemi; j++) { //определяем ЭКТП многослойной стенки
-		tepo = opredTempStenShaFragm(tepo, 2 * kost, ktpvoitom, vteitom, etei, kttki, cemi, dmkvoitom, htch, hvozd, qobi[j], etei[j], -hf); //в середине слоя
+	for (j = 0; j < cemi; j++) { //Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГ¬ ГќГЉГ’ГЏ Г¬Г­Г®ГЈГ®Г±Г«Г®Г©Г­Г®Г© Г±ГІГҐГ­ГЄГЁ
+		tepo = opredTempStenShaFragm(tepo, 2 * kost, ktpvoitom, vteitom, etei, kttki, cemi, dmkvoitom, htch, hvozd, qobi[j], etei[j], -hf); //Гў Г±ГҐГ°ГҐГ¤ГЁГ­ГҐ Г±Г«Г®Гї
 		r = 0.0; for (k = 0; k < ksu; k++) for (f = 0; f<ksu; f++) { p = tepo[k] - tepo[f]; if (p>r) r = p; }
 		p = hvozd*(d - hf) + htch*d; r = r / p; t = qobi[j] / r; ecktpitom[j] = t;
 	} //for (j=0; j<cemi; j++) cout << "SKTPTK ( " << j << " ) = " << ecktpitom[j] << endl;
@@ -687,8 +687,8 @@ double *oprEffDoliTepPerenitom(double ko, double d, double por)
 		sa = 0.0; sb = 1e0; k = 0;
 		do {
 			sc = (sa + sb) / 2e0;
-			fa = kttki[j] * sa + ecktpitom[j] * (hf - sa) - ektpi[j]; //эффективные КТП многослойной стенки и  перемычки должны сравняться
-			fb = kttki[j] * sb + ecktpitom[j] * (hf - sb) - ektpi[j]; //чтобы найти относительные доли площадей сечения переноса общей ПТП
+			fa = kttki[j] * sa + ecktpitom[j] * (hf - sa) - ektpi[j]; //ГЅГґГґГҐГЄГІГЁГўГ­Г»ГҐ ГЉГ’ГЏ Г¬Г­Г®ГЈГ®Г±Г«Г®Г©Г­Г®Г© Г±ГІГҐГ­ГЄГЁ ГЁ  ГЇГҐГ°ГҐГ¬Г»Г·ГЄГЁ Г¤Г®Г«Г¦Г­Г» Г±Г°Г ГўГ­ГїГІГјГ±Гї
+			fb = kttki[j] * sb + ecktpitom[j] * (hf - sb) - ektpi[j]; //Г·ГІГ®ГЎГ» Г­Г Г©ГІГЁ Г®ГІГ­Г®Г±ГЁГІГҐГ«ГјГ­Г»ГҐ Г¤Г®Г«ГЁ ГЇГ«Г®Г№Г Г¤ГҐГ© Г±ГҐГ·ГҐГ­ГЁГї ГЇГҐГ°ГҐГ­Г®Г±Г  Г®ГЎГ№ГҐГ© ГЏГ’ГЏ
 			fc = kttki[j] * sc + ecktpitom[j] * (hf - sc) - ektpi[j];
 			if ((fc*fb>0.0) && (fa*fc<0.0)) sb = sc;
 			if ((fc*fa>0.0) && (fb*fc<0.0)) sa = sc;
@@ -702,7 +702,7 @@ double KorrZnachVozdPrositomKon(double hps, double ksf, double por)
 {
 	int j = 0, k = 1000; double pa = 1e-3, pb = 1e0, pc, ra = fabs(pa - pb);
 	double fa, fb, fc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc, e = tocrasitom; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	while ((ra>e) && (j < k)) { //подтягиваем пористость к значению, которое задали изначально, во время подстройки ЭКТП
+	while ((ra>e) && (j < k)) { //ГЇГ®Г¤ГІГїГЈГЁГўГ ГҐГ¬ ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј ГЄ Г§Г­Г Г·ГҐГ­ГЁГѕ, ГЄГ®ГІГ®Г°Г®ГҐ Г§Г Г¤Г Г«ГЁ ГЁГ§Г­Г Г·Г Г«ГјГ­Г®, ГўГ® ГўГ°ГҐГ¬Гї ГЇГ®Г¤Г±ГІГ°Г®Г©ГЄГЁ ГќГЉГ’ГЏ
 		pc = (pa + pb) / 2e0;
 		kc = hps*pc / por;
 		tcc = kc*(1e0 - pc) / pc;
@@ -716,6 +716,6 @@ double KorrZnachVozdPrositomKon(double hps, double ksf, double por)
 		if ((fc*fb > 0.0) && (fa*fc<0.0)) pb = pc;
 		if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
 		j++; ra = fabs(pa - pb);
-	} //скорректированное значение толщины воздушной прослойки (размер поры), когда ввели перемычку
+	} //Г±ГЄГ®Г°Г°ГҐГЄГІГЁГ°Г®ГўГ Г­Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ ГІГ®Г«Г№ГЁГ­Г» ГўГ®Г§Г¤ГіГёГ­Г®Г© ГЇГ°Г®Г±Г«Г®Г©ГЄГЁ (Г°Г Г§Г¬ГҐГ° ГЇГ®Г°Г»), ГЄГ®ГЈГ¤Г  ГўГўГҐГ«ГЁ ГЇГҐГ°ГҐГ¬Г»Г·ГЄГі
 	return kc;
 }
