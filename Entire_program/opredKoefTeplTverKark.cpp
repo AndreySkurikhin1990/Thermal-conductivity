@@ -16,22 +16,22 @@ struct raspporporazmm { double rprm; struct raspporporazmm *slel; };
 double *ktpvotk=NULL, *vtetk=NULL, *Prvo=NULL, *stch=NULL;
 char *sntk=NULL, *sstk=NULL, *szfvtk=NULL, *szfstk=NULL, *szfstkk=NULL;
 int dmsrpv=18, dmsrpi=17, dmrprs3=31, dmrprs4=32, dmrprs5=25, dmrprs6=33, dmkvi=1;
-double ReshNeyaUravMaxKoTepl(double, double, double); //Максимальный
-double ReshNeyaUravMinKoTepl(double, double, double); //Минимальный
-double ReshNeyaUravKoTeplLiechtenecker(double, double, double); //Лихтенэкер
-double opredRdeltaSrVzaPro(double, double, double, int); //Взаимопроникающие компоненты
-double KoTeplFrickEllipsoidChasti(double, double, double); //Фрик - эллипсоиды
-double ReshNeyaUravKoTeplMaxwell(double, double, double); //Максвелл
-double ReshNeyaUravKoTeplBurgFrik(double, double , double); //Бургер-Фрик
-double ReshNeyaUravKoTeplShumanVoss(double, double, double); //Шуман-Восс
-double ReshNeyaUravKoTeplBruggman(double, double, double); //Бруггман
-double ReshNeyaUravKoTeplGoringChirchillSpher(double, double, double); //Горринг-Черчилль (сферы)
-double ReshNeyaUravKoTeplGoringChirchillCyl(double, double, double); //Горринг-Черчилль (цилиндры)
-double ReshNeyaUravKoTeplGoringChirchillCylPlotSl(double, double, double, double); //Горринг-Черчилль (плотный слой)
-double ReshNeyaUravKoTeplMaxwAcken(double, double, double); //Максвелл-Эйкен
-double ReshNeyaUravKoTeplSwift(double, double); //Свифт
-double MetodHashinaShtrikmanaMin(double, double, double); //Хашин-Штрикман (минимальный)
-double MetodHashinaShtrikmanaMax(double, double, double); //Хашин-Штрикман (максимальный)
+double ReshNeyaUravMaxKoTepl(double, double, double); //ГЊГ ГЄГ±ГЁГ¬Г Г«ГјГ­Г»Г©
+double ReshNeyaUravMinKoTepl(double, double, double); //ГЊГЁГ­ГЁГ¬Г Г«ГјГ­Г»Г©
+double ReshNeyaUravKoTeplLiechtenecker(double, double, double); //Г‹ГЁГµГІГҐГ­ГЅГЄГҐГ°
+double opredRdeltaSrVzaPro(double, double, double, int); //Г‚Г§Г ГЁГ¬Г®ГЇГ°Г®Г­ГЁГЄГ ГѕГ№ГЁГҐ ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ»
+double KoTeplFrickEllipsoidChasti(double, double, double); //Г”Г°ГЁГЄ - ГЅГ«Г«ГЁГЇГ±Г®ГЁГ¤Г»
+double ReshNeyaUravKoTeplMaxwell(double, double, double); //ГЊГ ГЄГ±ГўГҐГ«Г«
+double ReshNeyaUravKoTeplBurgFrik(double, double , double); //ГЃГіГ°ГЈГҐГ°-Г”Г°ГЁГЄ
+double ReshNeyaUravKoTeplShumanVoss(double, double, double); //ГГіГ¬Г Г­-Г‚Г®Г±Г±
+double ReshNeyaUravKoTeplBruggman(double, double, double); //ГЃГ°ГіГЈГЈГ¬Г Г­
+double ReshNeyaUravKoTeplGoringChirchillSpher(double, double, double); //ГѓГ®Г°Г°ГЁГ­ГЈ-Г—ГҐГ°Г·ГЁГ«Г«Гј (Г±ГґГҐГ°Г»)
+double ReshNeyaUravKoTeplGoringChirchillCyl(double, double, double); //ГѓГ®Г°Г°ГЁГ­ГЈ-Г—ГҐГ°Г·ГЁГ«Г«Гј (Г¶ГЁГ«ГЁГ­Г¤Г°Г»)
+double ReshNeyaUravKoTeplGoringChirchillCylPlotSl(double, double, double, double); //ГѓГ®Г°Г°ГЁГ­ГЈ-Г—ГҐГ°Г·ГЁГ«Г«Гј (ГЇГ«Г®ГІГ­Г»Г© Г±Г«Г®Г©)
+double ReshNeyaUravKoTeplMaxwAcken(double, double, double); //ГЊГ ГЄГ±ГўГҐГ«Г«-ГќГ©ГЄГҐГ­
+double ReshNeyaUravKoTeplSwift(double, double); //Г‘ГўГЁГґГІ
+double MetodHashinaShtrikmanaMin(double, double, double); //Г•Г ГёГЁГ­-ГГІГ°ГЁГЄГ¬Г Г­ (Г¬ГЁГ­ГЁГ¬Г Г«ГјГ­Г»Г©)
+double MetodHashinaShtrikmanaMax(double, double, double); //Г•Г ГёГЁГ­-ГГІГ°ГЁГЄГ¬Г Г­ (Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г»Г©)
 double RdeltaMin(double, double, double, double,double, double);
 double RdeltaMax(double, double, double, double, double, double, double);
 double urovOtsechen(double, double, double);
@@ -103,18 +103,18 @@ double **rasPorpoRazVer(double, int, int, int, int, int);
 //------------------------
 void napStrTveKar(int vy)
 { int k=0; char l1, l2, l3, l4='_';
-sntk[k]='D'; k++; sntk[k]=':'; k++; sntk[k]='\\'; k++; sntk[k]='\\'; k++; sntk[k]='_';  k++; sntk[k]='А';  k++;
-sntk[k]='с'; k++; sntk[k]='п'; k++; sntk[k]='и';  k++; sntk[k]='р';  k++; sntk[k]='а';  k++; sntk[k]='н';  k++;
-sntk[k]='т'; k++; sntk[k]='у'; k++; sntk[k]='р';  k++; sntk[k]='а';  k++; sntk[k]='\\'; k++; sntk[k]='\\'; k++;
+sntk[k]='D'; k++; sntk[k]=':'; k++; sntk[k]='\\'; k++; sntk[k]='\\'; k++; sntk[k]='_';  k++; sntk[k]='ГЂ';  k++;
+sntk[k]='Г±'; k++; sntk[k]='ГЇ'; k++; sntk[k]='ГЁ';  k++; sntk[k]='Г°';  k++; sntk[k]='Г ';  k++; sntk[k]='Г­';  k++;
+sntk[k]='ГІ'; k++; sntk[k]='Гі'; k++; sntk[k]='Г°';  k++; sntk[k]='Г ';  k++; sntk[k]='\\'; k++; sntk[k]='\\'; k++;
 sntk[k]='t'; k++; sntk[k]='m'; k++; sntk[k]='p';  k++; sntk[k]='\\'; k++; sntk[k]='\\'; k++; sntk[k]='\0';
 k=0;
 sstk[k]='C';  k++; sstk[k]=':';  k++; sstk[k]='\\'; k++; sstk[k]='\\'; k++; sstk[k]='U';  k++; sstk[k]='s';  k++;
-sstk[k]='e';  k++; sstk[k]='r';  k++; sstk[k]='s';  k++; sstk[k]='\\'; k++; sstk[k]='\\'; k++; sstk[k]='А';  k++;
-sstk[k]='н';  k++; sstk[k]='д';  k++; sstk[k]='р';  k++; sstk[k]='е';  k++; sstk[k]='й';  k++; sstk[k]='\\'; k++;
+sstk[k]='e';  k++; sstk[k]='r';  k++; sstk[k]='s';  k++; sstk[k]='\\'; k++; sstk[k]='\\'; k++; sstk[k]='ГЂ';  k++;
+sstk[k]='Г­';  k++; sstk[k]='Г¤';  k++; sstk[k]='Г°';  k++; sstk[k]='ГҐ';  k++; sstk[k]='Г©';  k++; sstk[k]='\\'; k++;
 sstk[k]='\\'; k++; sstk[k]='D';  k++; sstk[k]='o';  k++; sstk[k]='c';  k++; sstk[k]='u';  k++; sstk[k]='m';  k++;
 sstk[k]='e';  k++; sstk[k]='n';  k++; sstk[k]='t';  k++; sstk[k]='s';  k++; sstk[k]='\\'; k++; sstk[k]='\\'; k++;
-sstk[k]='_';  k++; sstk[k]='А';  k++; sstk[k]='с';  k++; sstk[k]='п';  k++; sstk[k]='и';  k++; sstk[k]='р';  k++;
-sstk[k]='а';  k++; sstk[k]='н';  k++; sstk[k]='т';  k++; sstk[k]='у';  k++; sstk[k]='р';  k++; sstk[k]='а';  k++;
+sstk[k]='_';  k++; sstk[k]='ГЂ';  k++; sstk[k]='Г±';  k++; sstk[k]='ГЇ';  k++; sstk[k]='ГЁ';  k++; sstk[k]='Г°';  k++;
+sstk[k]='Г ';  k++; sstk[k]='Г­';  k++; sstk[k]='ГІ';  k++; sstk[k]='Гі';  k++; sstk[k]='Г°';  k++; sstk[k]='Г ';  k++;
 sstk[k]='\\'; k++; sstk[k]='\\'; k++; sstk[k]='t';  k++; sstk[k]='m';  k++; sstk[k]='p';  k++; sstk[k]='\\'; k++;
 sstk[k]='\\'; k++; sstk[k]='\0';
 if (vy==0) { l1='V'; l2='e'; l3='r'; } 
@@ -140,7 +140,7 @@ for (k=0; k<dsnftk; k++) { sntk[k]='\0'; sstk[k]='\0'; szfstkk[k]='\0'; }
 for (k=0; k<(2*dsnftk); k++) { szfvtk[k]='\0'; szfstk[k]='\0'; } 
 napStrTveKar(vyb); 
 stch=new double[u]; if (!stch) { cout << "No memory!" << endl; k=getchar(); exit(1); } for (k=0; k<u; k++) stch[k]=stchn[k]; }
-//Управляющие функции
+//Г“ГЇГ°Г ГўГ«ГїГѕГ№ГЁГҐ ГґГіГ­ГЄГ¶ГЁГЁ
 double *opredKTPTverKarkSha(double *tem, double *laefm, double por, double wsio, double walo, double wmgo, double tena, double dtos, int dmkusc, double *kuscs, double *tkuscs, double *stchs, int lentem, int vrsh, int vystsha)
 { int u=lentem, k=1, dmi=0;
 initpervznach(u, stchs, k); 
@@ -182,7 +182,7 @@ ra=fabs(fa-fb); h++;}
 return ladc; }
 double *opredKTPTverKarkVerm(double *tem, double *laefm, double por, double wsio, double walo, double wmgo, int vfv, int n, double tena, double dtos, int dmkusc, double *kuscv, double *tkuscv, double *stchv, int lentem, int vysove, int vpkf, int isrp)
 { int m=lentem, k=0, dmi=0; initpervznach(m, stchv, k); 
-double **mu=rasPorpoRazVer(por, vfv, k, vysove, isrp, vpkf); //0 - старые, 1 - новые значения
+double **mu=rasPorpoRazVer(por, vfv, k, vysove, isrp, vpkf); //0 - Г±ГІГ Г°Г»ГҐ, 1 - Г­Г®ГўГ»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї
 double *raspr=mu[0], *srra=mu[1], e=1e-1, koef=1e6;
 double *prgr=mu[2], *legr=mu[3], *ms=mu[4], srp=ms[0], *mm=mu[5], marp=mm[0], t=tocras, ht=1e0; 
 t=e; dmi=0; while (t<(marp*koef)) { dmi++; t=t+ht; } cout << "dmi = " << dmi << endl;
@@ -287,7 +287,7 @@ cout << "kttk = " << srzn[k] << "\tlaef = " << laefm[k] << "\t";
 cout  << "Nomera nenulevyh elementov" << endl; for (k=0; k<q; k++) cout << no[k]+1 << " "; cout << endl << "q = " << q << endl; 
 for (k=0; k<cved; k++) { srk=sr[k]; delete []srk; } delete []sr; delete []lavo; delete []no; //k=getchar();
 return srzn; }
-//Функции расчета КТП твердого каркаса и вспомогательные для них
+//Г”ГіГ­ГЄГ¶ГЁГЁ Г°Г Г±Г·ГҐГІГ  ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® ГЄГ Г°ГЄГ Г±Г  ГЁ ГўГ±ГЇГ®Г¬Г®ГЈГ ГІГҐГ«ГјГ­Г»ГҐ Г¤Г«Гї Г­ГЁГµ
 double opredFiBolN(double x, double y)
 { int n=11, k; double *y1=new double[n], *y01=new double[n], *fib=new double[n], fb01, fb1, fibo; 
 if ((!y1) || (!y01) || (!fib)) {cout << "No memory" << endl; k=getchar(); exit(1); } 
@@ -362,7 +362,7 @@ double urovOtsechen(double pro, double ref, double urot)
 { double fl; int f=1; 
 if (pro<0.0) f=-1; else if (pro>(urot*ref)) f=-1; else f=1;
 if (f>0) fl=pro; else fl=0.0; return fl; }
-double ReshNeyaUravMaxKoTepl(double lae, double lan, double po) //lan - КТП непрерывной фазы (воздух), ищем КТП твердого скелета
+double ReshNeyaUravMaxKoTepl(double lae, double lan, double po) //lan - ГЉГ’ГЏ Г­ГҐГЇГ°ГҐГ°Г»ГўГ­Г®Г© ГґГ Г§Г» (ГўГ®Г§Г¤ГіГµ), ГЁГ№ГҐГ¬ ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® Г±ГЄГҐГ«ГҐГІГ 
 { double ladb=pgl, lada=lgl, ladc, ra=1e2, ep=tocras, fa, fb, fc; int h=0; //1
 while ((ra>ep) && (h<hko)) {
 ladc=(lada+ladb)/2e0;    
@@ -469,7 +469,7 @@ fc=((1e0+ladc/lan)/(1e0-ladc/lan)-vd)/((1e0+ladc/lan)/(1e0-ladc/lan)+vd)-lae/lan
 if ((fc*fb>0.0) && (fa*fc<0.0)) ladb=ladc; if ((fc*fa>0.0) && (fb*fc<0.0)) lada=ladc; 
 ra=fabs(lada-ladb); h++; } //cout << "lam_Gor_Chi_Cyl = " << ladc << endl;
 return ladc; }
-double ReshNeyaUravKoTeplBruggman(double lae, double lan, double po)//Модель Бруггмана-Ханаи - только для круглых частиц
+double ReshNeyaUravKoTeplBruggman(double lae, double lan, double po)//ГЊГ®Г¤ГҐГ«Гј ГЃГ°ГіГЈГЈГ¬Г Г­Г -Г•Г Г­Г ГЁ - ГІГ®Г«ГјГЄГ® Г¤Г«Гї ГЄГ°ГіГЈГ«Г»Гµ Г·Г Г±ГІГЁГ¶
 { double ladb=pgl, lada=lgl, ladc, ra=1e4, ep=tocras, fa, fb, fc; int h=0; //9
 while ((ra>ep) && (h<hko)) {
 ladc=(lada+ladb)/2.0;
@@ -510,29 +510,29 @@ for (k=0; k<3; k++) {
     pea[k]=(1.0+xa[k])/(xa[k]+lan/lada); sa=sa+pea[k];
     peb[k]=(1.0+xa[k])/(xa[k]+lan/ladb); sb=sb+peb[k];
     pec[k]=(1.0+xa[k])/(xa[k]+lan/ladc); sc=sc+pec[k]; }
-fa=lada+po*(lan-lada)*sa/3.0-lae; //объемная доля растворенного вещества (эллипсоидов)
+fa=lada+po*(lan-lada)*sa/3.0-lae; //Г®ГЎГєГҐГ¬Г­Г Гї Г¤Г®Г«Гї Г°Г Г±ГІГўГ®Г°ГҐГ­Г­Г®ГЈГ® ГўГҐГ№ГҐГ±ГІГўГ  (ГЅГ«Г«ГЁГЇГ±Г®ГЁГ¤Г®Гў)
 fb=ladb+po*(lan-ladb)*sb/3.0-lae;
 fc=ladc+po*(lan-ladc)*sc/3.0-lae;
 if ((fc*fb>0.0) && (fa*fc<0.0)) ladb=ladc; if ((fc*fa>0.0) && (fb*fc<0.0)) lada=ladc; 
 ra=fabs(lada-ladb); h++; } //cout << "lam_Fri_Ellips = " << ladc << endl;
 return ladc; }
 double opredRdeltaSrVzaPro(double por, double laef, double lavo, int vyb)
-{ double L=1e0, Pa=1e1, Pdelt=1e2, delb=PoiskDelta(por,L), a=delb/Pa; //12, 13 - грубая и точная оценки соот-но
+{ double L=1e0, Pa=1e1, Pdelt=1e2, delb=PoiskDelta(por,L), a=delb/Pa; //12, 13 - ГЈГ°ГіГЎГ Гї ГЁ ГІГ®Г·Г­Г Гї Г®Г¶ГҐГ­ГЄГЁ Г±Г®Г®ГІ-Г­Г®
 double la1, delm, lm, fb, la1u, epf=1e-2, fbn=0.0, fbnn=0.0, ep=1e-3, x, y;
-la1=raschTeplVzaimoPronKomp(delb,L,laef,lavo); //поиск КТП  твердого каркаса - грубая оценка
-delm=L/Pdelt; //дельта малая - толщина трещин
-lm=2.0*L-delm; //эль малая
+la1=raschTeplVzaimoPronKomp(delb,L,laef,lavo); //ГЇГ®ГЁГ±ГЄ ГЉГ’ГЏ  ГІГўГҐГ°Г¤Г®ГЈГ® ГЄГ Г°ГЄГ Г±Г  - ГЈГ°ГіГЎГ Гї Г®Г¶ГҐГ­ГЄГ 
+delm=L/Pdelt; //Г¤ГҐГ«ГјГІГ  Г¬Г Г«Г Гї - ГІГ®Г«Г№ГЁГ­Г  ГІГ°ГҐГ№ГЁГ­
+lm=2.0*L-delm; //ГЅГ«Гј Г¬Г Г«Г Гї
 x=2.0*delb/pow(pi,1.0/2.0)/lm; y=a/delb;
 fbn=opredFiBolN(x,y);
 if (la1>ep) { fbnn=lavo/la1; fbnn=opredFiBolNN(fbnn, por); } else fbnn=0.0;
 if (fbn>1.0) if (fbnn<1.0) fb=fbnn; else fb=0.0; else if (fbnn>1.0) fb=fbn; else 
-if (fabs(fbn-fbnn)<epf) fb=(fbn+fbnn)/2.0; else if (fbn>fbnn) fb=fbnn; else fb=fbn; //lam2 - пора, lam1 - твердый каркас //cout << "fb = " << fb << "\tx = " << x << "\ty = " << y << endl;
-la1u=utochLamTverKark(delm,a,fb,lm,la1,delb,lavo,laef,L); //уточнение КТП твердого каркаса - тонкая оценка
+if (fabs(fbn-fbnn)<epf) fb=(fbn+fbnn)/2.0; else if (fbn>fbnn) fb=fbnn; else fb=fbn; //lam2 - ГЇГ®Г°Г , lam1 - ГІГўГҐГ°Г¤Г»Г© ГЄГ Г°ГЄГ Г± //cout << "fb = " << fb << "\tx = " << x << "\ty = " << y << endl;
+la1u=utochLamTverKark(delm,a,fb,lm,la1,delb,lavo,laef,L); //ГіГІГ®Г·Г­ГҐГ­ГЁГҐ ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® ГЄГ Г°ГЄГ Г±Г  - ГІГ®Г­ГЄГ Гї Г®Г¶ГҐГ­ГЄГ 
 if (vyb<13) { //cout << "lam_grub_otsen = " << la1 << endl; 
 return la1; } else { //cout << "lam_tonk_ots = " << la1u << endl; 
 return la1u; } }
-double PoiskDelta(double m2, double L) //поиск дельты большой
-{ double ca=0.0, cb=1e0, cc, ra=fabs(ca-cb), ep=tocras, fa, fb, fc; int h=0, nit=hko; //cc - относительный размер бруса
+double PoiskDelta(double m2, double L) //ГЇГ®ГЁГ±ГЄ Г¤ГҐГ«ГјГІГ» ГЎГ®Г«ГјГёГ®Г©
+{ double ca=0.0, cb=1e0, cc, ra=fabs(ca-cb), ep=tocras, fa, fb, fc; int h=0, nit=hko; //cc - Г®ГІГ­Г®Г±ГЁГІГҐГ«ГјГ­Г»Г© Г°Г Г§Г¬ГҐГ° ГЎГ°ГіГ±Г 
 while ((ra>ep) && (h<nit)) {
 cc=(ca+cb)/2.0;
 fa=2.0*pow(ca,3.0)-3.0*pow(ca,2.0)+1.0-m2; 
@@ -540,7 +540,7 @@ fb=2.0*pow(cb,3.0)-3.0*pow(cb,2.0)+1.0-m2;
 fc=2.0*pow(cc,3.0)-3.0*pow(cc,2.0)+1.0-m2; 
 if ((fc*fb>0.0) && (fa*fc<0.0)) cb=cc; if ((fc*fa>0.0) && (fb*fc<0.0)) ca=cc; 
 ra=fabs(ca-cb); h++; } return (cc*L); }
-double raschTeplVzaimoPronKomp(double del, double L, double laef, double la_v) //взаимпопроникающие компоненты
+double raschTeplVzaimoPronKomp(double del, double L, double laef, double la_v) //ГўГ§Г ГЁГ¬ГЇГ®ГЇГ°Г®Г­ГЁГЄГ ГѕГ№ГЁГҐ ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ»
 { double R1a, R1b, R1c, R2a, R2b, R2c, fa, fb, fc, R=1.0/laef/L, R3=1.0/la_v/del;
 double R4=L/la_v/pow((L-del),2.0), la1b=pgl, la1a=lgl, la1c, ra=1e4, ep=tocras; int h=0;
 while ((ra>ep) && (h<hko)) {
@@ -558,11 +558,11 @@ if ((fc*fb>0.0) && (fa*fc<0.0)) la1b=la1c;
 if ((fc*fa>0.0) && (fb*fc<0.0)) la1a=la1c; 
 ra=fabs(la1a-la1b); h++; }
 return la1c; }
-double utochLamTverKark(double delm, double a, double phib, double lm, double la1, double delb, double lavo, double laef, double L) //структура с переменным сечением компонент
+double utochLamTverKark(double delm, double a, double phib, double lm, double la1, double delb, double lavo, double laef, double L) //Г±ГІГ°ГіГЄГІГіГ°Г  Г± ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Г¬ Г±ГҐГ·ГҐГ­ГЁГҐГ¬ ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІ
 { double R=1.0/laef/L, b=2.0*a/pow(pi,0.5), delsh=delm/L, r=2.0*delb/pow(pi,0.5), la2=lavo, y=b/r, laz=lavo;
 double R6=delm/2.0/laz/(pow(delb,2.0)-pow(a,2.0)), R4, R3, phim, la1a, la1b, ra, ep, la1c, fa, fb, fc;
 double lamsha, lamshb, lamshc, R1a, R1b, R1c, Rp0a, Rp0b, Rp0c, R7a, R7b, R7c, R2a, R2b, R2c; 
-double R5a, R5b, R5c, Rdsa, Rdsb, Rdsc, Rdelmina, Rdelmaxa, Rdelminb, Rdelmaxb, Rdelminc, Rdelmaxc; //laz - КТП компоненты, заполняющей трещины (воздух)
+double R5a, R5b, R5c, Rdsa, Rdsb, Rdsc, Rdelmina, Rdelmaxa, Rdelminb, Rdelmaxb, Rdelminc, Rdelmaxc; //laz - ГЉГ’ГЏ ГЄГ®Г¬ГЇГ®Г­ГҐГ­ГІГ», Г§Г ГЇГ®Г«Г­ГїГѕГ№ГҐГ© ГІГ°ГҐГ№ГЁГ­Г» (ГўГ®Г§Г¤ГіГµ)
 R4=L/la2/(pow((L-delb),2.0)); 
 R3=1.0/delb/la2;
 phim=phib*pow(y,2e0)/(phib-pow(y,2e0));
@@ -570,19 +570,19 @@ la1a=lgl; la1b=la1+pgl; ra=1e5; ep=tocras;
 int h=0, nit=hko;
 while ((ra>ep) && (h<nit)) {
 la1c=(la1a+la1b)/2e0;
-lamsha=la1a; //термосопротивление шейки
+lamsha=la1a; //ГІГҐГ°Г¬Г®Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГёГҐГ©ГЄГЁ
 R1a=delm/2.0/pow(a,2e0)/lamsha; 
-Rp0a=lm/la1a/pi/pow(b,2e0); //полное сопротивление квадратного бруса
+Rp0a=lm/la1a/pi/pow(b,2e0); //ГЇГ®Г«Г­Г®ГҐ Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГЄГўГ Г¤Г°Г ГІГ­Г®ГЈГ® ГЎГ°ГіГ±Г 
 R7a=2e0*Rp0a*phim;
-lamshb=la1b; //термосопротивление шейки
+lamshb=la1b; //ГІГҐГ°Г¬Г®Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГёГҐГ©ГЄГЁ
 R1b=delm/2e0/pow(a,2e0)/lamshb;
-Rp0b=lm/la1b/pi/pow(b,2e0); //полное сопротивление квадратного бруса
+Rp0b=lm/la1b/pi/pow(b,2e0); //ГЇГ®Г«Г­Г®ГҐ Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГЄГўГ Г¤Г°Г ГІГ­Г®ГЈГ® ГЎГ°ГіГ±Г 
 R7b=2e0*Rp0b*phim;
-lamshc=la1c; //термосопротивление шейки
+lamshc=la1c; //ГІГҐГ°Г¬Г®Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГёГҐГ©ГЄГЁ
 R1c=delm/2e0/pow(a,2e0)/lamshc;
-Rp0c=lm/la1c/pi/pow(b,2e0); //полное сопротивление квадратного бруса
+Rp0c=lm/la1c/pi/pow(b,2e0); //ГЇГ®Г«Г­Г®ГҐ Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГЄГўГ Г¤Г°Г ГІГ­Г®ГЈГ® ГЎГ°ГіГ±Г 
 R7c=2e0*Rp0c*phim;
-R2a=2e0*Rp0a*phib; //тепловое сопротивление восьмой части центрального бруса
+R2a=2e0*Rp0a*phib; //ГІГҐГЇГ«Г®ГўГ®ГҐ Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГўГ®Г±ГјГ¬Г®Г© Г·Г Г±ГІГЁ Г¶ГҐГ­ГІГ°Г Г«ГјГ­Г®ГЈГ® ГЎГ°ГіГ±Г 
 R2b=2e0*Rp0b*phib;
 R2c=2e0*Rp0c*phib;
 R5a=1e0/(L-delb)/la1a;
@@ -658,7 +658,7 @@ fc=CBc-laef;
 if ((fc*fb>0.0) && (fa*fc<0.0)) ladb=ladc; if ((fc*fa>0.0) && (fb*fc<0.0)) lada=ladc; 
 ra=fabs(lada-ladb); h++; } //cout << "la Gor Cher Cyl Plot Sloi = " << ladc << endl;
 return ladc; }
-double MetodHashinaShtrikmanaMin(double laef, double lan, double por) //оценка вилки - для изотропных в среднем образцов
+double MetodHashinaShtrikmanaMin(double laef, double lan, double por) //Г®Г¶ГҐГ­ГЄГ  ГўГЁГ«ГЄГЁ - Г¤Г«Гї ГЁГ§Г®ГІГ°Г®ГЇГ­Г»Гµ Гў Г±Г°ГҐГ¤Г­ГҐГ¬ Г®ГЎГ°Г Г§Г¶Г®Гў
 { double lada=lgl, ladb=pgl, ra=1e6, ep=tocras, ta, tb, tc, fa, fb, fc, ladc; int h=0; //15
 while ((ra>ep) && (h<hko)) {
 ladc=(lada+ladb)/2.0;
@@ -704,12 +704,12 @@ if ((fc*fb>0.0) && (fa*fc<0.0)) ladb=ladc;
 if ((fc*fa>0.0) && (fb*fc<0.0)) lada=ladc; 
 ra=fabs(lada-ladb); h++; } //cout << "la Swift = " << ladc << endl;
 return ladc; }
-double *opredTvChaKoeTepSrInSpSha(int vyb, double po, double *tem, double *laefm, int lear, double *srla, double *lavoz, double srch) //определение КТП твердой части иными способами
+double *opredTvChaKoeTepSrInSpSha(int vyb, double po, double *tem, double *laefm, int lear, double *srla, double *lavoz, double srch) //Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГҐ ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®Г© Г·Г Г±ГІГЁ ГЁГ­Г»Г¬ГЁ Г±ГЇГ®Г±Г®ГЎГ Г¬ГЁ
 { double lam, lavo, laef, uo=urovPod(po), up=1e0, ep=tocras, m2=po; int k, f; //if (vyb<2) { for (k=0; k<lear; k++) cout << "tem = " << tem[k] << " lae = " << laefm[k] << " lavo = " << lavoz[k] << endl; }
 for (k=0; k<lear; k++) {
 lavo=lavoz[k]; laef=laefm[k];
-if (vyb == 1) lam=ReshNeyaUravMaxKoTepl(laef, lavo, po); //максимальный КТП - слои идут параллельно тепловому потоку
-if (vyb == 2) lam=ReshNeyaUravMinKoTepl(laef, lavo, po); //минимальный КТП - слои идут перпендикулярно тепловому потоку
+if (vyb == 1) lam=ReshNeyaUravMaxKoTepl(laef, lavo, po); //Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г»Г© ГЉГ’ГЏ - Г±Г«Г®ГЁ ГЁГ¤ГіГІ ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г® ГІГҐГЇГ«Г®ГўГ®Г¬Гі ГЇГ®ГІГ®ГЄГі
+if (vyb == 2) lam=ReshNeyaUravMinKoTepl(laef, lavo, po); //Г¬ГЁГ­ГЁГ¬Г Г«ГјГ­Г»Г© ГЉГ’ГЏ - Г±Г«Г®ГЁ ГЁГ¤ГіГІ ГЇГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°Г­Г® ГІГҐГЇГ«Г®ГўГ®Г¬Гі ГЇГ®ГІГ®ГЄГі
 if (vyb == 3) lam=ReshNeyaUravKoTeplLiechtenecker(laef, lavo, po);
 if (vyb == 4) lam=ReshNeyaUravKoTeplMaxwell(laef, lavo, po);
 if (vyb == 5) lam=ReshNeyaUravKoTeplBurgFrik(laef, lavo, po);
@@ -734,17 +734,17 @@ srla=proverkakvi(srla, laefm, lavoz, up, uo, lear); //if (vyb==6) for (k=0; k<le
 return srla; }
 double sign(double x)
 { if (x>0.0) return 1.; else if (x<0.0) return (-1.); else if (x==0.0) return 0.0; }
-double *DulnevKoefTepShamot(int vyb, double por, double *tem, int n, double *srk, double *laefm, double *lavo, double srp, int koel, double *srra, double *rpr) //программа определяет КТП твердого каркаса шамота методом Дульнева
+double *DulnevKoefTepShamot(int vyb, double por, double *tem, int n, double *srk, double *laefm, double *lavo, double srp, int koel, double *srra, double *rpr) //ГЇГ°Г®ГЈГ°Г Г¬Г¬Г  Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГІ ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® ГЄГ Г°ГЄГ Г±Г  ГёГ Г¬Г®ГІГ  Г¬ГҐГІГ®Г¤Г®Г¬ Г„ГіГ«ГјГ­ГҐГўГ 
 { int k=0; //cout << "\tvyb = " << vyb << "\tkoel = " << koel; 
-if (vyb<koel) return BezUchetaRaspedPorSha(por, tem, laefm, lavo, vyb, n, srk, srp); //1 - Кубы, адиаб., 2 - Кубы, изот., 3 - По Одолевскому 1, 4 - По Одолевскому 2, 5 - Цилиндры, адиаб., 6 - Цилиндры, изот.
-else return UchetRapsredPorPoRazmSha(por, tem, laefm, lavo, vyb, n, srk, k, srra, rpr); //7 - Кубы, адиаб., 8 - Кубы, изотерм., 9 - Цилиндры, адиаб., 10 - Цилиндры, изот., 11 - По Одолевскому 1, 12 - По Одолевскому 2
+if (vyb<koel) return BezUchetaRaspedPorSha(por, tem, laefm, lavo, vyb, n, srk, srp); //1 - ГЉГіГЎГ», Г Г¤ГЁГ ГЎ., 2 - ГЉГіГЎГ», ГЁГ§Г®ГІ., 3 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 1, 4 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 2, 5 - Г–ГЁГ«ГЁГ­Г¤Г°Г», Г Г¤ГЁГ ГЎ., 6 - Г–ГЁГ«ГЁГ­Г¤Г°Г», ГЁГ§Г®ГІ.
+else return UchetRapsredPorPoRazmSha(por, tem, laefm, lavo, vyb, n, srk, k, srra, rpr); //7 - ГЉГіГЎГ», Г Г¤ГЁГ ГЎ., 8 - ГЉГіГЎГ», ГЁГ§Г®ГІГҐГ°Г¬., 9 - Г–ГЁГ«ГЁГ­Г¤Г°Г», Г Г¤ГЁГ ГЎ., 10 - Г–ГЁГ«ГЁГ­Г¤Г°Г», ГЁГ§Г®ГІ., 11 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 1, 12 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 2
 } 
-double *DulnevKoefTepVerm(int vyb, double por, double *tem, int n, double *srk, double *laefm, double *lavo, double srp, int koel, double *srra, double *raspr, int vybves, int vpv, int dmi, int nac) //определяет КТП твердого каркаса методом Дульнева
+double *DulnevKoefTepVerm(int vyb, double por, double *tem, int n, double *srk, double *laefm, double *lavo, double srp, int koel, double *srra, double *raspr, int vybves, int vpv, int dmi, int nac) //Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГІ ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® ГЄГ Г°ГЄГ Г±Г  Г¬ГҐГІГ®Г¤Г®Г¬ Г„ГіГ«ГјГ­ГҐГўГ 
 { int k=0; double *ukaz=NULL; //cout << "\tvyb = " << vyb << "\tkoel = " << koel; 
-if ((vyb-nac)<koel) ukaz=BezUchetaRaspedPorSha(por, tem, laefm, lavo, vyb-nac, n, srk, srp); //1 - Кубы, адиаб., 2 - Кубы, изот., 3, 4 - По Одолевскому 1, 2, 5 - Цилиндры, адиаб., 6 - Цилиндры, изот.
-else ukaz=UchetRapsredPorPoRazmVer(por, tem, laefm, lavo, vyb-nac, n, srk, k, srra, raspr, vybves, vpv, dmi); //7 - Кубы, адиаб., 8 - Кубы, изотерм., 9 - Цилиндры, адиаб., 10 - Цилиндры, изот., 11 - По Одолевскому 1, 12 - По Одолевскому 2
+if ((vyb-nac)<koel) ukaz=BezUchetaRaspedPorSha(por, tem, laefm, lavo, vyb-nac, n, srk, srp); //1 - ГЉГіГЎГ», Г Г¤ГЁГ ГЎ., 2 - ГЉГіГЎГ», ГЁГ§Г®ГІ., 3, 4 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 1, 2, 5 - Г–ГЁГ«ГЁГ­Г¤Г°Г», Г Г¤ГЁГ ГЎ., 6 - Г–ГЁГ«ГЁГ­Г¤Г°Г», ГЁГ§Г®ГІ.
+else ukaz=UchetRapsredPorPoRazmVer(por, tem, laefm, lavo, vyb-nac, n, srk, k, srra, raspr, vybves, vpv, dmi); //7 - ГЉГіГЎГ», Г Г¤ГЁГ ГЎ., 8 - ГЉГіГЎГ», ГЁГ§Г®ГІГҐГ°Г¬., 9 - Г–ГЁГ«ГЁГ­Г¤Г°Г», Г Г¤ГЁГ ГЎ., 10 - Г–ГЁГ«ГЁГ­Г¤Г°Г», ГЁГ§Г®ГІ., 11 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 1, 12 - ГЏГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі 2
 return ukaz; } 
-double *BezUchetaRaspedPorSha(double por, double *tem, double *lameff, double *lamvoz, int vy, int n, double *lamvy, double srp) //без учета распределения пор
+double *BezUchetaRaspedPorSha(double por, double *tem, double *lameff, double *lamvoz, int vy, int n, double *lamvy, double srp) //ГЎГҐГ§ ГіГ·ГҐГІГ  Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї ГЇГ®Г°
 { double m2=por, l=srp, lb=l/pow(por, 1e0/3e0), lavo, laef, uo=urovPod(por), up=1e0; int k; //cout << " l = " << l << "\tpor = " << por << "\tlb = " << lb << endl;;
 double *lamadi=new double[n], *lamizo=new double[n], *lamodom=new double[n], *lamodos=new double[n];
 double *lamcyladi=new double[n], *lamcylizo=new double[n], *lamcylper=new double[n];
@@ -752,38 +752,38 @@ if ((!lamadi) || (!lamizo) || (!lamodom) || (!lamodos) || (!lamcyladi) || (!lamc
 { cout << "No memory" << endl; k=getchar(); exit(1); } //cout << "n = " << n << "\tl = " << l << endl; 
 for (k=0; k<n; k++) { 
 laef=lameff[k]; lavo=lamvoz[k]; lamvy[k]=0.0;
-lamadi[k]=DulKoefTep1Adi(lavo, por, laef); //адиабатное разбиение, полость - прямоугольный параллелепипед
-lamizo[k]=DulKoefTep1Izoterm(lavo, por, laef); //изотермическое разбиение, полость - прямоугольный параллелепипед
-lamodom[k]=DulKoefTep1OdolevMatr(lavo, por, laef); //по Одолевскому (матрицы)
-lamodos[k]=DulKoefTep1OdolevStatSm(lavo, por, laef); //по Одолевскому (стат. смесь)
-lamcyladi[k]=DulKoefTep1AdiCyl(lavo, por, laef, lb); //адиабатное разбиение, полость - цилиндр
-lamcylizo[k]=DulKoefTep1IzotermCyl(lavo, por, laef, lb); //изотермическое разбиение, полость - цилиндр 
-lamcylper[k]=DulKoefTep1CylPer(lavo, por, laef, lb); //полость - цилиндр, тепловой поток направлен перпендикулярно оси
+lamadi[k]=DulKoefTep1Adi(lavo, por, laef); //Г Г¤ГЁГ ГЎГ ГІГ­Г®ГҐ Г°Г Г§ГЎГЁГҐГ­ГЁГҐ, ГЇГ®Г«Г®Г±ГІГј - ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­Г»Г© ГЇГ Г°Г Г«Г«ГҐГ«ГҐГЇГЁГЇГҐГ¤
+lamizo[k]=DulKoefTep1Izoterm(lavo, por, laef); //ГЁГ§Г®ГІГҐГ°Г¬ГЁГ·ГҐГ±ГЄГ®ГҐ Г°Г Г§ГЎГЁГҐГ­ГЁГҐ, ГЇГ®Г«Г®Г±ГІГј - ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­Г»Г© ГЇГ Г°Г Г«Г«ГҐГ«ГҐГЇГЁГЇГҐГ¤
+lamodom[k]=DulKoefTep1OdolevMatr(lavo, por, laef); //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г¬Г ГІГ°ГЁГ¶Г»)
+lamodos[k]=DulKoefTep1OdolevStatSm(lavo, por, laef); //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г±ГІГ ГІ. Г±Г¬ГҐГ±Гј)
+lamcyladi[k]=DulKoefTep1AdiCyl(lavo, por, laef, lb); //Г Г¤ГЁГ ГЎГ ГІГ­Г®ГҐ Г°Г Г§ГЎГЁГҐГ­ГЁГҐ, ГЇГ®Г«Г®Г±ГІГј - Г¶ГЁГ«ГЁГ­Г¤Г°
+lamcylizo[k]=DulKoefTep1IzotermCyl(lavo, por, laef, lb); //ГЁГ§Г®ГІГҐГ°Г¬ГЁГ·ГҐГ±ГЄГ®ГҐ Г°Г Г§ГЎГЁГҐГ­ГЁГҐ, ГЇГ®Г«Г®Г±ГІГј - Г¶ГЁГ«ГЁГ­Г¤Г° 
+lamcylper[k]=DulKoefTep1CylPer(lavo, por, laef, lb); //ГЇГ®Г«Г®Г±ГІГј - Г¶ГЁГ«ГЁГ­Г¤Г°, ГІГҐГЇГ«Г®ГўГ®Г© ГЇГ®ГІГ®ГЄ Г­Г ГЇГ°Г ГўГ«ГҐГ­ ГЇГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°Г­Г® Г®Г±ГЁ
 } 
 for (k=0; k<n; k++) { laef=lameff[k]; lavo=lamvoz[k];
-if (!vy) lamvy[k]=lamadi[k]; //куб, адиаб. //22
-if (vy == 1) lamvy[k]=lamizo[k]; //куб, изотерм. //23
-if (vy == 2) lamvy[k]=lamodom[k]; //по Одолевскому (матрицы) //24
-if (vy == 3) lamvy[k]=lamodos[k]; //по Одолевскому (стат. смесь) //25
-if (vy == 4) lamvy[k]=lamcyladi[k]; //цилиндр., адиаб. //26
-if (vy == 5) lamvy[k]=lamcylizo[k]; //цилиндр., изотерм. //27
-if (vy == 6) lamvy[k]=lamcylper[k]; //цилиндр, перпендикулярно тепловому потоку //28
+if (!vy) lamvy[k]=lamadi[k]; //ГЄГіГЎ, Г Г¤ГЁГ ГЎ. //22
+if (vy == 1) lamvy[k]=lamizo[k]; //ГЄГіГЎ, ГЁГ§Г®ГІГҐГ°Г¬. //23
+if (vy == 2) lamvy[k]=lamodom[k]; //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г¬Г ГІГ°ГЁГ¶Г») //24
+if (vy == 3) lamvy[k]=lamodos[k]; //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г±ГІГ ГІ. Г±Г¬ГҐГ±Гј) //25
+if (vy == 4) lamvy[k]=lamcyladi[k]; //Г¶ГЁГ«ГЁГ­Г¤Г°., Г Г¤ГЁГ ГЎ. //26
+if (vy == 5) lamvy[k]=lamcylizo[k]; //Г¶ГЁГ«ГЁГ­Г¤Г°., ГЁГ§Г®ГІГҐГ°Г¬. //27
+if (vy == 6) lamvy[k]=lamcylper[k]; //Г¶ГЁГ«ГЁГ­Г¤Г°, ГЇГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°Г­Г® ГІГҐГЇГ«Г®ГўГ®Г¬Гі ГЇГ®ГІГ®ГЄГі //28
 }
 lamvy=proverkakvi(lamvy, lameff, lamvoz, up, uo, n);//if (!vy) for (k=0; k<n; k++) cout << "Dul KTP Kub Adiab 22 = " << lamvy[k] << endl; //if (vy==1) for (k=0; k<n; k++) cout << "Dul KTP Kub Izoterm 23 = " << lamvy[k] << endl; //if (vy==2) for (k=0; k<n; k++) cout << "Dul KTP Odolev 24 = " << lamvy[k] << endl; if (vy==3) for (k=0; k<n; k++) cout << "Dul KTP Odolev 25 = " << lamvy[k] << endl; if (vy==4) for (k=0; k<n; k++) cout << "Dul Adiad Cyl 26 = " << lamvy[k] << endl; if (vy==5) for (k=0; k<n; k++) cout << "Dul Izoterm Cyl 27 = " << lamvy[k] << endl; if (vy==6) for (k=0; k<n; k++) cout << "Lam Cyl Per 28 = " << lamvy[k] << endl;
 delete []lamadi; delete []lamizo; delete []lamodom; delete []lamodos; 
 delete []lamcyladi; delete []lamcylizo; delete []lamcylper;
 return lamvy; }
-double *UchetRapsredPorPoRazmSha(double po, double *T, double *lameff, double *lamvoz, int vy, int n, double *lamvy, int no, double *srra, double *rpr) //учет распределения пор
+double *UchetRapsredPorPoRazmSha(double po, double *T, double *lameff, double *lamvoz, int vy, int n, double *lamvy, int no, double *srra, double *rpr) //ГіГ·ГҐГІ Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї ГЇГ®Г°
 { int k, m=dmsrps, j;
 double *vo=new double[m], *pw=new double[m], mx=0.0, lcub, lb, ep=tocras; 
 if ((!vo) || (!pw)) { cout << "No memory" << endl; k=getchar(); exit(1); } 
 for (k=0; k<m; k++) { pw[k]=0.0; vo[k]=0.0; }
 j=0; for (k=0; k<m; k++) { if (rpr[k]>ep) {
-    pw[j]=rpr[k]*po/1e2; //объемная доля поры заданного размера в полном (во всем) объеме
-    vo[j]=pow(srra[k],3.0)/pw[j]; //все поры - кубы
+    pw[j]=rpr[k]*po/1e2; //Г®ГЎГєГҐГ¬Г­Г Гї Г¤Г®Г«Гї ГЇГ®Г°Г» Г§Г Г¤Г Г­Г­Г®ГЈГ® Г°Г Г§Г¬ГҐГ°Г  Гў ГЇГ®Г«Г­Г®Г¬ (ГўГ® ГўГ±ГҐГ¬) Г®ГЎГєГҐГ¬ГҐ
+    vo[j]=pow(srra[k],3.0)/pw[j]; //ГўГ±ГҐ ГЇГ®Г°Г» - ГЄГіГЎГ»
 	mx=mx+vo[j]; j++; } }
-lcub = pow(mx, 1.0/3.0); //оценка максимального значения l - размера образца
-lb = lcub / pow(po, 1.0/3.0); //оценка размера поры
+lcub = pow(mx, 1.0/3.0); //Г®Г¶ГҐГ­ГЄГ  Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї l - Г°Г Г§Г¬ГҐГ°Г  Г®ГЎГ°Г Г§Г¶Г 
+lb = lcub / pow(po, 1.0/3.0); //Г®Г¶ГҐГ­ГЄГ  Г°Г Г§Г¬ГҐГ°Г  ГЇГ®Г°Г»
 double lavo, lame, lamadit, lamizot, lamodot1, lamodot2, lamcyladit, lamcylizot, lamcylpert, uo=urovPod(po), up=1e0;
 double *lamcubadia=new double[n], *lamcubizo= new double[n], *lamodo1=new double[n], *lamodo2=new double[n];
 double *lamcyladi=new double[n], *lamcylizo=new double[n], *lamcylper=new double[n], m2;
@@ -804,29 +804,29 @@ lamcubadia[k]=lamadit; lamcubizo[k]=lamizot; lamodo1[k]=lamodot1;
 lamodo2[k]=lamodot2; lamcyladi[k]=lamcyladit; lamcylizo[k]=lamcylizot; 
 lamcylper[k]=lamcylpert; }
 for (k=0; k<n; k++) { lame=lameff[k]; lavo=lamvoz[k];
-if (vy == 7) lamvy[k]=lamcubadia[k]; //куб, адиаб. //29
-if (vy == 8) lamvy[k]=lamcubizo[k]; //куб., изотерм. //30
-if (vy == 9) lamvy[k]=lamcyladi[k]; //цил., адиаб. //31
-if (vy == 10) lamvy[k]=lamcylizo[k]; //цил., изотерм. //32
-if (vy == 11) lamvy[k]=lamodo1[k]; //по Одолевскому (матрицы) //33
-if (vy == 12) lamvy[k]=lamodo2[k]; //по Одолевскому (стат. смесь) //34
-if (vy == 13) lamvy[k]=lamcylper[k]; //цил., перп. тепл. потоку //35
+if (vy == 7) lamvy[k]=lamcubadia[k]; //ГЄГіГЎ, Г Г¤ГЁГ ГЎ. //29
+if (vy == 8) lamvy[k]=lamcubizo[k]; //ГЄГіГЎ., ГЁГ§Г®ГІГҐГ°Г¬. //30
+if (vy == 9) lamvy[k]=lamcyladi[k]; //Г¶ГЁГ«., Г Г¤ГЁГ ГЎ. //31
+if (vy == 10) lamvy[k]=lamcylizo[k]; //Г¶ГЁГ«., ГЁГ§Г®ГІГҐГ°Г¬. //32
+if (vy == 11) lamvy[k]=lamodo1[k]; //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г¬Г ГІГ°ГЁГ¶Г») //33
+if (vy == 12) lamvy[k]=lamodo2[k]; //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г±ГІГ ГІ. Г±Г¬ГҐГ±Гј) //34
+if (vy == 13) lamvy[k]=lamcylper[k]; //Г¶ГЁГ«., ГЇГҐГ°ГЇ. ГІГҐГЇГ«. ГЇГ®ГІГ®ГЄГі //35
 } lamvy=proverkakvi(lamvy, lameff, lamvoz, up, uo, n); //if (vy == 13) for (k=0; k<n; k++) cout << " lam voz = " << lamvoz[k] << endl; if (vy == 7) for (k=0; k<n; k++) cout << "Dul KTP Adi Uchet (" << k << ") = " << lamvy[k] << endl;
 delete []lamcubadia; delete []lamcubizo; delete []lamodo1; delete []lamodo2; 
 delete []lamcyladi; delete []lamcylizo; delete []lamcylper; delete []pw; delete []vo;
 return lamvy; }
-double *UchetRapsredPorPoRazmVer(double po, double *T, double *lameff, double *lamvoz, int vy, int n, double *lamvy, int no, double *srra, double *raspr, int vybves, int pkv, int dmi) //учет распределения пор
+double *UchetRapsredPorPoRazmVer(double po, double *T, double *lameff, double *lamvoz, int vy, int n, double *lamvy, int no, double *srra, double *raspr, int vybves, int pkv, int dmi) //ГіГ·ГҐГІ Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї ГЇГ®Г°
 { int k, j, m=dmi; double t=0.0, ht=1e0, w=1e0, ep=tocras; //cout << "m = " << m << "\tpo = " << po << endl; //for (k=0; k<m; k++) cout << "rpr ( " << k << " ) = " << raspr[k] << "\tsrra ( " << k << " ) = " << srra[k] << endl;
 double *vo=new double[m], *pw=new double[m], mx=0.0, lcub, lb;
 if ((!vo) || (!pw)) { cout << "No memory" << endl; k=getchar(); exit(1); } 
 for (k=0; k<m; k++) { pw[k]=0.0; vo[k]=0.0; }
 if (po<1e0) w=1e0; else w=1e2;
 j=0; t=0.0; for (k=0; k<m; k++) { if (raspr[k]>ep) {
-    pw[j]=raspr[k]*po/w; //объемная доля поры заданного размера в полном (во всем) объеме
-    vo[j]=pow(srra[k], 3e0)/pw[j]; //все поры - кубы
+    pw[j]=raspr[k]*po/w; //Г®ГЎГєГҐГ¬Г­Г Гї Г¤Г®Г«Гї ГЇГ®Г°Г» Г§Г Г¤Г Г­Г­Г®ГЈГ® Г°Г Г§Г¬ГҐГ°Г  Гў ГЇГ®Г«Г­Г®Г¬ (ГўГ® ГўГ±ГҐГ¬) Г®ГЎГєГҐГ¬ГҐ
+    vo[j]=pow(srra[k], 3e0)/pw[j]; //ГўГ±ГҐ ГЇГ®Г°Г» - ГЄГіГЎГ»
 	mx=mx+vo[j]; j++; t=t+ht; } } //if (vy==7) for (k=0; k<m; k++) cout << "raspr = " << raspr[k] << "\tsrra = " << srra[k] << "\t"; if (vy==7) for (k=0; k<m; k++) cout << "pw = " << pw[k] << "\tvo = " << vo[k] << "\t"; 
-lcub = pow(mx, 1e0/3e0)/t; //оценка максимального значения l - размера образца
-lb = lcub / pow(po, 1e0/3e0); //оценка размера поры //cout << "lcub = " << lcub << "\tlb = " << lb << "\tpo = " << po << endl;
+lcub = pow(mx, 1e0/3e0)/t; //Г®Г¶ГҐГ­ГЄГ  Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї l - Г°Г Г§Г¬ГҐГ°Г  Г®ГЎГ°Г Г§Г¶Г 
+lb = lcub / pow(po, 1e0/3e0); //Г®Г¶ГҐГ­ГЄГ  Г°Г Г§Г¬ГҐГ°Г  ГЇГ®Г°Г» //cout << "lcub = " << lcub << "\tlb = " << lb << "\tpo = " << po << endl;
 double uo=urovPod(po), up=1e0, lavo, lame;
 double *lamcubadia=new double[n], *lamcubizo=new double[n], *lamodo1=new double[n], *lamodo2=new double[n];
 double *lamcyladi=new double[n], *lamcylizo=new double[n], *lamcylper=new double[n];
@@ -845,19 +845,19 @@ lamcyladi[k] = DulKoefTep1AdiCyl(lavo, pw[j], lamcyladi[k], lb);
 lamcylizo[k] = DulKoefTep1IzotermCyl(lavo, pw[j], lamcylizo[k], lb); 
 lamcylper[k] = DulKoefTep1CylPer(lavo, pw[j], lamcylper[k], lb); } } }
 for (k=0; k<n; k++) { 
-if (vy == 7) lamvy[k]=lamcubadia[k]; //куб, адиаб. //29
-if (vy == 8) lamvy[k]=lamcubizo[k]; //куб., изотерм. //30
-if (vy == 9) lamvy[k]=lamodo1[k]; //по Одолевскому (матрицы) //31
-if (vy == 10) lamvy[k]=lamodo2[k]; //по Одолевскому (стат. смесь) //32
-if (vy == 11) lamvy[k]=lamcyladi[k]; //цил., адиаб. //33
-if (vy == 12) lamvy[k]=lamcylizo[k]; //цил., изотерм. //34
-if (vy == 13) lamvy[k]=lamcylper[k]; //цил., перп. тепл. потоку //35
+if (vy == 7) lamvy[k]=lamcubadia[k]; //ГЄГіГЎ, Г Г¤ГЁГ ГЎ. //29
+if (vy == 8) lamvy[k]=lamcubizo[k]; //ГЄГіГЎ., ГЁГ§Г®ГІГҐГ°Г¬. //30
+if (vy == 9) lamvy[k]=lamodo1[k]; //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г¬Г ГІГ°ГЁГ¶Г») //31
+if (vy == 10) lamvy[k]=lamodo2[k]; //ГЇГ® ГЋГ¤Г®Г«ГҐГўГ±ГЄГ®Г¬Гі (Г±ГІГ ГІ. Г±Г¬ГҐГ±Гј) //32
+if (vy == 11) lamvy[k]=lamcyladi[k]; //Г¶ГЁГ«., Г Г¤ГЁГ ГЎ. //33
+if (vy == 12) lamvy[k]=lamcylizo[k]; //Г¶ГЁГ«., ГЁГ§Г®ГІГҐГ°Г¬. //34
+if (vy == 13) lamvy[k]=lamcylper[k]; //Г¶ГЁГ«., ГЇГҐГ°ГЇ. ГІГҐГЇГ«. ГЇГ®ГІГ®ГЄГі //35
 } //cout << "uo = " << uo << "\tup = " << up << "\tpor = " << po << "\tm = " << m << endl; 
 lamvy=proverkakvi(lamvy, lameff, lamvoz, up, uo, n); //if (vy == 8) { for (k=0; k<n; k++) cout << "Lam Kub Izot 30 = " << lamcubizo[k] << "\tlam = " << lamvy[k] << endl; cout << endl; } //if (vy == 13) { for (k=0; k<n; k++) cout << "Lam Cyl Per 35 = " << lamcylper[k] << "\tlam = " << lamvy[k] << endl; cout << endl; } //if (vy == 9) for (k=0; k<n; k++) cout << "Lam po Odolevskomu Matr 31 = " << lamvy[k] << endl; if (vy == 10) for (k=0; k<n; k++) cout << "Lam po Odolevskomu Stat Sm 32 = " << lamvy[k] << endl;//if (vy == 11) for (k=0; k<n; k++) cout << "Lam po Cyl Adiab 33 = " << lamvy[k] << endl; if (vy == 12) for (k=0; k<n; k++) cout << "Lam po Cyl Izoterm 34 = " << lamvy[k] << endl; //if (vy == 13) for (k=0; k<n; k++) cout << "Lam po Cyl Perpen 35 = " << lamvy[k] << endl;
 delete []lamcubadia; delete []lamcubizo; delete []lamodo1; delete []lamodo2; 
 delete []lamcyladi; delete []lamcylizo; delete []lamcylper; delete []pw; delete []vo;
 return lamvy; }
-double DulKoefTep1Adi(double lam2, double m2, double lame) //lam1 - КТП твердого каркаса, lam2 - КТП воздуха
+double DulKoefTep1Adi(double lam2, double m2, double lame) //lam1 - ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® ГЄГ Г°ГЄГ Г±Г , lam2 - ГЉГ’ГЏ ГўГ®Г§Г¤ГіГµГ 
 { double lamb=pgl, lama=lgl, ep=tocras, ra=1e0, fa, fb, fc, nua, nub, nuc, lamc; //22
 int k=0, nit=hko;
 while ((ra>ep) && (k<nit)) {
@@ -881,8 +881,8 @@ fc=(1e0+(nuc-1e0)*(pow(m2,2e0/3e0)))/(1e0+pow(m2,2e0/3e0)*(nuc-1e0))*(1e0-pow(m2
 if ((fc*fb>0.0) && (fa*fc<0.0)) lamb=lamc; if ((fc*fa>0.0) && (fb*fc<0.0)) lama=lamc; 
 k++; ra=fabs(lama-lamb); } //cout << "lamc = " << lamc << "\tfc = " << fc << "\tra = " << ra << "\tk = " << k << "\n"; 
 return lamc; }
-double DulKoefTep1OdolevMatr(double lam2, double m2, double lame) //матричная гетерогенная система - одна фаза образует связную матрицу при любой объемной концентрации этой фазы, система имеет включения в виде кубов, центры которых образуют простую кубическую решетку, ребра параллельны
-{ double lamb=pgl, lama=lgl, ep=tocras, ra=1e4, lamc; int k=0, nit=hko; //lam2 - КТП воздуха
+double DulKoefTep1OdolevMatr(double lam2, double m2, double lame) //Г¬Г ГІГ°ГЁГ·Г­Г Гї ГЈГҐГІГҐГ°Г®ГЈГҐГ­Г­Г Гї Г±ГЁГ±ГІГҐГ¬Г  - Г®Г¤Г­Г  ГґГ Г§Г  Г®ГЎГ°Г Г§ГіГҐГІ Г±ГўГїГ§Г­ГіГѕ Г¬Г ГІГ°ГЁГ¶Гі ГЇГ°ГЁ Г«ГѕГЎГ®Г© Г®ГЎГєГҐГ¬Г­Г®Г© ГЄГ®Г­Г¶ГҐГ­ГІГ°Г Г¶ГЁГЁ ГЅГІГ®Г© ГґГ Г§Г», Г±ГЁГ±ГІГҐГ¬Г  ГЁГ¬ГҐГҐГІ ГўГЄГ«ГѕГ·ГҐГ­ГЁГї Гў ГўГЁГ¤ГҐ ГЄГіГЎГ®Гў, Г¶ГҐГ­ГІГ°Г» ГЄГ®ГІГ®Г°Г»Гµ Г®ГЎГ°Г Г§ГіГѕГІ ГЇГ°Г®Г±ГІГіГѕ ГЄГіГЎГЁГ·ГҐГ±ГЄГіГѕ Г°ГҐГёГҐГІГЄГі, Г°ГҐГЎГ°Г  ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г»
+{ double lamb=pgl, lama=lgl, ep=tocras, ra=1e4, lamc; int k=0, nit=hko; //lam2 - ГЉГ’ГЏ ГўГ®Г§Г¤ГіГµГ 
 double nua, nub, nuc, fa, fb, fc;
 while ((ra>ep) && (k<nit)) {
 lamc=(lama+lamb)/2e0;
@@ -896,16 +896,16 @@ if ((fc*fb>0) && (fa*fc<0)) lamb=lamc; if ((fc*fa>0) && (fb*fc<0)) lama=lamc;
 k++; ra=fabs(lama-lamb); } 
 return lamc; }
 double DulKoefTep1OdolevStatSm(double lam2, double m2, double lame)
-{ double lamb=pgl, lama=lgl, ep=tocras, ra=1e4, lamc; int k=0, nit=hko; //нет регулярной структуры, статистическая смесь, частицы распределены хаотически
-double v1, v2, nua, nub, nuc, fa, fb, fc; //lam2 - КТП воздуха, ищем КТП твердого скелета
+{ double lamb=pgl, lama=lgl, ep=tocras, ra=1e4, lamc; int k=0, nit=hko; //Г­ГҐГІ Г°ГҐГЈГіГ«ГїГ°Г­Г®Г© Г±ГІГ°ГіГЄГІГіГ°Г», Г±ГІГ ГІГЁГ±ГІГЁГ·ГҐГ±ГЄГ Гї Г±Г¬ГҐГ±Гј, Г·Г Г±ГІГЁГ¶Г» Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г» ГµГ Г®ГІГЁГ·ГҐГ±ГЄГЁ
+double v1, v2, nua, nub, nuc, fa, fb, fc; //lam2 - ГЉГ’ГЏ ГўГ®Г§Г¤ГіГµГ , ГЁГ№ГҐГ¬ ГЉГ’ГЏ ГІГўГҐГ°Г¤Г®ГЈГ® Г±ГЄГҐГ«ГҐГІГ 
 while ((ra>ep) && (k<nit)) {
 lamc=(lama + lamb)/2.0;
 v1=m2; v2=1.0-m2;
 nua=((3.0*v1-1.0)*lama+(3.0*v2-1.0)*lam2)/4.0;
 nub=((3.0*v1-1.0)*lamb+(3.0*v2-1.0)*lam2)/4.0;
 nuc=((3.0*v1-1.0)*lamc+(3.0*v2-1.0)*lam2)/4.0;
-fa=nua+pow(pow(nua,2.0)+lama*lam2/2.0,0.5)-lame; //lam2 - КТП в порах
-fb=nub+pow(pow(nub,2.0)+lamb*lam2/2.0,0.5)-lame; //lame - ЭКТП
+fa=nua+pow(pow(nua,2.0)+lama*lam2/2.0,0.5)-lame; //lam2 - ГЉГ’ГЏ Гў ГЇГ®Г°Г Гµ
+fb=nub+pow(pow(nub,2.0)+lamb*lam2/2.0,0.5)-lame; //lame - ГќГЉГ’ГЏ
 fc=nuc+pow(pow(nuc,2.0)+lamc*lam2/2.0,0.5)-lame;
 if ((fc*fb>0.0) && (fa*fc<0.0)) lamb=lamc; 
 if ((fc*fa>0.0) && (fb*fc<0.0)) lama=lamc; 
@@ -964,8 +964,8 @@ if ((fc*fa>0.0) && (fb*fc<0.0)) lama=lamc;
 k++; ra=fabs(lama-lamb); } 
 return lamc; }
 double DulKoefTep1CylPer(double lavo, double por, double laef, double lb) 
-{ double ra=1e0, lamb=pgl, lam1=lavo, lama=lgl, dt=1e0, h=1e0, Qo=laef*h*dt, rb=pow(por/pi,1e0/2e0)*lb; //lam1 - КТП воздуха, lam2 - КТП ТТ
-double lamc, bb, bm, int1, ab, ep=tocras, am, Q1, Q2, fa, fb, fc; //тепловой поток перпендикулярен оси цилиндра
+{ double ra=1e0, lamb=pgl, lam1=lavo, lama=lgl, dt=1e0, h=1e0, Qo=laef*h*dt, rb=pow(por/pi,1e0/2e0)*lb; //lam1 - ГЉГ’ГЏ ГўГ®Г§Г¤ГіГµГ , lam2 - ГЉГ’ГЏ Г’Г’
+double lamc, bb, bm, int1, ab, ep=tocras, am, Q1, Q2, fa, fb, fc; //ГІГҐГЇГ«Г®ГўГ®Г© ГЇГ®ГІГ®ГЄ ГЇГҐГ°ГЇГҐГ­Г¤ГЁГЄГіГ«ГїГ°ГҐГ­ Г®Г±ГЁ Г¶ГЁГ«ГЁГ­Г¤Г°Г 
 int k=0, nit=hko; 
 while ((ra>ep) && (k<nit)) {
     lamc=(lama+lamb)/2e0;
@@ -1049,11 +1049,11 @@ else { cout << "Irregular number!"; p=getchar(); exit(1); }
 double up=1e0, uo=urovPod(por); srk=proverkakvi(srk, laefm, lavo, up, uo, n);
 return srk; }
 double *MetodDulnevaSigalovoyPolyDispVer(double *tem, int lete, double m22, double *laefm, int vfv, double r)
-{ double m20=porex /*общая пористость*/, m2=m20-m22 /*m2 - межзерновая пористость (внешняя), m22 - внутрення пористость*/;
+{ double m20=porex /*Г®ГЎГ№Г Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј*/, m2=m20-m22 /*m2 - Г¬ГҐГ¦Г§ГҐГ°Г­Г®ГўГ Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј (ГўГ­ГҐГёГ­ГїГї), m22 - ГўГ­ГіГІГ°ГҐГ­Г­Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј*/;
 double A=pow(74e-2/(1e0-m2),1e0/3e0); 
-double gu=9.81, hv=3e1*1e-3, rov=125.0, sigb=2.156e5 /*предел прочности при сжатии материала частиц, Па*/, ka=7e0/5e0, T, ladc, ladb, lada; 
-double H0=101325.0, H=1e5, kB=1.380658e-23, d=(6e-1*21e-2+65e-2*79e-2)*1e-10, sigse=pi*pow(d,2e0)/4e0, E=8.428e6 /*модуль Юнга вермикулита*/, laef; 
-double akk=9e-1 /*коэффициент аккомодации*/, ko1=0.2595/(1-0.2595), ko2=0.2595-ko1, fp=0.2595/m2-(ko1*m2+ko2), ep, uo, up=1e0, ra;
+double gu=9.81, hv=3e1*1e-3, rov=125.0, sigb=2.156e5 /*ГЇГ°ГҐГ¤ГҐГ« ГЇГ°Г®Г·Г­Г®Г±ГІГЁ ГЇГ°ГЁ Г±Г¦Г ГІГЁГЁ Г¬Г ГІГҐГ°ГЁГ Г«Г  Г·Г Г±ГІГЁГ¶, ГЏГ */, ka=7e0/5e0, T, ladc, ladb, lada; 
+double H0=101325.0, H=1e5, kB=1.380658e-23, d=(6e-1*21e-2+65e-2*79e-2)*1e-10, sigse=pi*pow(d,2e0)/4e0, E=8.428e6 /*Г¬Г®Г¤ГіГ«Гј ГћГ­ГЈГ  ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ */, laef; 
+double akk=9e-1 /*ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ Г ГЄГЄГ®Г¬Г®Г¤Г Г¶ГЁГЁ*/, ko1=0.2595/(1-0.2595), ko2=0.2595-ko1, fp=0.2595/m2-(ko1*m2+ko2), ep, uo, up=1e0, ra;
 int k, h=0, kit=hko; double *ladi=new double[lete], n, dliSvoPro, cPr, N, dem1, dem2, dem4, B, lamg1, lamg2, lamg4, lamg5, izco;
 double sigm1, sigm2, sigm3, sigm3a, sigm3b, sigm3c, sigm4, sigm5, dem5, lam0, sigmr, debo;
 double rr=0.0, fa=0.0, fb=0.0, fc=0.0, ch1, ch2, ch3, ch123, ch4a, ch4b, ch4c, gi, ch5, ch6;
@@ -1065,12 +1065,12 @@ while ((ra>ep) && (h<kit)) {
 ladc=(lada+ladb)/2e0; T=tem[k];
 laef=opredKTPTKTochSha(laefm, tem, T, lete);
 izco=2e0*(5.67e-2)*pow(stch[k],2e0)*3e0/4e0;
-    lam0=opredTeploprovVozd(T); /*температура в К*/
+    lam0=opredTeploprovVozd(T); /*ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°Г  Гў ГЉ*/
     n=H/kB/T;
-    dliSvoPro=1e0/pow(2e0,1e0/2e0)/n/sigse; //длина свободного пробега молекулы воздуха
-    cPr=opredPrVozd(T-tem0); //число Прандтля
+    dliSvoPro=1e0/pow(2e0,1e0/2e0)/n/sigse; //Г¤Г«ГЁГ­Г  Г±ГўГ®ГЎГ®Г¤Г­Г®ГЈГ® ГЇГ°Г®ГЎГҐГЈГ  Г¬Г®Г«ГҐГЄГіГ«Г» ГўГ®Г§Г¤ГіГµГ 
+    cPr=opredPrVozd(T-tem0); //Г·ГЁГ±Г«Г® ГЏГ°Г Г­Г¤ГІГ«Гї
     N=pow(pow(m2,2e0)-1e1*m2+9.0,0.5); N=(m2+3e0+N)/2e0/m2;
-    debo=rov*gu*hv; /*удельная нагрузка*/
+    debo=rov*gu*hv; /*ГіГ¤ГҐГ«ГјГ­Г Гї Г­Г ГЈГ°ГіГ§ГЄГ */
     dem1=r*(A-pi/4e0); /*dem1=2*r*(A-pi/4);*/ if (dem1<0.0) dem1=1e0;
     dem2=7e0*r*pow(debo,7e0/18e0)*pow(sigb,2e0)/pow(N,2e0)/pow(E,8e0/9e0);
     dem4=2e0*r*(pow(2e0,1e0/2e0)*A-1e0); if (dem4<0.0) dem4=1e0; dem5=2e0*pow(2e0,1e0/2e0)*r*A;
@@ -1082,7 +1082,7 @@ izco=2e0*(5.67e-2)*pow(stch[k],2e0)*3e0/4e0;
     sigm2=lamg2*pow(N,1e0/2e0)*pow(E,4e0/9e0)*pow(debo,1e0/18e0)*r/3.2/pow(sigb,1e0/2e0);
     sigm2=sigm2*fp; sigm3=(2e-2)*pow(N,1e0/2e0)*pow(E,8e0/9e0)*pow(debo,11e0/18e0)*r/pow(sigb,3e0/2e0);
     sigm3a=lada*sigm3; sigm3b=ladb*sigm3; sigm3c=ladc*sigm3;
-    sigm4=lamg4*pi*r*(pow(2e0,1e0/2e0)*A-1e0)/2e0; //большая пора - цилиндр
+    sigm4=lamg4*pi*r*(pow(2e0,1e0/2e0)*A-1e0)/2e0; //ГЎГ®Г«ГјГёГ Гї ГЇГ®Г°Г  - Г¶ГЁГ«ГЁГ­Г¤Г°
     if (m2>=74e-2) { sigm5=lamg5*2e0*r*(2e0*pow(A,2e0)-pi)/pow(2e0,1e0/2e0)/A; rr=1e0+pow(A,2e0)/pi; }
     else { sigm5=0.0; rr=1e0+pow(pow(2e0,1e0/2e0)*A-1e0,2e0)/2e0; }
     gi=izco*pow(T/1e2,3e0); 
@@ -1094,11 +1094,11 @@ izco=2e0*(5.67e-2)*pow(stch[k],2e0)*3e0/4e0;
 	if ((fc*fa>0.0) && (fb*fc<0.0)) lada=ladc;
 	ra=fabs(fa-fb); h++; }
 ladi[k]=ladc; } return ladi; }
-double *MetodDulnevaSigalovoyDopVer(double *tem, int lete, double m22, double *laefm, int vfv, double r) /*m22 - пористость вермикулита фракции 2-0,7 мм, из статьи "Теплопроводность моно- и полидисперсных материалов"*/
-{ double m20=porex /*общая пористость*/, m2=m20-m22;
-double A=pow(74e-2/(1e0-m2),1e0/3e0) /*alpha - размер воздушной оболочки (ореола)*/, gu=9.8, hv=30e-3, rov=125., sigb=2.156e5; //предел прочности при сжатии материала частиц, Па
+double *MetodDulnevaSigalovoyDopVer(double *tem, int lete, double m22, double *laefm, int vfv, double r) /*m22 - ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ  ГґГ°Г ГЄГ¶ГЁГЁ 2-0,7 Г¬Г¬, ГЁГ§ Г±ГІГ ГІГјГЁ "Г’ГҐГЇГ«Г®ГЇГ°Г®ГўГ®Г¤Г­Г®Г±ГІГј Г¬Г®Г­Г®- ГЁ ГЇГ®Г«ГЁГ¤ГЁГ±ГЇГҐГ°Г±Г­Г»Гµ Г¬Г ГІГҐГ°ГЁГ Г«Г®Гў"*/
+{ double m20=porex /*Г®ГЎГ№Г Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј*/, m2=m20-m22;
+double A=pow(74e-2/(1e0-m2),1e0/3e0) /*alpha - Г°Г Г§Г¬ГҐГ° ГўГ®Г§Г¤ГіГёГ­Г®Г© Г®ГЎГ®Г«Г®Г·ГЄГЁ (Г®Г°ГҐГ®Г«Г )*/, gu=9.8, hv=30e-3, rov=125., sigb=2.156e5; //ГЇГ°ГҐГ¤ГҐГ« ГЇГ°Г®Г·Г­Г®Г±ГІГЁ ГЇГ°ГЁ Г±Г¦Г ГІГЁГЁ Г¬Г ГІГҐГ°ГЁГ Г«Г  Г·Г Г±ГІГЁГ¶, ГЏГ 
 double ka=7e0/5e0, H0=101325.0, H=1e5, kB=1.380658e-23, d=((6e-1)*(21e-2)+(65e-2)*(79e-2))*(1e-10), sigse=pi*pow(d,2.0)/4.0;
-double E=8.428e6 /*модуль Юнга вермикулита*/, akk=0.9 /*коэффициент аккомодации*/, fa=0.0, fb=0.0, fc=0.0, up=1.0, uo, izco;
+double E=8.428e6 /*Г¬Г®Г¤ГіГ«Гј ГћГ­ГЈГ  ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ */, akk=0.9 /*ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ Г ГЄГЄГ®Г¬Г®Г¤Г Г¶ГЁГЁ*/, fa=0.0, fb=0.0, fc=0.0, up=1.0, uo, izco;
 double ko1=0.2595/(1e0-0.2595), ko2=0.2595-ko1, fp=0.2595/m2-(ko1*m2+ko2), lada, ladb, ladc, ra, ep; int k, h, kit=hko;
 double *ladi=new double[lete], sigm5, n, dliSvoPro, cPr, N, dem1, dem2, dem3, dem4, dem5, B, lamg1, sigm1, sigm2, sigm3a, sigm3b, sigm3c, sigm4; 
 double gi, rr=0.0, sigmr, ch1, ch2, ch3, ch123, ch4a, ch4b, ch4c, ch5, ch6, Zs, Zss, V, G, lamrs, lamrss, X, T, laef, lam0;
@@ -1109,17 +1109,17 @@ while ((ra>ep) && (h<kit)) {
 ladc=(lada+ladb)/2e0; T=tem[k];
 	laef=opredKTPTKTochSha(laefm, tem, T, lete); 
 	izco=2e0*(5.67e-2)*pow(stch[k],2e0)*3e0/4e0;
-	lam0=opredTeploprovVozd(T); /*температура в К*/
-    n=H/kB/T; dliSvoPro=1e0/pow(2.0,0.5)/n/sigse; /*длина свободного пробега молекулы воздуха*/
-    cPr=opredPrVozd(T-tem0); /*число Прандтля*/ N=pow(pow(m2,2e0)-10.0*m2+9e0,1e0/2e0); N=(m2+3e0+N)/2e0/m2;
+	lam0=opredTeploprovVozd(T); /*ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°Г  Гў ГЉ*/
+    n=H/kB/T; dliSvoPro=1e0/pow(2.0,0.5)/n/sigse; /*Г¤Г«ГЁГ­Г  Г±ГўГ®ГЎГ®Г¤Г­Г®ГЈГ® ГЇГ°Г®ГЎГҐГЈГ  Г¬Г®Г«ГҐГЄГіГ«Г» ГўГ®Г§Г¤ГіГµГ */
+    cPr=opredPrVozd(T-tem0); /*Г·ГЁГ±Г«Г® ГЏГ°Г Г­Г¤ГІГ«Гї*/ N=pow(pow(m2,2e0)-10.0*m2+9e0,1e0/2e0); N=(m2+3e0+N)/2e0/m2;
     dem1=2e0*r*(A-pi/4e0); if (dem1<0.0) dem1=2e0*r*(A-2e0/3e0); if (dem1<0.0) dem1=1e0;
 	dem3=2e0*r*(pow(2e0,1e0/2e0)*A-1e0); if (dem3<0.0) dem3=1e0; dem5=2.0*pow(2.0,1e0/2e0)*r*A;
     akk=opredKoefAkkomodLandau(T); 
     B=4e0*ka/(ka+1e0)*((2e0-akk)/akk)*H0*dliSvoPro/cPr;
-    X=4.45*(A*log(A/fabs(A-1e0))-1e0)/(1e0+B/H/dem1); //X - молекулярный перенос тепла через ореолы вокруг частицы
-    Zs=2.23*(pow(2e0,1e0/2e0)*A-1e0)/(1e0+B/H/dem3); //Z, Z' - перенос тепла через поры
+    X=4.45*(A*log(A/fabs(A-1e0))-1e0)/(1e0+B/H/dem1); //X - Г¬Г®Г«ГҐГЄГіГ«ГїГ°Г­Г»Г© ГЇГҐГ°ГҐГ­Г®Г± ГІГҐГЇГ«Г  Г·ГҐГ°ГҐГ§ Г®Г°ГҐГ®Г«Г» ГўГ®ГЄГ°ГіГЈ Г·Г Г±ГІГЁГ¶Г»
+    Zs=2.23*(pow(2e0,1e0/2e0)*A-1e0)/(1e0+B/H/dem3); //Z, Z' - ГЇГҐГ°ГҐГ­Г®Г± ГІГҐГЇГ«Г  Г·ГҐГ°ГҐГ§ ГЇГ®Г°Г»
     Zss=2.23/(1e0+B/H/dem3)/(pow(2e0,1e0/2e0)*A-1e0);
-    V=(pow(A,2e0)-pi/2e0)/(1e0+B/H/dem5)/A; //V - через дополнительные пути (столбы) при пористости более 75 %
+    V=(pow(A,2e0)-pi/2e0)/(1e0+B/H/dem5)/A; //V - Г·ГҐГ°ГҐГ§ Г¤Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­Г»ГҐ ГЇГіГІГЁ (Г±ГІГ®Г«ГЎГ») ГЇГ°ГЁ ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГЁ ГЎГ®Г«ГҐГҐ 75 %
     G=izco*pow(T/1e2,3e0);
     lamrs=4.45*G*r*(1+0.5*pow(pow(2e0,1e0/2e0)*A-1e0,2e0))/A;
     lamrss=4.45*G*r*(1+pow(A,2e0)/pi);
@@ -1131,11 +1131,11 @@ ladc=(lada+ladb)/2e0; T=tem[k];
 	if ((fc*fa>0.0) && (fb*fc<0.0)) lada=ladc;
 	ra=fabs(fa-fb); h++; }
 ladi[k]=ladc; } return ladi; }
-double *MetodDulnevaSigalovoyBezIspVer(double *tem, int lete, double m22, double *laefm, int vfv, double r) //m22 - пористость вермикулита
-{ double m20 = porex /*общая пористость*/, m2=m20-m22; //из статьи "Теплопроводность зернистых систем"
-double A=pow(74e-2/(1e0-m2),1e0/3e0) /*alpha - размер воздушной оболочки (ореола)*/, gu=9.8, hv=30e-3, rov=125.0, sigb=2.156e5; //предел прочности при сжатии материала частиц, Па
+double *MetodDulnevaSigalovoyBezIspVer(double *tem, int lete, double m22, double *laefm, int vfv, double r) //m22 - ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
+{ double m20 = porex /*Г®ГЎГ№Г Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј*/, m2=m20-m22; //ГЁГ§ Г±ГІГ ГІГјГЁ "Г’ГҐГЇГ«Г®ГЇГ°Г®ГўГ®Г¤Г­Г®Г±ГІГј Г§ГҐГ°Г­ГЁГ±ГІГ»Гµ Г±ГЁГ±ГІГҐГ¬"
+double A=pow(74e-2/(1e0-m2),1e0/3e0) /*alpha - Г°Г Г§Г¬ГҐГ° ГўГ®Г§Г¤ГіГёГ­Г®Г© Г®ГЎГ®Г«Г®Г·ГЄГЁ (Г®Г°ГҐГ®Г«Г )*/, gu=9.8, hv=30e-3, rov=125.0, sigb=2.156e5; //ГЇГ°ГҐГ¤ГҐГ« ГЇГ°Г®Г·Г­Г®Г±ГІГЁ ГЇГ°ГЁ Г±Г¦Г ГІГЁГЁ Г¬Г ГІГҐГ°ГЁГ Г«Г  Г·Г Г±ГІГЁГ¶, ГЏГ 
 double ka=7e0/5e0, H0=101325.0, H=1e5, kB=1.380658e-23, d=(6e-1*21e-2+65e-2*79e-2)*1e-10, sigse=pi*pow(d,2e0)/4e0;
-double E=8.428e6 /*модуль Юнга вермикулита*/, Gms=20.58e6 /*модуль сдвига*/, akk=9e-1 /*коэффициент аккомодации*/;
+double E=8.428e6 /*Г¬Г®Г¤ГіГ«Гј ГћГ­ГЈГ  ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ */, Gms=20.58e6 /*Г¬Г®Г¤ГіГ«Гј Г±Г¤ГўГЁГЈГ */, akk=9e-1 /*ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ Г ГЄГЄГ®Г¬Г®Г¤Г Г¶ГЁГЁ*/;
 double fa=0.0, fb=0.0, fc=0.0, up=1e0, uo;
 double ko1=0.2595/(1.0-0.2595), ko2=0.2595-ko1, fp=0.2595/m2-(ko1*m2+ko2), dem1, dem2, dem4, dem5; int h, k, kit=hko;
 double ra, ep, lada, ladc, ladb, lam0, n, N, dliSvoPro, B, ch1, ch2, ch3, ch123, ch4a, ch4b, ch4c, gi, ch5, ch6,izco;
@@ -1150,10 +1150,10 @@ laef=opredKTPTKTochSha(laefm, tem, T, lete);
     lam0=opredTeploprovVozd(T);
 	izco=2e0*(5.67e-2)*pow(stch[k],2e0)*3e0/4e0;
     n=H/kB/T;
-    dliSvoPro=1e0/pow(2e0,1e0/2e0)/n/sigse; //длина свободного пробега молекулы воздуха
-    cPr=opredPrVozd(T-tem0); //число Прандтля
+    dliSvoPro=1e0/pow(2e0,1e0/2e0)/n/sigse; //Г¤Г«ГЁГ­Г  Г±ГўГ®ГЎГ®Г¤Г­Г®ГЈГ® ГЇГ°Г®ГЎГҐГЈГ  Г¬Г®Г«ГҐГЄГіГ«Г» ГўГ®Г§Г¤ГіГµГ 
+    cPr=opredPrVozd(T-tem0); //Г·ГЁГ±Г«Г® ГЏГ°Г Г­Г¤ГІГ«Гї
     N=pow(pow(m2,2e0)-1e1*m2+9e0,1e0/2e0); N=(m2+3e0+N)/2e0/m2;
-    debo=rov*gu*hv; //удельная нагрузка
+    debo=rov*gu*hv; //ГіГ¤ГҐГ«ГјГ­Г Гї Г­Г ГЈГ°ГіГ§ГЄГ 
     dem1=r*(A-pi/4e0); if (dem1<0.0) dem1=1e0;
     dem2=7e0*r*pow(debo,7e0/18e0)*pow(sigb,1e0/2e0)/pow(N,1e0/2e0)/pow(E,8e0/9e0);
     dem4=2e0*r*(pow(2e0,1e0/2e0)*A-1e0); if (dem4<0.0) dem4=1e0;
@@ -1323,7 +1323,7 @@ lto[k]=lamc; }
 return lto; }
 double Poiskkx(double kx)
 {double xa=0.0, xb=5e-1, xc, ra=fabs(xa-xb), ep=tocras, fa, fb, fc; 
-int h=0, nit=hko; //xc - относительный размер бруса
+int h=0, nit=hko; //xc - Г®ГІГ­Г®Г±ГЁГІГҐГ«ГјГ­Г»Г© Г°Г Г§Г¬ГҐГ° ГЎГ°ГіГ±Г 
 while ((ra>ep) && (h<nit)) {
 xc=(xa+xb)/2e0;
 fa=4.0*pow(xa,3.0)-3.0*pow(xa,2.0)+kx; 
