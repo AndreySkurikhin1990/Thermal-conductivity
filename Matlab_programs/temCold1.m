@@ -1,0 +1,23 @@
+function [ temColdTer1 ] = temCold1()
+n1=[20
+20
+20
+21
+25
+26
+27
+28
+29
+30
+31
+31
+31
+33
+34
+54
+57
+59
+62
+62];
+temColdTer1=n1;
+end
