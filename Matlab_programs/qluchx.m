@@ -1,0 +1,67 @@
+format long g;teta=0; te0=273.15; T0=1000+te0; Tk=30.6+te0; tol=3e4; 
+y0=1e3; l=2e1; Ntt=ceil(tol/l); npp=Kramers_n(); dl=dlvoVer53101; p=length(dl); 
+for k=1:p  
+    dl(k)=1e-2/dl(k); 
+end;
+temvc=[108.8+te0 235+te0];
+temvh=[603+te0 1000+te0]; 
+tepv=[0.156 0.245];
+qv = [(temvh(1)-temvc(1))*tepv(1)   (temvh(2)-temvc(2))*tepv(2)];
+qv = (1e6/tol)*qv;
+temvs=(temvc+temvh)/2;
+kktp1=(tepv(2)-tepv(1))/(temvs(2)-temvs(1));
+kktp2=tepv(2)-kktp1*temvs(2);
+xa = 0:l:tol; 
+Tzh=temvh(2); 
+Tzc=temvh(1);
+p=length(xa);
+for k=1:p-1
+    koefteph = abs(kktp1*Tzh+kktp2); 
+    koeftepc = abs(kktp1*Tzc+kktp2);
+    xn=xa(k);
+    xk=xa(k+1);
+    tetah(k)=Tzh;
+    tetac(k)=Tzc;
+    Tzh=Tzh-qv(2)*abs(xk-xn)*1e-6/koefteph; 
+    Tzc=Tzc-qv(1)*abs(xk-xn)*1e-6/koeftepc;
+end
+tetah(1)=temvh(2); 
+tetah(p)=temvc(2); 
+tetac(1)=temvh(1); 
+tetac(p)=temvc(1); 
+sigma=5.668e-8;
+qx1=0; 
+qx2=0; 
+la1=0;
+la2=0;
+for k=2:p-1
+    xn=xa(k-1)*1e-6; 
+    xk=xa(k)*1e-6;
+    grc=(tetac(k)-tetac(k-1))/abs(xk-xn);
+    grh=(tetah(k)-tetah(k-1))/abs(xk-xn);
+    Tzc=tetac(k);
+    Tzh=tetah(k);
+    alfc=1/sprko(Tzc);
+    alfh=1/sprko(Tzh);
+    npc=real(nsreddv(dl,npp,Tzc));
+    nph=real(nsreddv(dl,npp,Tzh));
+    t=abs(16*(npc^2)*sigma*(Tzc^3)/(3*alfc*1e6));
+    la1(k)=t;
+    t=t*grc;
+    qx1(k)=t;
+    t=abs(16*(nph^2)*sigma*(Tzh^3)/(3*alfh*1e6));
+    la2(k)=t;
+    t=t*grh;
+    qx2(k)=t;
+    disp(k);
+end
+%for k=1:length(qx) if (rem(k-2,2)==0) disp(qx(k)); end; end;
+%for k=1:length(qx) if (rem(k-2,2)==0) disp(xa(k)*1e-6); end; end;
+p=plot(xa(2:p-1)*1e-3,la1(2:p-1),'-b',xa(2:p-1)*1e-3,la2(2:p-1),'-k');
+set(p,'LineWidth',3); hold on; grid on; 
+xlabel({'Координата, мм'}); 
+%ylabel({'Плотность излучательного теплового потока, кВт/м2'}); 
+%title({'График зависимости qлуч от координаты x'});
+ylabel({'Коэффициент излучательной теплопроводности, Вт/(м*К)'}); 
+title({'График зависимости lambda_луч от координаты x'});
+legend('356 °C','618 °C');
