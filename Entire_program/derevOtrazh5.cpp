@@ -14,6 +14,7 @@ void zadrktVerNac();
 void zadrktShaNac();
 void zadrktITOMNac();
 void zadrktkviNac();
+double **opredSredKTPTK();
 //----------------------------------------
 void main()
 {
@@ -21,4 +22,6 @@ void main()
 zadrktVerNac();
 //zadrktITOMNac();
 //zadrktkviNac();
+//double **mu=opredSredKTPTK();
+int k=getchar();
 }

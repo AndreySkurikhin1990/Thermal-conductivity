@@ -84,7 +84,65 @@ double **rasrasporporazitom(double *, double *, double *, double, int, double, d
 double **vybRasPorRazVer(double *, int, int, int, int);
 double **vybRasPorRazSha(double, double, int, int, double *, double*, double *, double **);
 double **vybFunRasPorpoRazSha(double, int, int);
-//----------------//Г‡Г Г¤Г Г­ГЁГҐ Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї ГЇГ®Г° ГЇГ® Г°Г Г§Г¬ГҐГ°Г Г¬ - Г€Г’ГЋГЊ
+double novNapMas(int, int, int, int, int, int, int, int, int);
+double **sortirovka(double *, double *, double *, int, double **);
+//----------------
+double novNapMas(int vyve, int vymave, int vmimfv, int vyfrve, int vyukve, int vysove, int vpmf, int vpkf, int cemv)
+{	double por=0.0, ko=1e-2;
+	if (!vyve) //если выбран шамот
+	{
+	double porsha0=21.8*ko, porsha1=11.014*ko, porsha2=25.2*ko, porsha3=26.5*ko, porsha4=11.5*ko, porsha5=16.5*ko; //0 - Роучка, 1 - ШПД-41, 2 - ШБ-1 2-1, 3 - ШВ-1 1-1, 4 - ШПД, 5 - ШКУ-32 3-1
+	if (!vymave) por=porsha0; else if (vymave==1) por=porsha1; else if (vymave==2) por=porsha2;
+	else if (vymave==3) por=porsha3; else if (vymave==4) por=porsha4; else if (vymave==5) por=porsha5;
+	}
+	else if (vyve==1) 
+	{ //если выбран вермикулит
+	double por207=66.35*ko, poris84=55.75*ko, porin84=81.53*ko;
+	double poro84=86.61*ko, poro16035=84.36*ko, por16035=83.97*ko;
+	if ((!vysove) || (vysove==1)) 
+	{  //исходный или после повторных измерений
+	if (!vyfrve) 
+	{ 
+	if (!vpmf) por = por207; 
+	else if (vpmf==1) por=por16035; 
+	} //выбор пористости мелкой фракции
+	else if (vyfrve==1) 
+	{ 
+	if (!vpkf) por = poris84; 
+	else if (vpkf==1) por=porin84; 
+	} //выбор пористости крупной фракции
+	else if (vyfrve==2) por = poro16035; 
+	}
+	if (vysove==2) 
+	{ //после обжига
+	if ((!vyfrve) || (vyfrve==2)) por=poro16035;
+	else if (vyfrve==1) por=poro84; 
+	} 
+	}
+	else if (vyve==2) 
+	{ //если выбран ИТОМ
+	double pori440=(8e1+82e0)*ko/2e0, pori620=(75e0+78e0)*ko/2e0;
+	double pori860=(65e0+68e0)*ko/2, pori1000=(62e0+65e0)*ko/2e0;
+	if (!vymave) por=pori440; 
+	else if (vymave==1) por=pori620; 
+	else if (vymave==2) por=pori860; 
+	else if (vymave==3) por=pori1000;
+	}
+	else if (vyve==3) 
+	{ //если выбран КВИ
+	double pork400=51.74*ko, pork500=52.07*ko, pork600=51.51*ko, pork700=39.75*ko;
+	double pork800=40.85*ko, pork900=39.37*ko, pork1000=36.07*ko;
+	if (vymave==4) por=pork400; 
+	else if (vymave==5) por=pork500; 
+	else if (vymave==6) por=pork600; 
+	else if (vymave==7) por=pork700; 
+	else if (vymave==8) por=pork800; 
+	else if (vymave==9) por=pork900;
+	else if (vymave==10) por=pork1000;
+	}
+	return por;
+}
+//Задание распределения пор по размерам - ИТОМ
 double *rasPorpoRazmitom440(double *rapo, int n)
 { int k=0; double s=0.0;
 rapo[k]=0.57; k++; rapo[k]=0.3;   k++; rapo[k]=0.6;   k++; rapo[k]=0.87;  k++; rapo[k]=1.35; k++;
@@ -137,9 +195,9 @@ for (k=0; k<n; k++) rapo[k]=(1e-6)*rapo[k];
 int j=(n-(n%2))/2; double t; for (k=0; k<j; k++) { t=rapo[k]; rapo[k]=rapo[n-1-k]; rapo[n-1-k]=t; } 
 return rapo; }
 double *LevGranPoromitom(double *rapo, double *levgr, int n)
-{ int k; levgr[0]=0.0; for (k=1; k<n; k++) levgr[k]=rapo[k-1]; return levgr; }
+{ int k=0; levgr[k]=0.0; for (k=1; k<n; k++) levgr[k]=rapo[k-1]; return levgr; }
 double **rasPorpoRazitom(int vvi)
-{ int n=dmsrpi, k=0, f=cvym, j=0, qg=0; //Г·ГЁГ±Г«Г® ГўГ»ГµГ®Г¤Г­Г»Гµ Г¬Г Г±Г±ГЁГўГ®Гў
+{ int n=dmsrpi, k=0, f=cvym, j=0, qg=0; //число выходных массивов
 double rpn=1e0, dp=1e0, ht=dp, **mu=new double*[f], *rp=NULL, *mk=NULL, *ms=NULL, *legr0=NULL, srp=0.0;
 double s=0.0, l=0.0, h=1e-6, p=h, *uv=NULL, *prgr0=NULL, *rpr0=NULL, *po=NULL, m=0.0, e=1e-1, marp=0.0;
 prgr0=new double[n]; rpr0=new double[n]; legr0=new double[n];
@@ -159,13 +217,13 @@ for (k=0; k<n; k++) prgr00[k]=prgr0[k]*koef;
 legr00[0]=0.0; for (k=1; k<n; k++) legr00[k]=prgr00[k-1]; //for (k=0; k<n; k++) cout << "le ( " << k << " ) = " << legr00[k] << "\tpr = " << prgr00[k] << endl;
 for (k=0; k<n; k++) if (legr00[k]<e1) p=k; else break;
 for (k=0; k<p; k++) s=s+raspr0[k];
-if (legr00[p]<=ht) m=raspr0[p]*(ht-legr00[p])/(prgr00[p]-legr00[p]); //Г°Г Г§Г¬ГҐГ° ГЇГ®Г° Г¤Г® 1 Г¬ГЄГ¬
+if (legr00[p]<=ht) m=raspr0[p]*(ht-legr00[p])/(prgr00[p]-legr00[p]); //размер пор до 1 мкм
 s=s+m; q=1; //cout << "p = " << p << "\ts = " << s << endl;
 t=0.0; j=0; while (t<pri) { j++; t=t+ht; } jk=j; qg=jk;
 double *ras01=new double[qg], *prgrm=new double[qg], *legrm=new double[qg];
 double *srra=new double[qg], prgr01=rpn, srp, marp; 
 if ((!ras01) || (!prgrm) || (!legrm)) { cout << "No memory!" << endl; k=getchar(); exit(1); }
-fl=1; t=0.0; for (j=0; j<qg; j++) { for (u=0; u<n; u++) if (fabs(legr00[u]-t)>e) { fl=-1; break; } if (fl<0) break; t=t+ht; } //fl - Г¬ГҐГ¦Г¤Гі Г¶ГҐГ«Г»Г¬ГЁ - ГґГ ГЄГІ Г±ГіГ№ГҐГ±ГІГўГ®ГўГ Г­ГЁГї
+fl=1; t=0.0; for (j=0; j<qg; j++) { for (u=0; u<n; u++) if (fabs(legr00[u]-t)>e) { fl=-1; break; } if (fl<0) break; t=t+ht; } //fl - между целыми - факт существования
 for (k=0; k<qg; k++) { prgrm[k]=0.0; legrm[k]=0.0; ras01[k]=0.0; } 
 w=0; ras01[w]=s; prgrm[w]=prgr01; legrm[w]=legr01; legr01=prgr01; prgr01=prgr01+de; w++;
 for (k=p; k<n; k++) { 
@@ -175,7 +233,7 @@ for (k=p; k<n; k++) {
 	if (fl<0) { t=0.0; lf=t+ht; for (j=0; j<qg; j++) { if ((srpir>t) && (srpir<lf) && (fabs(t-srpir)>e)) 
 	{ flg=1; pd--; jk--; l--; break; } else { t=lf; lf=lf+ht; } } } //cout << "ld = " << ld << "\tpd = " << pd << endl;
 	m=rprit/r; //cout << "jk = " << jk << "\tk = " << k << "\tleft = " << srpil << "\tright = " << srpir << "\trprit = " << rprit << "\tprgr01 = " << prgr01 << endl;
-	for (b=ld; b<pd; b++) { //Г¤Г® 2 Г¬ГЄГ¬
+	for (b=ld; b<pd; b++) { //до 2 мкм
 		q++; s=s+m; ras01[w]=m; legrm[w]=legr01; prgrm[w]=prgr01; legr01=prgr01; prgr01=prgr01+de; w++; } 
 	if ((flg>0) && ((k+1)<n)) {
 		m=rprit*(srpir-t)/r; 
@@ -197,14 +255,14 @@ return mu; }
 double *NapMasRaspitom(int vvi, int n, double *r)
 { 
 int k=0;
-if (!vvi) r=rasPorpoRazmitom440(r, n); //Г€Г’ГЋГЊ-440
-else if (vvi==1) r=rasPorpoRazmitom620(r, n); //Г€Г’ГЋГЊ-620
-else if (vvi==2) r=rasPorpoRazmitom860(r, n); //Г€Г’ГЋГЊ-860
-else if (vvi==3) r=rasPorpoRazmitom1000(r, n); //Г€Г’ГЋГЊ-1000
+if (!vvi) r=rasPorpoRazmitom440(r, n); //ИТОМ-440
+else if (vvi==1) r=rasPorpoRazmitom620(r, n); //ИТОМ-620
+else if (vvi==2) r=rasPorpoRazmitom860(r, n); //ИТОМ-860
+else if (vvi==3) r=rasPorpoRazmitom1000(r, n); //ИТОМ-1000
 return r;
 }
 
-//ГГ Г¬Г®ГІ - ГГЃ-1 В№2 2-1
+//Шамот - ШБ-1 №2 2-1
 double **vybFunRasPorpoRazSha(double porsha, int vrsh, int vystsha)
 { double *po; int k=0, n=0, m=cvym;
 double ko=1e-2, rpn=1e0, dp=1e0, p0=porsha, r=1e-6; 
@@ -261,11 +319,11 @@ raspr=NapMasRaspSha3(raspr,n);
 for (k=1; k<n; k++) rpr[k]=fabs(raspr[k-1]-raspr[k]);
 prgr=NapMasPrGrSha3(prgr,n); 
 k=0; legr[k]=ko*p0; for (k=1; k<n; k++) legr[k]=prgr[k-1];
-for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў*/
+for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*средний размер каждого из диапазонов*/
 k=0; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=rpr;
 return mu; }
 
-//ГГ‚-1 В№ 1 1-1
+//ШВ-1 № 1 1-1
 double *NapMasRaspSha4(double *raspr, int n)
 { int k=0; double ko=1e-2;
 raspr[k]=0.0;	  k++; raspr[k]=11.5833; k++; raspr[k]=16.7564; k++; raspr[k]=23.6914; k++; raspr[k]=33.213;  k++;
@@ -297,12 +355,12 @@ double **NapMasRasLePrSha4(int n, double *legr, double *prgr, double *raspr, dou
 raspr=NapMasRaspSha4(raspr,n); for (k=1; k<n; k++) rpr[k]=fabs(raspr[k-1]-raspr[k]);
 prgr=NapMasPrGrSha4(prgr,n); 
 k=0; legr[k]=p0*ko; for (k=1; k<n; k++) legr[k]=prgr[k-1];
-for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў*/ 
+for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*средний размер каждого из диапазонов*/ 
 k=0; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=rpr;
 return mu;
 }
 
-//ГГЏГ„
+//ШПД
 double *NapMasRaspSha5(double *raspr, int n)
 { int k=0;
 raspr[k]=0.0;     k++; raspr[k]=10.1713; k++; raspr[k]=18.4934; k++; raspr[k]=26.538;  k++; raspr[k]=36.3394; k++;
@@ -331,12 +389,12 @@ raspr=NapMasRaspSha5(raspr,n);
 for (k=1; k<n; k++) rpr[k]=fabs(raspr[k-1]-raspr[k]);
 prgr=NapMasPrGrSha5(prgr,n); 
 k=0; legr[0]=ko*p0; for (k=1; k<n; k++) legr[k]=prgr[k-1];
-for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў*/ 
+for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*средний размер каждого из диапазонов*/ 
 k=0; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=rpr;
 return mu;
 }
 
-//ГГЉГ“-32-3-1
+//ШКУ-32-3-1
 double *NapMasRaspSha6(double *raspr, int n)
 { int k=0;
 raspr[k]=0.0;     k++; raspr[k]=12.1030; k++; raspr[k]=14.4598; k++; raspr[k]=17.4058; k++; raspr[k]=22.6349; k++;
@@ -369,7 +427,7 @@ raspr=NapMasRaspSha6(raspr,n);
 for (k=1; k<n; k++) rpr[k]=fabs(raspr[k-1]-raspr[k]);
 prgr=NapMasPrGrSha6(prgr,n); 
 p0=1e-6; ko=1e-2; legr[0]=p0*ko; for (k=1; k<n; k++) legr[k]=prgr[k-1];
-for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў*/ 
+for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*средний размер каждого из диапазонов*/ 
 k=0; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=rpr;
 return mu; }
 
@@ -399,7 +457,7 @@ raspr=NapMasRaspSha2(raspr, n);
 for (k=0; k<n; k++) rpr[k]=raspr[k];
 prgr=NapMasPrGrSha2(prgr,n); 
 p0=1e-2; ko=1e-6; k=0; legr[k]=p0*ko; for (k=1; k<n; k++) legr[k]=prgr[k-1];
-for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў*/ 
+for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0; /*средний размер каждого из диапазонов*/ 
 k=0; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=rpr;
 return mu; }
 
@@ -420,7 +478,7 @@ prgr[k]=1.00; k++; prgr[k]=2.00; k++; prgr[k]=3.00; k++; prgr[k]=4.00; k++;
 prgr[k]=5.00; k++; prgr[k]=6.00; k++; prgr[k]=7.00; k++; prgr[k]=8.00; k++; 
 prgr[k]=9.00; k++; prgr[k]=1e1;  k++; prgr[k]=2e1;  k++; prgr[k]=3e1;  k++;
 prgr[k]=4e1;  k++; prgr[k]=5e1;  k++; prgr[k]=13e1;
-for (k=0; k<n; k++) prgr[k]=prgr[k]*ko; /*Гў Г¬ГҐГІГ°Г Гµ*/ 
+for (k=0; k<n; k++) prgr[k]=prgr[k]*ko; /*в метрах*/ 
 return prgr; }
 double **NapMasRasLePrSha(int n, double *legr, double *prgr, double *raspr, double *srra, double *rpr, double **mu)
 { int k=0; double p0;
@@ -428,7 +486,7 @@ raspr=NapMasRaspSha(raspr); k=0; p0=raspr[k]; p0=1e2/p0;
 for (k=1; k<n; k++) rpr[k]=fabs(raspr[k-1]-raspr[k])*p0;
 prgr=NapMasPrGrSha(prgr, n); 
 k=0; legr[k]=0.0; for (k=1; k<n; k++) legr[k]=prgr[k-1];
-for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2.0; /*Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў*/ 
+for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2.0; /*средний размер каждого из диапазонов*/ 
 k=0; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=rpr;
 return mu; }
 
@@ -443,7 +501,7 @@ else if ((poris<stpoSha16) && (poris>=stpoSha10)) mu=poisrasprpor1(poris, p0, n,
 return mu;
 }
 
-//Г‚ГҐГ°Г¬ГЁГЄГіГ«ГЁГІ
+//Вермикулит
 double *PravGranPoromVer(double *rapo, int n)
 { int k=0; double ko=1e-6;
 rapo[k]=13e1; k++; rapo[k]=12e1; k++; rapo[k]=11e1; k++; rapo[k]=1e2; k++; rapo[k]=9e1; k++;
@@ -457,7 +515,7 @@ double *LevGranPoromVer(double *pravgr, double *levgr, int n)
 { int k; double ko=1e-6, mr=1e-2; levgr[0]=ko*mr; for (k=1; k<n; k++) levgr[k]=pravgr[k-1]; return levgr; }
 double *rasPorpoRazmVerIs84(double *rapo, int n)
 { int k=0; 
-rapo[k]=0.00; k++; rapo[k]=0.00; k++; rapo[k]=2.14; k++; rapo[k]=1.000; k++; rapo[k]=1.06; k++;
+rapo[k]=0.00; k++; rapo[k]=0.0;  k++; rapo[k]=2.14; k++; rapo[k]=1.000; k++; rapo[k]=1.06; k++;
 rapo[k]=1.33; k++; rapo[k]=1.30; k++; rapo[k]=1.57; k++; rapo[k]=1.900; k++; rapo[k]=2.35; k++;
 rapo[k]=3.83; k++; rapo[k]=3.77; k++; rapo[k]=8.94; k++; rapo[k]=27.38; k++; rapo[k]=7.70; k++;
 rapo[k]=29.0; k++; rapo[k]=6.73; k++; rapo[k]=0.0;
@@ -517,19 +575,19 @@ return rapo;
 double *NapMasRaspVer(int vfv, int n, int vysove, int vpkf, double *raspr)
 { int k=0;
 if ((!vysove) || (vysove==2)) { 
-if (!vfv) raspr=rasPorpoRazmVerI207(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 2-0,7 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©
-else if (vfv==1) { if (!vpkf) raspr=rasPorpoRazmVerIs84(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©
-else if (vpkf==1) raspr=rasPorpoRazmVerIn84(raspr, dmsrpv); } //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©, Г¤Г°ГіГЈГ Гї ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГј
-else if (vfv==2) raspr=rasPorpoRazmVerI16035(raspr, dmsrpv); } //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 1,6-0,35 Г¬Г¬, ГЁГ±ГµГ®Г¤Г­Г»Г©
+if (!vfv) raspr=rasPorpoRazmVerI207(raspr, dmsrpv); //для фракции 2-0,7 мм, исходный
+else if (vfv==1) { if (!vpkf) raspr=rasPorpoRazmVerIs84(raspr, dmsrpv); //для фракции 8-4 мм, исходный
+else if (vpkf==1) raspr=rasPorpoRazmVerIn84(raspr, dmsrpv); } //для фракции 8-4 мм, исходный, другая пористость
+else if (vfv==2) raspr=rasPorpoRazmVerI16035(raspr, dmsrpv); } //для фракции 1,6-0,35 мм, исходный
 if (vysove==1) {
-if ((vfv==2) || (!vfv)) raspr=rasPorpoRazmVerO16035(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 1,6-0,35 Г¬Г¬ ГЁ 2-0,7 Г¬Г¬, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
-else if (vfv==1) raspr=rasPorpoRazmVerO84(raspr, dmsrpv); //Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
-else { cout << "Net takoy fraktsii!"; k=getchar(); exit(1); } } //ГІГ®Г«ГјГЄГ® Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 8-4 Г¬Г¬
+if ((vfv==2) || (!vfv)) raspr=rasPorpoRazmVerO16035(raspr, dmsrpv); //для фракции 1,6-0,35 мм и 2-0,7 мм, после обжига
+else if (vfv==1) raspr=rasPorpoRazmVerO84(raspr, dmsrpv); //для фракции 8-4 мм, после обжига
+else { cout << "Net takoy fraktsii!"; k=getchar(); exit(1); } } //только для фракции 8-4 мм
 return raspr; }
 double **NapMasRasLePrVer(int vfv, int vysove, int vpkf, int nom, double **mu)
-{ int k, n=dmsrpv, q;
+{ int k=0, n=dmsrpv, q=0;
 double *legr=NULL, *prgr=NULL, *raspr=NULL;
-double *srra=NULL, ht=1e0, t, r;
+double *srra=NULL, ht=1e0, t=0.0, r=0.0, e=1e-8;
 legr=new double[n]; prgr=new double[n]; raspr=new double[n]; srra=new double[n]; 
 if ((!legr) || (!prgr) || (!raspr) || (!srra) || (!mu)) { cout << "No memory!" << endl; k=getchar(); exit(1); }
 for (k=0; k<n; k++) { raspr[k]=0.0; prgr[k]=0.0; legr[k]=0.0; srra[k]=0.0; }
@@ -540,9 +598,9 @@ for (k=0; k<n; k++) srra[k]=(legr[k]+prgr[k])/2e0;
 q=1; t=0.0; double m=0.0, *mm=new double[q], *ms=new double[q];
 m=0.0; for (k=0; k<n; k++) m=m+ht; k=0; mm[k]=m;
 t=0.0; r=0.0; for (k=0; k<n; k++) { t=t+srra[k]*raspr[k]; r=r+raspr[k]; } 
-k=0; if (fabs(r)>0.0) t=t/r; else t=0.0; ms[k]=t;
+k=0; if (fabs(r)>e) t=t/r; else t=0.0; ms[k]=t;
 k=0; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=prgr; k++; mu[k]=legr; k++; mu[k]=ms; k++; mu[k]=mm;
-return mu; } //Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЄГ Г¦Г¤Г®ГЈГ® ГЁГ§ Г¤ГЁГ ГЇГ Г§Г®Г­Г®Гў
+return mu; } //средний размер каждого из диапазонов
 double *vybRasPorRazmVer(double *rpr, int vysove, int vfv, int vpkf, int n)
 {
 if ((!vysove) || (vysove==1)) {
@@ -554,11 +612,11 @@ if (vysove==2) { if ((!vfv) || (vfv==2)) rpr=rasPorpoRazmVerO16035(rpr,n);
 else if (vfv==1) rpr=rasPorpoRazmVerO84(rpr,n); }
 return rpr;
 }
-double **rasPorpoRazVer(double poris, int vfv, int vyvyzn, int vysove, int isrp, int vpkf) //0 - Г±ГІГ Г°Г»ГҐ, 1 - Г­Г®ГўГ»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї
+double **rasPorpoRazVer(double poris, int vfv, int vyvyzn, int vysove, int isrp, int vpkf) //0 - старые, 1 - новые значения
 { int k=0, n=0, j=0, qg=0, nm=cvym, q=1;
-double *legr=NULL, *prgr=NULL, *raspr=NULL, *srra=NULL, ht=1e0, s=0.0, e=1e-1;
+double *legr=NULL, *prgr=NULL, *raspr=NULL, *srra=NULL, ht=1e0, s=0.0, e=1e-6;
 double rpn=1e0, dp=1e0, ras0=0.0, marp=0.0, srp=0.0, **mu=NULL, *po=NULL, r=0.0;
-double *ms, *mm, koef=1e-6;
+double *ms, *mm, koef=1e0, m=0.0, x=1e1;
 mu=new double*[nm]; if (!mu) { cout << "No memory" << endl; k=getchar(); exit(1); } 
 mu=NapMasRasLePrVer(vfv, vysove, vpkf, k, mu);
 k=0; raspr=mu[k]; k++; srra=mu[k]; k++; prgr=mu[k]; k++; legr=mu[k]; k++;
@@ -573,18 +631,19 @@ if (raspr) delete[]raspr; if (srra) delete[]srra;
 k=0; raspr=mu[k]; k++; srra=mu[k]; k++; prgr=mu[k]; k++; legr=mu[k]; k++;
 ms=mu[k]; j=0; srp=ms[j]; k++; mm=mu[k]; marp=mm[j]; 
 k=0; s=e; while (s<marp) { s=s+ht; k++; } qg=k; s=srp; l=marp; 
-if (isrp==1) { //Г°Г Г±Г·ГҐГІ ГµГ Г°Г ГЄГІГҐГ°ГЁГ±ГІГЁГЄ ГЇГ®Г°ГЁГ±ГІГ®Г© Г±ГІГ°ГіГЄГІГіГ°Г» ГЇГ°ГЁ ГіГ±Г«Г®ГўГЁГЁ ГёГ Г°Г®Г®ГЎГ°Г Г§Г­Г»Гµ ГЇГ®Г°
+if (isrp==1) { //расчет характеристик пористой структуры при условии шарообразных пор
 double sz=0.0, sch=sz, dv=sz, vpre=sz, vtek=sz, rtek=sz, rpre=sz; l=0.0; p=1e-6;
 for (k=0; k<qg; k++) { rtek=(p+l)/2e0; srra[k]=rtek; 
 vtek=(pi/6e0)*pow(rtek,3e0); vpre=(pi/6e0)*pow(rpre,3e0); dv=fabs(vtek-vpre);
 sz=sz+raspr[k]; sch=sch+raspr[k]*dv; rpre=rtek;
 legr[k]=l; p=p+h; l=l+h; } s=sch/sz; } 
 else if (isrp>1) { cout << "Nepravilno vybran nomer" << endl; k=getchar(); exit(1); }
-for (k=0; k<qg; k++) { srra[k]=srra[k]*koef; legr[k]=legr[k]*koef; prgr[k]=prgr[k]*koef; }
+m=0.0; for (k=0; k<qg; k++) if (m<prgr[k]) m=prgr[k]; if (m>x) koef=1e-6;
+for (k=0; k<qg; k++) { legr[k]=legr[k]*koef; prgr[k]=prgr[k]*koef; srra[k]=(prgr[k]+legr[k])/2e0; }
 k=0; s=s*koef; ms[k]=s; l=l*koef; mm[k]=l; //cout << "Sr raz por = " << s << "\tMax Raz Por = " << l << endl;
 k=0; mu[k]=raspr; k++; mu[k]=srra; k++; mu[k]=legr; k++; mu[k]=prgr; k++; mu[k]=ms; k++; mu[k]=mm;
 return mu; }
-
+//---------------
 double **rasrasporporaz1(double *raspr0, double rpn, int vyb, int nn, double *ras11, double *prgr01, double *legr01, double p1, double p0, double de, int vlpr, double **mu)
 { 	int k, q, j, n=nn, qg=0;
 	double *legr11=new double[n], *prgr11=new double[n], kot, dob1, dob2, dob3, xp, kop, xt, s, e=1e-1, ht=1e0;
@@ -712,44 +771,71 @@ mu=rasppor2(p2, p0, legr01, prgr01, ras01, qg, rpn, h, k, mu);
 if (ras01) delete[]ras01; if (prgr01) delete[]prgr01; 
 if (legr01) delete[]legr01; if (srra01) delete[]srra01;
 return mu; }
+double **sortirovka(double *prgr, double *legr, double *raspr, int n, double **mu)
+{ int q=n-1, k=0, x=0; double mp=0.0, ml=0.0, mr=0.0, t=0.0, g=0.0, s=0.0;
+double *prgr1=new double[n], *legr1=new double[n], *ras1=new double[n]; 
+if ((!prgr1) || (!legr1) || (!ras1)) { cout << "No memory!" << endl; k=getchar(); exit(1); }
+for (k=0; k<n; k++) { ras1[k]=raspr[k]; prgr1[k]=prgr[k]; legr1[k]=legr[k]; }
+while (q>0) {
+k=0; x=k; mp=prgr[k]; ml=legr[k]; mr=raspr[k];
+for (k=1; k<=q; k++) {
+if (mp<prgr[k]) {
+	mp=prgr[k]; ml=legr[k]; mr=raspr[k]; x=k; } }
+prgr1[q]=mp; legr1[q]=ml; ras1[q]=mr;
+q--; }
+for (k=0; k<n; k++) { raspr[k]=ras1[k]; prgr[k]=prgr1[k]; legr[k]=legr1[k]; }
+if (ras1) delete[]ras1; if (prgr1) delete[]prgr1; if (legr1) delete[]legr1;
+k=0; mu[k]=prgr; k++; mu[k]=legr; k++; mu[k]=raspr; //for (k=0; k<n; k++) cout << "ra = " << raspr[k] << "\tle = " << legr[k] << "\tpr = " << prgr[k] << "\n"; cout << endl; k=getchar();
+return mu;
+}
 double **rasrasporporaz0(double *prgr0, double *legr0, double *raspr0, double rpn, int vyb, int n, double de, double **mu)
-{ double s=0.0, e=1e-1, r=0.0, koef=1e6, *prgr00=new double[n];
-double *legr00=new double[n], m=0.0, t=0.0, ht=1e0; 
-int k=0, q=0, p=0, j=0, jk=0, qg=0;
-for (k=0; k<n; k++) prgr00[k]=prgr0[k]*koef;
-legr00[0]=0.0; for (k=1; k<n; k++) legr00[k]=prgr00[k-1]; 
-m=0.0; for (k=0; k<n; k++) if (m<prgr00[k]) m=prgr00[k]; s=e; k=0; while (s<m) { k++; s=s+ht; } qg=k;
-s=0.0; for (k=0; k<n; k++) if (prgr00[k]<(ht+e)) { p=k; s=s+raspr0[k]; } //Г°Г Г§Г¬ГҐГ° ГЇГ®Г° Г¤Г® 1 Г¬ГЄГ¬
+{ int k=0, q=1, p=0, j=0, jk=0, qg=3; 
+double s=0.0, e=1e-6, r=0.0, koef=1e6, *prgr00=new double[n], **muv=new double*[qg];
+double *legr00=new double[n], m=0.0, t=0.0, ht=1e0, g=0.0, x=0.0, ko=0.0, e1=ht+e;
+if ((!legr00) || (!prgr00) || (!muv)) { cout << "No memory!" << endl; k=getchar(); exit(1); }
+m=0.0; for (k=0; k<n; k++) if (m<prgr0[k]) m=prgr0[k]; r=1e1;
+if (m>r) koef=1e0; //cout << "n = " << n << "\t";
+for (k=0; k<n; k++) { prgr00[k]=prgr0[k]*koef; legr00[k]=legr0[k]*koef; }
+k=0; m=legr00[k]; for (k=1; k<n; k++) if (m>legr00[k]) m=legr00[k];
+k=0; legr00[k]=m; for (k=1; k<n; k++) legr00[k]=prgr00[k-1]; 
+k=0; muv[k]=prgr00; k++; muv[k]=legr00; k++; muv[k]=raspr0;
+muv=sortirovka(prgr00, legr00, raspr0, n, muv);
+k=0; prgr00=muv[k]; k++; legr00=muv[k]; k++; raspr0=muv[k];
+m=0.0; for (k=0; k<n; k++) if (m<prgr00[k]) m=prgr00[k];
+s=e; k=0; while (s<m) { k++; s=s+ht; } qg=k; //cout << "qg = " << qg << endl;
+s=0.0; for (k=0; k<n; k++) if (prgr00[k]<e1) { p=k; s=s+raspr0[k]; } //cout << "s = " << s << "\t"; //размер пор до 1 мкм
+k=0; r=legr00[k]; g=prgr00[k]; x=raspr0[k]; k++; t=raspr0[k];
+if (r>0.0) { ko=(t-x)/(g-r); s=s+r*ko; } //cout << "s = " << s << "\tr = " << r << "\tx = " << x << "\tt = " << t << "\tg = " << g << "\t";
 double *ras01=new double[qg], *prgrm=new double[qg], *legrm=new double[qg];
 double *mm=new double[q], *ms=new double[q], *srra01=new double[qg], prgr01=rpn;
 if ((!ras01) || (!prgrm) || (!legrm) || (!srra01) || (!ms) || (!mm))
 { cout << "No memory!" << endl; k=getchar(); exit(1); }
 k=0; prgr01=de; legrm[k]=0.0; prgrm[k]=prgr01; 
-for (k=1; k<qg; k++) { ras01[k]=0.0; prgrm[k]=prgr01; legrm[k]=prgrm[k-1]; prgr01=prgr01+de; }
+for (k=1; k<qg; k++) { legrm[k]=prgr01; ras01[k]=0.0; prgr01=prgr01+de; prgrm[k]=prgr01; }
 q=0; ras01[q]=s; q++;
 for (k=p; k<n; k++) {
     r=prgr00[k]-legr00[k];
-    if ((prgr00[k]>(ht+e)) && (r<(ht+e)) && (r>e)) { ras01[q]=raspr0[k]; q++; }
-    if (r>(ht+e)) {
+    if ((prgr00[k]>e1) && (r<e1) && (r>e)) { ras01[q]=raspr0[k]; q++; }
+    if (r>e1) {
         m=raspr0[k]/r;
 		t=r; j=0; while (t>e) { j++; t=t-ht; } jk=j; 
         for (j=0; j<jk; j++) { ras01[q]=m; q++; } } }
-if (prgr00) delete []prgr00; if (legr00) delete []legr00; //cout << "q = " << q << "\tqg = " << qg << endl;
+if (prgr00) delete []prgr00; if (legr00) delete []legr00; 
 t=0.0; for (k=0; k<qg; k++) t=t+ht; k=0; mm[k]=t;
 for (k=0; k<qg; k++) srra01[k]=(prgrm[k]+legrm[k])/2e0;
 s=0.0; r=s; for (k=0; k<qg; k++) { s=s+ras01[k]*srra01[k]; r=r+ras01[k]; }
-if (fabs(r)>0.0) s=s/r; else s=0.0; k=0; ms[k]=s;
+if (fabs(r)>0.0) s=s/r; else s=0.0; k=0; ms[k]=s; //for (k=0; k<qg; k++) cout << "pr = " << prgrm[k] << "\tle = " << legrm[k] << "\t";
 k=0; mu[k]=ras01; k++; mu[k]=srra01; k++; mu[k]=prgrm; k++; mu[k]=legrm; k++; 
-mu[k]=ms; k++; mu[k]=mm; 
+mu[k]=ms; k++; mu[k]=mm; if (muv) delete[]muv; 
 return mu; }
 
-//ГЉГ‚Г€
+//КВИ
 double **rasPorpoRazkvi(int vypl)
 { 
-int k=0, f=cvym; //Г·ГЁГ±Г«Г® ГўГ»ГµГ®Г¤Г­Г»Гµ Г¬Г Г±Г±ГЁГўГ®Гў
-double **mu=new double*[f]; if (!mu) { cout << "No memory!" << endl; k=getchar(); exit(1); } //0 - Г¬Г Г±Г±ГЁГў Г°Г Г±ГЇГ°ГҐГ¤ГҐГ«ГҐГ­ГЁГї ГЇГ®Г°, 1 - Г¬Г Г±Г±ГЁГў Г±Г°ГҐГ¤Г­ГЁГµ Г°Г Г§Г¬ГҐГ°Г®Гў ГЇГ®Г°, 2, 3 - Г«ГҐГўГ Гї ГЁ ГЇГ°Г ГўГ Гї ГЈГ°Г Г­ГЁГ¶Г», 4 - Г±Г°ГҐГ¤Г­ГЁГ© Г°Г Г§Г¬ГҐГ° ГЇГ®Г°, 5 - Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г»Г©
+int k=0, f=cvym; //число выходных массивов
+double **mu=new double*[f]; if (!mu) { cout << "No memory!" << endl; k=getchar(); exit(1); } //0 - массив распределения пор, 1 - массив средних размеров пор, 2, 3 - левая и правая границы, 4 - средний размер пор, 5 - максимальный
 mu=poisrasprporkvi(vypl, mu);
-return mu; } //ГЉГ‚
+return mu; } //КВ
 double *NapMasRaspkvi(int vvk, int n)
 {
 int k=0; double *raspr;
@@ -794,9 +880,9 @@ s=pr/s; r=w+s*(prmi-ko);
 v=0; w0=raspr0[v]; ras01[v]=w0; v++; 
 ras01[v]=r; pr=r; v++; v0=v;
 u=0; r=(w0-r)/w0; ras02[u]=r*k0; u++; //cout << "w0 = " << w0 << "\tras01 = " << pr << "\tras02 = " << r*k0 << "\tr = " << r << endl; 
-for (k=v0-1; k<qg; k++) { //ГЁГ¤ГҐГ¬ ГЇГ® prgr01, legr01
+for (k=v0-1; k<qg; k++) { //идем по prgr01, legr01
     f=1; x=-1;
-        for (q=p; q<n1; q++) { //ГЁГ¤ГҐГ¬ ГЇГ® prgr0
+        for (q=p; q<n1; q++) { //идем по prgr0
         if ((legr0[q]<=prgr01[k]) && (f>0) && (prgr0[q]>=prgr01[k])) {
 			x=q; f=-1; break; } }
 if ((x>0) && (f<0)) {

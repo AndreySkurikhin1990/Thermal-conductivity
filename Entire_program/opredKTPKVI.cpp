@@ -11,22 +11,19 @@
 #include <iostream>
 #include <time.h>
 using namespace std;
-const double tek0 = 273.15, tnosck = 3e2, dtosck = 1e2, tnack = 2e2, detek = 1e2;
-const double y0kvi = 3e1*1e-3, tocraskvi = 1e-4, templak = 175e1 + tek0, dkoalk = 0.639201;
-const double porkvi400=51.74*1e-2, porkvi500=52.07*1e-2, porkvi600=51.51*1e-2, porkvi700=39.75*1e-2;
-const double porkvi800=40.85*1e-2, porkvi900=39.37*1e-2, porkvi1000=36.07*1e-2;
-const int dsk = 60, ks = 10, dmkoosck = 14, dmkvokvi = 28, dmkok = 3, dkosckl = 6;
-const int N = 13, vmik = 0, vybkvi = 6, nnxtk = 0, nxtk = 30; //vmik: 0 - ÃªÃ¥Ã°Ã Ã¬Ã®Ã¢Ã¥Ã°Ã¬Ã¨ÃªÃ³Ã«Ã¨Ã², 1 - ÃˆÃ’ÃŽÃŒ, vybkvi: 4 - 400, 5 - 500, 6 - 600, 7 - 700, 8 - 800, 9 - 900, 10 - 1000
+const double tek0 = 273.15, tnosck = 3e2, dtosck = 1e2, tnack = 2e2, detek = 1e2, tkk=22.0+tek0;
+const double y0kvi = 3e1*1e-3, tocraskvi = 1e-7, templak = 175e1 + tek0, dkoalk = 0.639201;
+const int dsk=60, ks=10, dmkoosck=14, dmkvokvi=28, dmkok=3, dkosckl=6, cemnk=11, cemdu=6;
+const int N = 13, vmik = 0, vybkvi = 6, nnxtk = 0, nxtk = 30, vybves=3; //vmik: 0 - êåðàìîâåðìèêóëèò, 1 - ÈÒÎÌ, vybkvi: 4 - 400, 5 - 500, 6 - 600, 7 - 700, 8 - 800, 9 - 900, 10 - 1000
 const char nfk = 'C';
 struct derevo {
-	int otre; //1 - Ã®Ã²Ã°Ã Ã¦Ã¥Ã­Ã¨Ã¥ Ã¨Ã«Ã¨ 0 - Ã¯Ã°Ã®Ã¯Ã³Ã±ÃªÃ Ã­Ã¨Ã¥
-	int ste; //Ã­Ã®Ã¬Ã¥Ã° Ã±Ã²Ã¥Ã­ÃªÃ¨
-	int vis; //Ã¢Ã¨Ã¤Ã¨Ã¬Ã®Ã±Ã²Ã¼: 1 - Ã¢Ã¨Ã¤Ã¥Ã­, 0 - Ã­Ã¥Ã²
-	int lev; //Ã­Ã®Ã¬Ã¥Ã° Ã³Ã°Ã®Ã¢Ã­Ã¿
-	struct derevo *back; //Ã³ÃªÃ Ã§Ã Ã²Ã¥Ã«Ã¼ Ã­Ã Ã§Ã Ã¤
-	struct derevo *next; //Ã³ÃªÃ Ã§Ã Ã²Ã¥Ã«Ã¼ Ã¢Ã¯Ã¥Ã°Ã¥Ã¤
+	int otre; //1 - îòðàæåíèå èëè 0 - ïðîïóñêàíèå
+	int ste; //íîìåð ñòåíêè
+	int vis; //âèäèìîñòü: 1 - âèäåí, 0 - íåò
+	int lev; //íîìåð óðîâíÿ
+	struct derevo *back; //óêàçàòåëü íàçàä
+	struct derevo *next; //óêàçàòåëü âïåðåä
 };
-class KoePog { public: double alp, tem; KoePog *nex; };
 void RasKTPkvi();
 void napstrkvi();
 void initarrkvi(int);
@@ -34,26 +31,24 @@ double *koefoslab(double, double, double, double *, int, double *);
 void NapMasVozdSha(double *, double *, int);
 double epsisredkvi(double, double *, double *, int, double *, double *, int, int);
 double *opredKTPTverKarkkvi(double *, double *, double, double, double, double, int, int, double, double, int, double *, double *, double *, int, int, int);
-double **opredTempHolGor(double *, double *, int, int, double, int, double **, int, double *, double *);
+double **opredTempHolGor(double *, double *, int, int, double, int, double **, int, int, double *, int, double);
 double *NapMasKTPkvi(double *, int, int);
 double **PoiskZavVelTemVer(int, double **, int, double *, double *, int);
-double *koefPribSha(double *, double *, int, double *);
+double *koefPribSha(double *, double *, int, double *, char *);
 void zadrktkviNac();
 void napMasEKTPkviNac(double, double, double);
-double *vydelPolkvi(double *, double *, int, int);
 double RasFracXeffkvi(int);
 double *EffectTols(double *, double *, double *, double, double, int);
 double RaschAlphaTvKarkvi();
 double **rasPorpoRazkvi(int);
 double BolTochRasAlpha(int, int, double, double, double, double *, double *, double *, int, int, char *, double *, double *, int, double *, double *, int, double *, double *, double *, double *, double *, double *);
 double **RaschRTAkvi(int, double, double, double, int, int, double, int, double, int, int, int);
-double *kopokvi(double, double, int, double, int, int, double, double, int, double *);
 double **izmRTAkvi(double *, int, int, double *, double *, double *, double *, double *, double *, int);
 double **chaRTAkvi(int, double *, double *, double *, double *, double *, double *, int);
-double *oprRasTemNachkvi(int, int, double *, double *, int, double *, double, double, double, double, double, int);
+double *oprRasTemNach(int, int, double *, double *, int, double *, double, double, double, double, double, int);
 double opredKTPTKTochSha(double *, double *, double, int);
 double *zadrktkvi(int, int, double, int, double, double, int, int, double, int, int, double *);
-double *izstNkvi(int, int, int, int);
+double *izstN(int, int, int, int);
 double F0_lamT(double);
 double *KoefPoglRosselNac(double *, int, int, double, double, double, double *, double *, int, double, double, double *, double *, int, int, int);
 double **opredTempLPStenSha(double *, double *, double *, double *, double, int, double *, double *, double *, double *, int, int, double, double, double, int, char *);
@@ -61,7 +56,6 @@ double *FuncRaschIzl(double, double, double, double, int, double *, double, doub
 double *podschchieleSha(int, int, int, double *, double *);
 double oprProcSoderpoPoris(double *, double *, double, int);
 double opredLuchSostkvi(double *, double *, int, int, int);
-void opredtemphckvi(double *, double *, double *, double *, double *, int, int, double);
 double *opredKoefOtr(double *, double *, int, double, int, int, double *, double *, int);
 double KorrZnachVozdProskviKon(double, double, double);
 double *oprEffDoliTepPerenkvi(double, double, double);
@@ -69,25 +63,29 @@ double KorrZnachVozdProskvi(double, double, double, int);
 double *opredTempStenShaFragm(double *, int, double *, double *, double *, double *, int, int, double, double, double, double, double);
 void vyvodfile(double *, int, int, double, char *);
 double bbfn(double);
-double *poisMasKoefkvi(int);
+double *poisMasKoefkvi(int, double *, int);
 void oprsodoxkvi();
 void zapisvfile(double *, int, char *);
+double **vydelPol(int, int, double **, double **, int, int);
+double novNapMas(int, int, int, int, int, int, int, int, int);
 //-----------
-char *sfatk = NULL, *sfnok = NULL, *snk = NULL, *ssk = NULL, *skptk = NULL, *svskv = NULL, *snmk = NULL;
-char *sfok = NULL, *svfdku = NULL, *svfdk = NULL;
 double *dkosckm = NULL, *dkosckt = NULL, *qobk = NULL, *etek = NULL, *kttkk = NULL, *mkok = NULL, *ektpk = NULL;
-double *tgork = NULL, *tholk = NULL, *kektpk = NULL, *tsredkvi = NULL, *stchsrkvi = NULL, *Tkvi = NULL;
-double *Akvi = NULL, *Rkvi = NULL, *Rakvi = NULL, *Takvi = NULL, tnak = tnack + tek0, *Aakvi = NULL;
-double *Rtkvi = NULL, *Ttkvi = NULL, *Atkvi = NULL, *alphakvi = NULL, *Tpctk = NULL, porkvi, smgok, salok;
+double *kektpk = NULL, *tsredkvi = NULL, *stchsrkvi = NULL, *Tkvi = NULL;
+double tnak = tnack + tek0, *alphakvi = NULL, *Tpctk = NULL, porkvi, smgok, salok;
 double ssiok, *txkvi = NULL, *qxkvi = NULL, *lxkvi = NULL, *kxkvi = NULL, *dtxkvi = NULL, *tkusck = NULL;
 double *kusck = NULL, *ktpvokvi = NULL, *vtekvi = NULL, *ktrk = NULL, qobkvi, dkospk = 1e0, hkkvi, hkvi;
-double hvokt, tmikvi, tmakvi, dpctk = 1e0, *ecktpkvi = NULL, tmak, tmik, cok, bok, *sodoxkvi;
-double cnk = 1e-2, ckk = 1e2, bnk = 1e-2, bkk = 1e2, *temrask = NULL, tnrk, *ooxkvi = NULL, *mtsk = NULL;
-int cemk = 11, vtk = 0, sctxk = 0, vtkk=3, vtkn = 0;
+double hvokt, tmikvi, tmakvi, dpctk = 1e0, *ecktpkvi = NULL, *sodoxkvi;
+double *temrask = NULL, tnrk, *ooxkvi = NULL, *mtsk = NULL;
+int cemk = cemnk, vtk = 0, sctxk = 0, vtkk=3, vtkn = 0;
 //------------
 void zadrktkviNac()
 {
-	int j, jk = nxtk, jn = nnxtk, k, q, f = 6; initarrkvi(jk);
+	int j=0, jk = nxtk, jn = nnxtk, k=0, q=0, f = 6; 
+char *snmk=NULL, *sfnok=NULL, *svfdvkNULL, *s=NULL;
+char **ms=napolStrok();
+k=0; snmk=ms[k]; k++; sfnok=ms[k];
+ms=napNazvFile(vyve, vm, snmk, nfi); if (ms) delete[]ms;
+k=0; svfdk=ms[k]; k++; j=4; for (q=k; q<j; q++) { s=ms[q]; if (s) delete[]s; } if (ms) delete[]ms;
 	double hf = 1e0, nf = 0.0, ka, kb, hnkvi = 0.0, dhk = 1e-3, hvh = 1e-6;
 	double hvko = (13e1)*hvh, hvna, p=0.0, r, d = 0.0, *atr = NULL, t, ko, *po, **mu; 
 	for (j = 0; j < ks; j++) d = d + hf; //cout << "d = " << d << "\t";
@@ -102,7 +100,7 @@ void zadrktkviNac()
 	cet = ce; j = 0; while (cet > 0.0) { cet = cet - hf; j++; } cek = j; delete[]mu; //k=31; x = 0.0; for (j = 0; j < cek; j++) if (j <= k) x = x + srra[j] * rapo[j]; else break; //for (j=0; j<k; j++) cout << "sr_ra = " << srra[j] << "\tlegr = " << legr[j] << endl;  
 	//--------------
 	dkospk = RaschAlphaTvKarkvi(); vtkk=cemk;
-	for (vtk = vtkn; vtk<vtkk; vtk++) { //Ã¯Ã°Ã®Ã¡Ã¥Ã£Ã Ã¥Ã¬ Ã¯Ã® Ã²Ã¥Ã¬Ã¯Ã¥Ã°Ã Ã²Ã³Ã°Ã¥
+	for (vtk = vtkn; vtk<vtkk; vtk++) { //ïðîáåãàåì ïî òåìïåðàòóðå
 		
 		ko = srp;
 		cout << "Sred razm por = " << ko << "\t";
@@ -115,9 +113,9 @@ void zadrktkviNac()
 		}
 		hvokt = hvna; hkvi = hvokt*(1e0 - porkvi) / porkvi;
 		while (hvokt <= hvko) {
-			j = jn; hkkvi = hnkvi*dhk; //Ã¯Ã°Ã®Ã¡Ã¥Ã£Ã Ã¥Ã¬ Ã¯Ã® Ã°Ã Ã§Ã¬Ã¥Ã°Ã Ã¬ Ã¯Ã®Ã°
+			j = jn; hkkvi = hnkvi*dhk; //ïðîáåãàåì ïî ðàçìåðàì ïîð
 			while ((j < jk) && (hkkvi < y0kvi)) { //cout << "hk = " << hkkvi << "\tte = " << etek[vtk] << endl; 
-				sctxk = j; u=0; //Ã¯Ã°Ã®Ã¡Ã¥Ã£Ã Ã¥Ã¬ Ã¯Ã® ÃªÃ®Ã®Ã°Ã¤Ã¨Ã­Ã Ã²Ã¥
+				sctxk = j; u=0; //ïðîáåãàåì ïî êîîðäèíàòå
 				mu = RaschRTAkvi(ks, hkvi, 0.0, 0.0, 1, vtk, hvokt, u, etek[vtk], u, u, 1);
 				Rakvi = mu[u]; u++; Takvi = mu[u]; u++; Aakvi = mu[u]; u++; 
 				Rkvi = mu[u];  u++; Tkvi = mu[u];  u++; Akvi = mu[u];  u++; 
@@ -147,18 +145,18 @@ void napstrkvi()
 	if ((!sfatk) || (!sfok) || (!snk) || (!ssk) || (!skptk) || (!svskv) || (!snmk) || (!sfnok)) 
 	{ cout << "No_memory!" << endl; getchar(); exit(1); }
 	int k = 0;
-	snk[k] = 'D'; k++; snk[k] = ':'; k++; snk[k] = '\\'; k++; snk[k] = '\\'; k++; snk[k] = '_';  k++; snk[k] = 'Ã€';  k++;
-	snk[k] = 'Ã±'; k++; snk[k] = 'Ã¯'; k++; snk[k] = 'Ã¨';  k++; snk[k] = 'Ã°';  k++; snk[k] = 'Ã ';  k++; snk[k] = 'Ã­';  k++;
-	snk[k] = 'Ã²'; k++; snk[k] = 'Ã³'; k++; snk[k] = 'Ã°';  k++; snk[k] = 'Ã ';  k++; snk[k] = '\\'; k++; snk[k] = '\\'; k++;
+	snk[k] = 'D'; k++; snk[k] = ':'; k++; snk[k] = '\\'; k++; snk[k] = '\\'; k++; snk[k] = '_';  k++; snk[k] = 'À';  k++;
+	snk[k] = 'ñ'; k++; snk[k] = 'ï'; k++; snk[k] = 'è';  k++; snk[k] = 'ð';  k++; snk[k] = 'à';  k++; snk[k] = 'í';  k++;
+	snk[k] = 'ò'; k++; snk[k] = 'ó'; k++; snk[k] = 'ð';  k++; snk[k] = 'à';  k++; snk[k] = '\\'; k++; snk[k] = '\\'; k++;
 	snk[k] = 't'; k++; snk[k] = 'm'; k++; snk[k] = 'p';  k++; snk[k] = '\\'; k++; snk[k] = '\\'; k++; snk[k] = '\0';
 	k = 0;
 	ssk[k] = 'C';  k++; ssk[k] = ':'; k++;  ssk[k] = '\\'; k++; ssk[k] = '\\'; k++; ssk[k] = 'U';  k++; ssk[k] = 's';  k++;
-	ssk[k] = 'e';  k++; ssk[k] = 'r'; k++;  ssk[k] = 's';  k++; ssk[k] = '\\'; k++; ssk[k] = '\\'; k++; ssk[k] = 'Ã€';  k++;
-	ssk[k] = 'Ã­';  k++; ssk[k] = 'Ã¤'; k++;  ssk[k] = 'Ã°';  k++; ssk[k] = 'Ã¥';  k++; ssk[k] = 'Ã©';  k++; ssk[k] = '\\'; k++;
+	ssk[k] = 'e';  k++; ssk[k] = 'r'; k++;  ssk[k] = 's';  k++; ssk[k] = '\\'; k++; ssk[k] = '\\'; k++; ssk[k] = 'À';  k++;
+	ssk[k] = 'í';  k++; ssk[k] = 'ä'; k++;  ssk[k] = 'ð';  k++; ssk[k] = 'å';  k++; ssk[k] = 'é';  k++; ssk[k] = '\\'; k++;
 	ssk[k] = '\\'; k++; ssk[k] = 'D'; k++;  ssk[k] = 'o';  k++; ssk[k] = 'c';  k++; ssk[k] = 'u';  k++; ssk[k] = 'm';  k++;
 	ssk[k] = 'e';  k++; ssk[k] = 'n'; k++;  ssk[k] = 't';  k++; ssk[k] = 's';  k++; ssk[k] = '\\'; k++; ssk[k] = '\\'; k++;
-	ssk[k] = '_';  k++; ssk[k] = 'Ã€'; k++;  ssk[k] = 'Ã±';  k++; ssk[k] = 'Ã¯';  k++; ssk[k] = 'Ã¨';  k++; ssk[k] = 'Ã°';  k++;
-	ssk[k] = 'Ã ';  k++; ssk[k] = 'Ã­'; k++;  ssk[k] = 'Ã²';  k++; ssk[k] = 'Ã³';  k++; ssk[k] = 'Ã°';  k++; ssk[k] = 'Ã ';  k++;
+	ssk[k] = '_';  k++; ssk[k] = 'À'; k++;  ssk[k] = 'ñ';  k++; ssk[k] = 'ï';  k++; ssk[k] = 'è';  k++; ssk[k] = 'ð';  k++;
+	ssk[k] = 'à';  k++; ssk[k] = 'í'; k++;  ssk[k] = 'ò';  k++; ssk[k] = 'ó';  k++; ssk[k] = 'ð';  k++; ssk[k] = 'à';  k++;
 	ssk[k] = '\\'; k++; ssk[k] = '\\'; k++; ssk[k] = 't';  k++; ssk[k] = 'm';  k++; ssk[k] = 'p';  k++; ssk[k] = '\\'; k++;
 	ssk[k] = '\\'; k++; ssk[k] = '\0';
 	k = 0;
@@ -233,13 +231,9 @@ void initarrkvi(int koel)
 	if ((!qobk) || (!etek) || (!kttkk) || (!mkok) || (!ektpk) || (!tgork) || (!tholk) || (!stchsrkvi) || (!tsredkvi)) 
 	{ cout << snmk << endl; k = getchar(); exit(1); }
 	for (j = 0; j < cemk; j++) {
-		qobk[j] = 0.0; etek[j] = 0.0; kttkk[j] = 0.0; mkok[j] = 0.0;
-		ektpk[j] = 0.0; stchsrkvi[j] = 0.0; tgork[j] = 0.0; tholk[j] = 0.0; tsredkvi[j] = 0.0;
-	} 
+		qobk[j]=0.0; etek[j]=0.0; kttkk[j]=0.0; mkok[j]=0.0; ektpk[j]=0.0; stchsrkvi[j]=0.0; tgork[j]=0.0; tholk[j]=0.0; tsredkvi[j]=0.0; } 
 	for (j = 0; j < ks; j++) {
-		Akvi[j] = 0.0; Rkvi[j] = 0.0; Rakvi[j] = 0.0; Takvi[j] = 0.0;
-		Aakvi[j] = 0.0; Rtkvi[j] = 0.0; Ttkvi[j] = 0.0; Atkvi[j] = 0.0; Tkvi[j] = 0.0;
-	}
+		Akvi[j]=0.0; Rkvi[j]=0.0; Rakvi[j]=0.0; Takvi[j]=0.0; Aakvi[j]=0.0; Rtkvi[j]=0.0; Ttkvi[j]=0.0; Atkvi[j]=0.0; Tkvi[j]=0.0; }
 	txkvi = new double[koel]; qxkvi = new double[koel]; lxkvi = new double[koel]; 
 	kxkvi = new double[koel]; dtxkvi = new double[koel];
 	if ((!txkvi) || (!qxkvi) || (!lxkvi) || (!kxkvi) || (!dtxkvi)) { cout << snmk << endl; j = getchar(); exit(1); }
@@ -255,77 +249,81 @@ void initarrkvi(int koel)
 	double s; for (k = 0; k < cemk; k++) { s = epsisredkvi(etek[k], tkusck, kusck, dmkoosck, dkosckt, dkosckm, dkosckl, vybkvi); stchsrkvi[k] = s; } //for (k=0; k<cemk; k++) cout << "Step cher ( " << k << " ) = " << stchsrkvi[k] << "\t"; cout << endl; 
 	napMasEKTPkviNac(wmg, wsi, wal); //cout << "j = " << j << endl; 
 }
-double *poisMasKoefkvi(int vyb)
+double *poisMasKoefkvi(int vyb, double *kktp, int n)
 {
-	int k = 3, j; double *kktp = new double[k], t1=25e0, t2=5e2, dt=t2-t1, kn;
-	if (!kktp) { cout << snmk << endl; j = getchar(); exit(1); }
-	kktp[2] = 0.0;
+	int k=0, j=0; double t1=25e0, t2=5e2, dt=t2-t1, kn=0.0;
+	for (k=0; k<n; k++) kktp[k]=0.0;
 	if (vyb == 3) { kktp[1] = 0.00015; kktp[0] = 0.068; } //350
 	else if (vyb == 4) { kktp[1] = 0.000125; kktp[0] = 0.082; //1
 	kn=(0.156-0.087)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.156-kn; //2
 	kn=(0.155-0.087)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.155-kn; //3 
-	kktp[1] = 0.00016; kktp[0] = 0.14; //4  //Spirina //Ã¢Ã»Ã¡Ã®Ã°
-	//kn=(0.146-0.087)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.146-kn; //Ãª Ã¢Ã®Ã¯Ã°Ã®Ã±Ã³ Ã® Ã±Ã²Ã Ã­Ã¤Ã Ã°Ã²Ã¨Ã§Ã Ã¶Ã¨Ã¨ ÃŠÃ‚Ãˆ
+	kktp[1] = 0.00016; kktp[0] = 0.14; //4  //Spirina //âûáîð
+	//kn=(0.146-0.087)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.146-kn; //ê âîïðîñó î ñòàíäàðòèçàöèè ÊÂÈ
 	} //400
-	else if (vyb == 5) { kktp[1] = 0.0001; kktp[0] = 0.103; //Ã¨Ã§ Ã€ÃµÃ²Ã¿Ã¬Ã®Ã¢Ã , 1991
-	kn=(0.165-0.105)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.165-kn; //Ã¢Ã»Ã¡Ã®Ã°
-	//kn=(0.178-0.105)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.178-kn; //Ã„Ã¢Ã³ÃµÃ±Ã«Ã®Ã©Ã­Ã»Ã¥
-	//kn=(0.152-0.105)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.152-kn; //Ãª Ã¢Ã®Ã¯Ã°Ã®Ã±Ã³ Ã® Ã±Ã²Ã Ã­Ã¤Ã Ã°Ã²Ã¨Ã§Ã Ã¶Ã¨Ã¨ ÃŠÃ‚Ãˆ
+	else if (vyb == 5) { kktp[1] = 0.0001; kktp[0] = 0.103; //èç Àõòÿìîâà, 1991
+	kn=(0.165-0.105)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.165-kn; //âûáîð
+	//kn=(0.178-0.105)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.178-kn; //Äâóõñëîéíûå
+	//kn=(0.152-0.105)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.152-kn; //ê âîïðîñó î ñòàíäàðòèçàöèè ÊÂÈ
 	} //500
-	else if (vyb == 6) { kktp[1] = 0.00015; kktp[0] = 0.116; //Ã¢Ã»Ã¡Ã®Ã°
+	else if (vyb == 6) { kktp[1] = 0.00015; kktp[0] = 0.116; //âûáîð
 	kn=(0.201-0.12)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.201-kn;
 	kn=(0.195-0.12)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.195-kn;
 	kktp[1] = 0.00015; kktp[0] = 0.17; //Spirina
-	kn=(0.196-0.12)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.196-kn; //Ã„Ã¢Ã³ÃµÃ±Ã«Ã®Ã©Ã­Ã»Ã¥ //Ã¢Ã»Ã¡Ã®Ã°
-	//kn=(0.178-0.12)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.178-kn; //Ãª Ã¢Ã®Ã¯Ã°Ã®Ã±Ã³ Ã® Ã±Ã²Ã Ã­Ã¤Ã Ã°Ã²Ã¨Ã§Ã Ã¶Ã¨Ã¨ ÃŠÃ‚Ãˆ
+	kn=(0.196-0.12)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.196-kn; //Äâóõñëîéíûå //âûáîð
+	//kn=(0.178-0.12)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.178-kn; //ê âîïðîñó î ñòàíäàðòèçàöèè ÊÂÈ
 	} //600
 	else if (vyb == 7) { kktp[1] = 0.00017; kktp[0] = 0.146; 
 	kn=(0.216-0.15)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.216-kn; 
-	kn=(0.235-0.15)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.235-kn; //Ãª Ã¢Ã®Ã¯Ã°Ã®Ã±Ã³ Ã® Ã±Ã²Ã Ã­Ã¤Ã Ã°Ã²Ã¨Ã§Ã Ã¶Ã¨Ã¨ ÃŠÃ‚Ãˆ
-	kn=(0.251-0.16)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.251-kn; //Ã„Ã¢Ã³ÃµÃ±Ã«Ã®Ã©Ã­Ã»Ã¥ //Ã¢Ã»Ã¡Ã®Ã°
+	kn=(0.235-0.15)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.235-kn; //ê âîïðîñó î ñòàíäàðòèçàöèè ÊÂÈ
+	kn=(0.251-0.16)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.251-kn; //Äâóõñëîéíûå //âûáîð
 	} //700
 	else if (vyb == 8) { kktp[1] = 0.00018;  kktp[0] = 0.156; 
-	kn=(0.226-0.16)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.226-kn; //Ã¢Ã»Ã¡Ã®Ã°
+	kn=(0.226-0.16)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.226-kn; //âûáîð
 	//kn=(0.25-0.16)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.25-kn;
 	//kktp[1] = 0.00014; kktp[0] = 0.21; //Spirina
-	//kn=(0.23-0.16)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.23-kn; //Ãª Ã¢Ã®Ã¯Ã°Ã®Ã±Ã³ Ã® Ã±Ã²Ã Ã­Ã¤Ã Ã°Ã²Ã¨Ã§Ã Ã¶Ã¨Ã¨ ÃŠÃ‚Ãˆ
+	//kn=(0.23-0.16)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.23-kn; //ê âîïðîñó î ñòàíäàðòèçàöèè ÊÂÈ
 	} //800
 	else if (vyb == 9) { kktp[1] = 0.00019;  kktp[0] = 0.185; 
-	kn=(0.23-0.195)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.23-kn; //Ã¢Ã»Ã¡Ã®Ã°
+	kn=(0.23-0.195)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.23-kn; //âûáîð
 	//kn=(0.29-0.195)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.29-kn;
 	} //900
 	else if (vyb == 10) { kktp[1] = 0.00025;  kktp[0] = 0.246; 
-	kn=(0.287-0.25)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.287-kn; //Ã¢Ã»Ã¡Ã®Ã°
+	kn=(0.287-0.25)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.287-kn; //âûáîð
 	//kn=(0.36-0.25)/dt; kktp[1] = kn; kn=kn*t2; kktp[0] = 0.36-kn;
-	//kn=(0.35-0.25)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.35-kn; //Ãª Ã¢Ã®Ã¯Ã°Ã®Ã±Ã³ Ã® Ã±Ã²Ã Ã­Ã¤Ã Ã°Ã²Ã¨Ã§Ã Ã¶Ã¨Ã¨ ÃŠÃ‚Ãˆ
+	//kn=(0.35-0.25)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.35-kn; //ê âîïðîñó î ñòàíäàðòèçàöèè ÊÂÈ
 	} //1000
 	return kktp;
 }
 void napMasEKTPkviNac(double wmg, double wsi, double wal)
 {
-	int vpv=vybkvi; 
-	kektpk = poisMasKoefkvi(vybkvi);
-	int k, nk, j; double hf = 1e0, g, s, t;
-	double *ektpks = new double[cemk], *eteks = new double[cemk], **mu;
-	if ((!ektpks) || (!eteks)) { cout << snmk << endl; k = getchar(); exit(1); }
-	for (k = 0; k < cemk; k++) { t = etek[k]; eteks[k] = t; t=t-tek0; s = 0.0; g = 0.0; 
-	for (j = 0; j<dmkok; j++) { s = s + kektpk[j] * pow(t, g); g = g + hf; } ektpks[k] = s; }
-	ektpk = vydelPolkvi(ektpks, eteks, cemk, 0); delete[]etek; 
-	etek = vydelPolkvi(ektpks, eteks, cemk, 1);
-	double nf = 0.0, *p = vydelPolkvi(ektpks, eteks, cemk, 2), tn;
-	nf = p[0]; delete[]p; k = 0; while (nf>0.0) { nf = nf - hf; k++; } 
-	nk = k; cemk = nk; tn = etek[0]; delete[]ektpks; delete[]eteks;
-	mu = opredTempHolGorkvi(ektpk, etek, cemk, dmkok, y0kvi);
-	double *tgks = mu[0], *tkhks = mu[1], *qks = mu[2], *tsks = mu[3]; delete[]mu;
-	etek[0] = tn; for (k = 1; k < cemk; k++) etek[k] = etek[k - 1] + detek; //for (k = 0; k < cemk; k++) cout << "t_g = " << tgks[k] << "\tt_h = " << tkhks[k] << "\tqks = " << qks[k] << "\ttsks = " << tsks[k] << "\tete = " << etek[k] << "\tektpk = " << ektpk[k] << endl;
+	int vpk=vybkvi, k=0, j=0, f=cemdu;
+	double *kektpk=new double[dmkok]; if (!kektpk) { cout << snmk << endl; k=getchar(); exit(1); }
+	kektpk=poisMasKoefkvi(vpk, kektpk, dmkok);
+	porkvi=novNapMas(vybves, vpk, k, k, k, k, k, k, cemk);
+	double hf=1e0, g=0.0, s=0.0, t=0.0, *po=NULL, nf = 0.0, tn=0.0, ys0=y0kvi;
+	double **mu=new double*[f], **muv=new double*[f];
+	double *qob=NULL, *thol=NULL, *tgor=NULL, *tsred=NULL;
+	if ((!ektpk) || (!mu) || (!muv)) { cout << snmk << endl; k = getchar(); exit(1); }
+	for (k=0; k<f; k++) { po=new double[cemk]; if (!po) { cout << snmk << endl; k=getchar(); exit(1); } muv[k]=po; } 
+	for (k=0; k<cemk; k++) { t=etek[k]; s=0.0; g=0.0; 
+	for (j=0; j<dmkok; j++) { s=s+kektpk[j]*pow(t, g); g=g+hf; } ektpk[k]=s; } //for (k=0; k<cem; k++) cout << "tem = " << ete[k] << "\tktp = " << ektpi[k] << "\t"; cout << endl;
+	muv=opredTempHolGor(ektpk, etek, cemk, k, ys0, k, muv, f, cemk, etek, dmkok, tkk); //cem - äëèíà ìàññèâà efte
+	k=0; j=1; mu=vydelPol(k, cemk, muv, mu, f, j);
+	k=0; thol=mu[k]; k++; tgor=mu[k]; k++; qob=mu[k]; k++; 
+	ektpk=mu[k]; k++; tsred=mu[k]; etek=tsred; k++; po=mu[k]; 
+	k=0; nf=po[k]; t=0.0; k=0; while (t<nf) { t=t+hf; k++; } cemk=k; //cout << "cem = " << cem << "\tnf = " << nf << "\t";	
+	for (k=0; k<cemk; k++) cout << "tem = " << etek[k] << "\tktp = " << ektpk[k] << "\tth = " << thol[k] << "\ttg = " << tgor[k] << "\tqo = " << qob[k] << "\t"; cout << endl;
+	for (k=0; k<f; k++) { po=muv[k]; delete[]po; } for (k=0; k<f; k++) { po=mu[k]; delete[]po; }
+	if (muv) delete[]muv; if (mu) delete[]mu; if (kektpk) delete[]kektpk; k=getchar();
 	if (stchsrkvi) delete[]stchsrkvi; stchsrkvi = new double[cemk]; 
 	if (!stchsrkvi) { cout << snmk << endl; k = getchar(); exit(1); }
 	for (k = 0; k < cemk; k++) { g = epsisredkvi(etek[k], tkusck, kusck, dmkoosck, dkosckt, dkosckm, dkosckl, vybkvi); stchsrkvi[k] = g; } 
 	for (k = 0; k < cemk; k++) { cout << "tem = " << etek[k] << "\tst_ch = " << stchsrkvi[k] << "\t"; cout << endl; } //zapisvfile(stchsrkvi, cemk, svfdk); //cout << "por kvi = " << porkvi << "\tce = " << cemk << endl; k=getchar();
-	kttkk = opredKTPTverKarkkvi(etek, ektpk, porkvi, wsi, wal, wmg, vybkvi, dmkok, tnosck, dtosck, dmkoosck, kusck, tkusck, stchsrkvi, cemk, vmik, vpv);
+	kttkk = opredKTPTverKarkkvi(etek, ektpk, porkvi, wsi, wal, wmg, vybkvi, dmkok, tnosck, dtosck, dmkoosck, kusck, tkusck, stchsrkvi, cemk, vmik, vpk);
 }
 double RasFracXeffkvi(int v)
 {	int l = 2, k; double *mkbr = new double[l], *mv = new double[l], *tol = new double[l];
+	if ((!mkbr) || (!mv) || (!tol)) { cout << snmk << endl; k = getchar(); exit(1); }
 	k = 0; mkbr[k] = 230.078; k++; mkbr[k] = 231.006; k++;
 	k = 0; mv[k] = 0.95; k++; mv[k] = 1.19; k++;
 	k = 0; tol[k] = 0.64; k++; tol[k] = 0.64; k++;
@@ -361,8 +359,8 @@ double RaschAlphaTvKarkvi()
 	else { cout << snmk << endl; j = getchar(); exit(1); }
 	long lt; unsigned int st; lt = time(NULL); st = (unsigned int)(lt - (lt % 2)) / 2; srand(st);
 		for (k = 0; k < l; k++) {
-		x = RasFracXeffkvi(k); //Ã°Ã Ã§Ã¬Ã¥Ã° Ã·Ã Ã±Ã²Ã¨Ã¶Ã»
-		rcf[k] = x*1e-6; y = x*pork; //Ã°Ã Ã§Ã¬Ã¥Ã° Ã¯Ã®Ã°Ã»
+		x = RasFracXeffkvi(k); //ðàçìåð ÷àñòèöû
+		rcf[k] = x*1e-6; y = x*pork; //ðàçìåð ïîðû
 		for (j = 0; j < d; j++) pn[j] = 0.0;
 		for (j = 0; j < jk; j++) {
 			pj = rand(); prf = 0.0; 
@@ -382,163 +380,16 @@ double RaschAlphaTvKarkvi()
 				lamtem = bbfn(yp*tc*1e6); if (lamtem<epsilon) lamtem = 0.0; //cout << "\tf(lam*T)_2 = " << lamtem << endl; 
 				if (lamtem>0.0) alx[j] = BolTochRasAlpha(0, j, yp, xt, tc, ktpvokvi, vtekvi, etek, cemk, dmkvokvi, snmk, Tkvi, Rkvi, 2 * N, kttkk, Akvi, 3, Rakvi, Takvi, Aakvi, Rtkvi, Ttkvi, Atkvi)*lamtem; else alx[j]=0.0; }
 			else alx[j] = 0.0; 
-		} w=0; pt = RaschRTAkvi(d, xt, 0.0, 0.0, 1, w, yp, 1, tc, w, w, w); pp = pt[w]; altc = pp[w]; delete[]pp; delete[]pt;
-		alx[0] = 0.0; alx[1] = altc / (hf - pork); //for (j=0; j<d; j++) cout << "j = " << j << "\talx = " << alx[j] << "\t";
+		} w=0; sp=0.0; pt = RaschRTAkvi(d, xt, sp, sp, 1, w, yp, 1, tc, w, w, w); pp = pt[w]; altc = pp[w]; delete[]pp; delete[]pt;
+		j=0; alx[j] = 0.0; j++; alx[j] = altc / (hf - pork); //for (j=0; j<d; j++) cout << "j = " << j << "\talx = " << alx[j] << "\t";
 		sp=0.0; for (j = 1; j < d; j++) {
 			p = 0.0; for (h = 0; h <= j; h++) p = p + hf;
 			yp = pork*x*1e-6 / (p - hf); if (j>1) xt = oprProcSoderpoPoris(rapo, legr, yp, cek); else xt = 1e0; //cout << "j = " << j << "\txt = " << xt << "\t";
 			alsf[k] = alsf[k] + pn[j] * alx[j] * xt; sp=sp+pn[j]*xt; } alsf[k]=alsf[k]/sp; }
 	x = 0.0; yp = 0.0; for (j = 0; j < cfk; j++) { x = x + alsf[j]; yp = yp + hf; } x = x / yp; for (j=0; j<cfk; j++) cout << "j = " << j << "\tal_sr = " << alsf[j] << endl; 
 	delete[]rapo; delete[]srra; delete[]rcf; delete[]pn; delete[]alx; delete[]alsf; delete[]legr;
-	x = (x / altc); printf("sr_okp = %0.10lf\n", x); //Ã®Ã±Ã«Ã Ã¡Ã«Ã¥Ã­Ã¨Ã¥ ÃŠÃ Ã§Ã  Ã±Ã·Ã¥Ã² Ã¯Ã®Ã°Ã¨Ã±Ã²Ã®Ã© Ã±Ã²Ã°Ã³ÃªÃ²Ã³Ã°Ã» Ã¢Ã¥Ã°Ã¬Ã¨ÃªÃ³Ã«Ã¨Ã²Ã 
+	x = (x / altc); printf("sr_okp = %0.10lf\n", x); //îñëàáëåíèå ÊÏ çà ñ÷åò ïîðèñòîé ñòðóêòóðû âåðìèêóëèòà
 	return x; }
-double **RaschRTAkvi(int kost, double htm, double kta, double ktb, int izm, int vyte, double hvo, int v, double ti, int c, int w, int u)
-{	int k = kost, j, r; double *te = NULL, e = tocraskvi, **mauk=NULL; //cout << "c = " << c << "\tw = " << w << "\tu = " << u << endl;
-	if (!v) { 
-		alphakvi = kopokvi(kta, ktb, 2, 0.0, kost, vyte, htm, hvo, w, alphakvi);
-		te = kopokvi(kta, ktb, 0, 0.0, kost, vyte, htm, hvo, w, alphakvi); //cout << "htm = " << htm << endl;
-		if (!c) {
-			k = kost; 
-			if (Rakvi) delete[]Rakvi; Rakvi = new double[k];
-			if (Rkvi) delete[]Rkvi; Rkvi = new double[k];
-			if (Rtkvi) delete[]Rtkvi; Rtkvi = new double[k];
-			if ((!Rakvi) || (!Rkvi) || (!Rtkvi)) { cout << snmk << endl; j = getchar(); exit(1); }
-			k = kost; j=3; Rakvi = opredKoefOtr(te, Rakvi, k, tocraskvi, j, cemk, mkok, etek, vybkvi);
-			for (j = 0; j < k; j++) { Rtkvi[j] = Rakvi[j]; Rkvi[j] = Rakvi[j]; }
-			if (Takvi) delete[]Takvi; Takvi = new double[k];
-			if (Ttkvi) delete[]Ttkvi; Ttkvi = new double[k];
-			if (Tkvi) delete[]Tkvi; Tkvi = new double[k];
-			if (Aakvi) delete[]Aakvi; Aakvi = new double[k];
-			if (Atkvi) delete[]Atkvi; Atkvi = new double[k];
-			if (Akvi) delete[]Akvi; Akvi = new double[k];
-			if ((!Takvi) || (!Ttkvi) || (!Tkvi) || (!Aakvi) || (!Atkvi) || (!Akvi)) { cout << snmk << endl; j = getchar(); exit(1); }
-			k = kost; for (j = 0; j < k; j++) {
-				Takvi[j] = -alphakvi[j] * htm; Takvi[j] = exp(Takvi[j]); Aakvi[j] = 1e0 - Takvi[j] - Rakvi[j];
-				if (Aakvi[j] < 0.0) { Aakvi[j] = alphakvi[j] * htm; Takvi[j] = 1e0 - Rakvi[j] - Aakvi[j]; }
-				Atkvi[j] = Aakvi[j]; Ttkvi[j] = Takvi[j]; Akvi[j] = Aakvi[j]; Tkvi[j] = Takvi[j]; }
-			k = kost; mauk = izmRTAkvi(te, k, 1, Rkvi, Tkvi, Akvi, Rakvi, Takvi, Aakvi, 0);
-			r = 6; mauk[r] = Rtkvi; r++; mauk[r] = Ttkvi; r++; mauk[r] = Atkvi; }
-		else if (c == 1) { r = 1; mauk = new double*[r]; if (!mauk) { cout << snmk << endl; j = getchar(); exit(1); } j=0; mauk[j] = te; } }
-	else if (v == 1) { //cout << "v = " << v << endl;
-		te = kopokvi(0.0, 0.0, 1, ti, kost, c, htm, hvo, w, alphakvi); r = 1;
-		mauk = new double*[r]; if (!mauk) { cout << snmk << endl; j = getchar(); exit(1); } j=0; mauk[j] = te; }
-	j=0; if (!u) mauk[j] = te; return mauk; }
-double *kopokvi(double ta, double tb, int vyb, double tl, int kost, int vyte, double htk, double hvo, int w, double *al)
-{ 	int k, q = 100, j, r, f;
-	double t0 = 2e1, te = tek0 + t0, dte = 1e0, *p=NULL, e = 1e-3, t, a1, a2, t1, t2;
-	char *s = new char[q]; KoePog *kp = new KoePog, *ne=NULL, *roo=NULL, *pre=NULL;
-	if ((!kp) || (!s)) { cout << snmk << endl; k = getchar(); exit(1); } for (j = 0; j < q; j++) s[j] = '\0';
-	ifstream fin; fin.open(sfatk); if (!fin.is_open()) { cout << sfnok << endl; k = getchar(); exit(1); }
-	roo = kp; k = 0; while (!fin.eof()) {
-		fin.getline(s, q, '\n'); ne = new KoePog; if (!ne) { cout << snmk << endl; j = getchar(); exit(1); }
-		kp->alp = atof(s)*dkoalk*dkospk; kp->tem = te; kp->nex = ne; pre = kp; kp = ne; k++; te = te + dte; kp->nex = NULL;
-	}
-	if (ta>templak) ta=templak; if (tb>templak) tb=templak;
-	delete[]ne; kp = NULL; pre->nex = kp; fin.close(); delete[]s; r = k;
-	if ((!vyb) || (vyb == 2)) {
-		f = 2; double *xi = new double[kost], *teks = new double[kost], *koe = new double[f], knat;
-		if ((!teks) || (!koe) || (!xi)) { cout << snmk << endl; k = getchar(); exit(1); }
-		teks = oprRasTemNachkvi(cemk, dmkok, teks, koe, kost, xi, htk, hvo, hkkvi, ta, tb, w);
-		for (k = 0; k < kost; k++) {
-			kp = roo->nex; pre = roo; j = 0; t = teks[k];
-			while ((kp) && (j<r)) {
-				if (kp->tem>t) {
-					a1 = pre->alp; a2 = kp->alp;
-					t1 = pre->tem; t2 = kp->tem; knat = (a2 - a1) / (t2 - t1); 
-					al[k] = a1 + knat*(t - t1); break;	}
-				else { pre = kp; kp = kp->nex; } j++;	} } delete[]xi; delete[]koe;
-		if (vyb == 2) { p = al; delete[]teks; }
-		else p = teks; }
-	else if (vyb == 1) {
-		kp = roo->nex; j = 0; pre = roo; t = 0.0;
-		while ((kp) && (j<r)) {
-			if (kp->tem>tl) {
-				a1 = pre->alp; a2 = kp->alp; t1 = pre->tem; t2 = kp->tem;
-				t = a1 + (a2 - a1)*(tl - t1) / (t2 - t1); break; }
-			else { pre = kp; kp = kp->nex; } j++; }
-		j = 1; p = new double[j]; j=0; if (p) p[j] = t; else { cout << snmk << endl; j = getchar(); exit(1); } }
-	kp = roo; while (kp) { ne = kp->nex; delete kp; kp = ne; } //Ã³Ã¤Ã Ã«Ã¥Ã­Ã¨Ã¥ Ã±Ã¯Ã¨Ã±ÃªÃ 
-	return p; }
-double **izmRTAkvi(double *tere, int kost, int izm, double *Ra, double *Ta, double *Aa, double *Rb, double *Tb, double *Ab, int v) //izm = 0 - Ã­Ã¥Ã² Ã¨Ã§Ã¬Ã¥Ã­Ã¥Ã­Ã¨Ã©, izm - Ã³Ã·Ã¨Ã²Ã»Ã¢Ã Ã¾Ã²Ã±Ã¿ Ã¨Ã§Ã¬Ã¥Ã­Ã¥Ã­Ã¨Ã¿ //Ã¯Ã®Ã¨Ã±Ãª Ã¨Ã§Ã¬Ã¥Ã­Ã¥Ã­Ã¨Ã¿ Ã±Ã²Ã¥Ã¯Ã¥Ã­Ã¨ Ã·Ã¥Ã°Ã­Ã®Ã²Ã» Ã¨Ã«Ã¨ Ã¡Ã¥Ã§Ã°Ã Ã§Ã¬Ã¥Ã°Ã­Ã®Ã£Ã® ÃªÃ®Ã½Ã´Ã´Ã¨Ã¶Ã¨Ã¥Ã­Ã²Ã  Ã¯Ã®Ã£Ã«Ã®Ã¹Ã¥Ã­Ã¨Ã¿
-{	double **mu, ko, dkosck; int k, rt = dmkoosck;
-	for (k = 0; k < kost; k++) {
-		ko = opredKTPTKTochSha(kusck, tkusck, tere[k], rt);
-		dkosck = opredKTPTKTochSha(dkosckm, dkosckt, tere[k], dkosckl);
-		if ((ko<0.0) || (ko>1e0) || (dkosck<0.0) || (dkosck>1e0) || (!izm)) { dkosck = 1e0; ko = 1e0; }
-		Aa[k] = Aa[k] * ko*dkosck; Ta[k] = 1e0 - Aa[k] - Ra[k]; Tb[k] = Ta[k]; Ab[k] = Aa[k]; }
-	mu = chaRTAkvi(kost, Ra, Ta, Aa, Rb, Tb, Ab, v);
-	return mu; }
-double **chaRTAkvi(int kost, double *Ra, double *Ta, double *Aa, double *Rb, double *Tb, double *Ab, int v)
-{
-	int f = 9, k = kost; double *tmp = new double[k], **mu = new double*[f]; 
-	if ((!tmp) || (!mu)) { cout << snmk << endl; k = getchar(); exit(1); }
-	for (k = 0; k < kost; k++) { if (Ta[k] * Ra[k] >= 1e0) v = 3; if (v == 3) { Ab[k] = Aa[k]; Rb[k] = Ra[k]; Tb[k] = Ta[k]; } }
-	if (v < 3) {
-		for (k = 0; k < kost; k++) {
-			Ab[k] = (1e0 - Ta[k] + Ra[k] * Ta[k] - Ra[k]); Ab[k] = Ab[k] / (1e0 - Ta[k] * Ra[k]);
-			tmp[k] = pow((1e0 - Ra[k])*Ta[k], 2e0)*Ra[k] / (1e0 - pow(Ra[k] * Ta[k], 2e0)) + Ra[k]; Rb[k] = tmp[k];
-			Tb[k] = pow(1e0 - Ra[k], 2e0)*Ta[k] / (1e0 - pow(Ra[k] * Ta[k], 2e0)); } }
-	delete[]tmp; k = 0; mu[k] = Ra; k++; mu[k] = Ta; k++; mu[k] = Aa; k++; 
-	mu[k] = Rb; k++; mu[k] = Tb; k++; mu[k] = Ab; k++; return mu; }
-double *oprRasTemNachkvi(int ce, int cee, double *teks, double *koe, int kost, double *xi, double htch, double hvozd, double hkokvi, double a, double b, int w)
-{ 	double e = tocraskvi, hkx = 0.0, ht = 0.0; int k, j;
-	if (!w) {
-		k = 1; for (j = 0; j < ce; j++) if ((tgork[j] < e) || (tholk[j] < e) || (qobk[j] < e)) { k = 0; break; }
-		if (!k) opredtemphckvi(ektpk, etek, tgork, tholk, qobk, ce, cee, y0kvi);
-		hkx = hkokvi; koe[0] = (tholk[vtk] - tgork[vtk]) / y0kvi; 
-		koe[1] = tgork[vtk]; tmak = tgork[vtk]; tmik = tholk[vtk]; }
-	else if (w == 1) { hkx = y0kvi / 2e0; koe[0] = a; koe[1] = b; tmak = b; tmik = b - a*y0kvi; }
-	xi[0] = hkx + htch / 2e0; ht = hvozd + htch;
-	for (k = 1; k < kost; k++) xi[k] = xi[k - 1] + ht; //Ã¬Ã Ã±Ã±Ã¨Ã¢ Ã±Ã¥Ã°Ã¥Ã¤Ã¨Ã­ ÃªÃ Ã¦Ã¤Ã®Ã© Ã¨Ã§ Ã±Ã²Ã¥Ã­Ã®Ãª Ã¯Ã® Ã²Ã®Ã«Ã¹Ã¨Ã­Ã¥
-	for (k = 0; k < kost; k++) teks[k] = koe[0] * xi[k] + koe[1]; //for (k=0; k<kost; k++) cout << "k = " << k << "\txk = " << xi[k] << "\ttex = " << teks[k] << endl; //Ã«Ã¨Ã­Ã¥Ã Ã°Ã¨Ã§Ã Ã¶Ã¨Ã¿ Ã¯Ã®Ã«Ã¿ Ã²Ã¥Ã¬Ã¯Ã¥Ã°Ã Ã²Ã³Ã°
-	qobkvi = opredKTPTKTochSha(qobk, etek, (teks[0] + teks[kost - 1]) / 2e0, ce); 
-	if (qobkvi < 0.0) qobkvi = 0.0; return teks; }
-void opredtemphckvi(double *efktpv, double *eftev, double *tgv, double *thv, double *qon, int dlma, int n, double h) //n=3 - Ã¤Ã«Ã¨Ã­Ã  Ã¬Ã Ã±Ã±Ã¨Ã¢Ã  ÃªÃ®Ã½Ã´Ã´Ã¨Ã¶Ã¨Ã¥Ã­Ã²Ã®Ã¢ Ã¯Ã°Ã¨Ã¡Ã«Ã¨Ã¦Ã Ã¾Ã¹Ã¥Ã£Ã® Ã¬Ã­Ã®Ã£Ã®Ã·Ã«Ã¥Ã­Ã , tgv - Ã²Ã¥Ã¬Ã¯Ã¥Ã°Ã Ã²Ã³Ã°Ã  Ã£Ã®Ã°Ã¿Ã·Ã¥Ã© Ã±Ã²Ã¥Ã­ÃªÃ¨, thv - Ã²Ã¥Ã¬Ã¯Ã¥Ã°Ã Ã²Ã³Ã°Ã  ÃµÃ®Ã«Ã®Ã¤Ã­Ã®Ã© Ã±Ã²Ã¥Ã­ÃªÃ¨, dlma - Ã¤Ã«Ã¨Ã­Ã  Ã¬Ã Ã±Ã±Ã¨Ã¢Ã  ÃÃŠÃ’Ã
-{ 	int k = 0, j; double *koeq = new double[n], *kho = new double[n], *kgo = new double[n];
-	double *tsv = new double[n], t = tek0, ts, g, p, hf = 1e0, r, s;
-	if ((!koeq) || (!kho) || (!kgo) || (!tsv)) { cout << snmk << endl; j = getchar(); exit(1); }
-	for (k = 0; k < n; k++) tsv[k] = (tgv[k] + thv[k]) / 2e0;
-	koeq = koefPribSha(qon, tsv, n, koeq);
-	kgo = koefPribSha(tgv, tsv, n, kgo);
-	kho = koefPribSha(thv, tsv, n, kho);
-	for (k = 0; k < dlma; k++) {
-		ts = eftev[k];
-		g = 0.0; p = 0.0; 
-		for (j = 0; j < n; j++) { g = g + pow(ts, p)*koeq[j]; p = p + hf; } 
-		if (g<0.0) g = 0.0; if (qobk) qobk[k] = g;
-		p = efktpv[k]; 
-		if (fabs(p)>0.0) { g = fabs(g*h / p / 2e0); tgork[k] = eftev[k] + g; tholk[k] = eftev[k] - g; }
-		else {
-			r = 0.0; s = 0.0; for (j = 0; j < n; j++) { r = r + pow(ts, s)*kgo[j]; s = s + hf; } 
-			if (r < 0.0) r = 0.0; if (tgork) tgork[k] = r;
-			r = 0.0; s = 0.0; for (j = 0; j < n; j++) { r = r + pow(ts, s)*kho[j]; s = s + hf; } 
-			if (r < 0.0) r = 0.0; if (tholk) tholk[k] = r; } }
-delete[]tsv; delete[]koeq; delete[]kho; delete[]kgo; }
-double *zadrktkvi(int zf, int kost, double d, int vyte, double htk, double hvo, int prod, int vy, double tc, int c, int u, double *rta)
-{ 	int j; double **mu = RaschRTAkvi(kost, htk, 0.0, 0.0, 1, vyte, hvo, 0, tc, 1, 0, 0), *tt = mu[0], *te = new double[kost];
-	if (!te) { cout << snmk << endl; j = getchar(); exit(1); }
-	else for (j = 0; j < kost; j++) te[j] = tt[j];
-	if (!u) {
-		int k = 0, kst, q = 0, m = 4, b;
-		double *prs = new double[m*kost*kost], *pr = new double[m], Er;
-		if ((!prs) || (!pr)) { cout << snmk << endl; k = getchar(); exit(1); }
-		for (k = 0; k < (m*kost*kost); k++) prs[k] = 0.0;
-		q = 0; for (kst = 1; kst <= kost; kst++)
-		{ 	for (b = 0; b < m; b++) pr[b] = 0.0;
-			for (k = 1; k <= kost; k++) {
-				pr = izstNkvi(k, kst, m, kost);
-				for (b = 0; b < m; b++) prs[q + b] = pr[b]; q = q + m; } }
-		if (prod == 1) Er = opredLuchSostkvi(prs, te, q, zf, vyte);
-		delete[]pr; delete[]te; delete[]tt; delete[]mu; return prs; }
-	else { delete[]tt; delete[]mu; return te; } }
-double *izstNkvi(int izst, int kst, int l, int ocs)
-{ 	int k; double *o;
-	if (abs(izst - kst) <= N) 
-		o = podschchieleSha(izst, kst, ocs, Rkvi, Tkvi);
-	else {
-		o = new double[l]; if (!o) { cout << snmk << endl; k = getchar(); exit(1); }
-		for (k = 0; k < l; k++) o[k] = 0.0; }
-	return o; }
 double opredLuchSostkvi(double *prot, double *Tsr, int le, int zf, int vyte)
 {
 	int k = 0, j = 0, q = 0, m = 0, l = 3, mma = 30000, mm = 0, mt = 0, vy = 9, idr=3;
@@ -602,37 +453,35 @@ double opredLuchSostkvi(double *prot, double *Tsr, int le, int zf, int vyte)
 double KorrZnachVozdProskvi(double hps, double ksf, double por, int vy)
 {	int j = 0, k = 1000; double pa = 1e-2, pb = 1e0, *po, pc, ra = fabs(pa - pb), e = tocraskvi, hf = 1e0;
 	double fa, fb, fc, ta, tb, tc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	while ((ra > e) && (j < k)) { //Ã¯Ã®Ã¤Ã²Ã¿Ã£Ã¨Ã¢Ã Ã¥Ã¬ Ã¯Ã®Ã°Ã¨Ã±Ã²Ã®Ã±Ã²Ã¼ Ãª Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¾, ÃªÃ®Ã²Ã®Ã°Ã®Ã¥ Ã§Ã Ã¤Ã Ã«Ã¨ Ã¨Ã§Ã­Ã Ã·Ã Ã«Ã¼Ã­Ã®, Ã¢Ã® Ã¢Ã°Ã¥Ã¬Ã¿ Ã¯Ã®Ã¤Ã±Ã²Ã°Ã®Ã©ÃªÃ¨ ÃÃŠÃ’Ã
+	while ((ra > e) && (j < k)) { //ïîäòÿãèâàåì ïîðèñòîñòü ê çíà÷åíèþ, êîòîðîå çàäàëè èçíà÷àëüíî, âî âðåìÿ ïîäñòðîéêè ÝÊÒÏ
 		pc = (pa + pb) / 2e0;
 		kc = hps*pc / por;
-		po = oprEffDoliTepPerenkvi(kc, ksf, pc); tc = po[0]; delete[]po; //Ã¯Ã°Ã¨ 373 ÃŠ
+		po = oprEffDoliTepPerenkvi(kc, ksf, pc); tc = po[0]; delete[]po; //ïðè 373 Ê
 		tcc = kc*(hf - pc) / pc;
 		fc = (hf - tc)*kc / (kc + tcc) - por;
 		ka = hps*pa / por;
-		po = oprEffDoliTepPerenkvi(ka, ksf, pa); ta = po[0]; delete[]po; //Ã®Ã¯Ã°Ã¥Ã¤Ã¥Ã«Ã¿Ã¥Ã¬ Ã¤Ã®Ã«Ã¾ Ã¯Ã«Ã®Ã¹Ã Ã¤Ã¨ Ã±Ã¥Ã·Ã¥Ã­Ã¨Ã¿ Ã¯Ã¥Ã°Ã¥Ã¬Ã»Ã·ÃªÃ¨
+		po = oprEffDoliTepPerenkvi(ka, ksf, pa); ta = po[0]; delete[]po; //îïðåäåëÿåì äîëþ ïëîùàäè ñå÷åíèÿ ïåðåìû÷êè
 		tca = ka*(hf - pa) / pa;
 		fa = (hf - ta)*ka / (ka + tca) - por;
 		kb = hps*pb / por;
-		po = oprEffDoliTepPerenkvi(kb, ksf, pb); tb = po[0]; delete[]po; //Ã·Ã¥Ã°Ã¥Ã§ Ã¯Ã¥Ã°Ã¥Ã¬Ã»Ã·ÃªÃ³ Ã²Ã¥Ã¯Ã«Ã® Ã°Ã Ã±Ã¯Ã°Ã®Ã±Ã²Ã°Ã Ã­Ã¿Ã¥Ã²Ã±Ã¿ Ã·Ã¨Ã±Ã²Ã®Ã© Ã²Ã¥Ã¯Ã«Ã®Ã¯Ã°Ã®Ã¢Ã®Ã¤Ã­Ã®Ã±Ã²Ã¼Ã¾
+		po = oprEffDoliTepPerenkvi(kb, ksf, pb); tb = po[0]; delete[]po; //÷åðåç ïåðåìû÷êó òåïëî ðàñïðîñòðàíÿåòñÿ ÷èñòîé òåïëîïðîâîäíîñòüþ
 		tcb = kb*(hf - pb) / pb;
 		fb = (hf - tb)*kb / (kb + tcb) - por;
 		if ((fc*fb > 0.0) && (fa*fc<0.0)) pb = pc; if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
 		j++; ra = fabs(pa - pb); }
 	dpctk = tc; //cout << "Dol Plo CTP = " << tc << endl;
-	if (!vy) return kc; //Ã±ÃªÃ®Ã°Ã°Ã¥ÃªÃ²Ã¨Ã°Ã®Ã¢Ã Ã­Ã­Ã®Ã¥ Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¥ Ã²Ã®Ã«Ã¹Ã¨Ã­Ã» Ã¢Ã®Ã§Ã¤Ã³Ã¸Ã­Ã®Ã© Ã¯Ã°Ã®Ã±Ã«Ã®Ã©ÃªÃ¨ (Ã°Ã Ã§Ã¬Ã¥Ã° Ã¯Ã®Ã°Ã»), ÃªÃ®Ã£Ã¤Ã  Ã¢Ã¢Ã¥Ã«Ã¨ Ã¯Ã¥Ã°Ã¥Ã¬Ã»Ã·ÃªÃ³
+	if (!vy) return kc; //ñêîððåêòèðîâàííîå çíà÷åíèå òîëùèíû âîçäóøíîé ïðîñëîéêè (ðàçìåð ïîðû), êîãäà ââåëè ïåðåìû÷êó
 	else if (vy == 1) return tc;
-} //Ã¤Ã®Ã«Ã¿ Ã¯Ã«Ã®Ã¹Ã Ã¤Ã¨, Ã·Ã¥Ã°Ã¥Ã§ ÃªÃ®Ã²Ã®Ã°Ã³Ã¾ Ã¯Ã°Ã®Ã¨Ã±ÃµÃ®Ã¤Ã¨Ã² Ã¯Ã¥Ã°Ã¥Ã­Ã®Ã± Ã²Ã¥Ã¯Ã«Ã  Ã·Ã¨Ã±Ã²Ã®Ã© Ã²Ã¥Ã¯Ã«Ã®Ã¯Ã°Ã®Ã¢Ã®Ã¤Ã­Ã®Ã±Ã²Ã¼Ã¾
+} //äîëÿ ïëîùàäè, ÷åðåç êîòîðóþ ïðîèñõîäèò ïåðåíîñ òåïëà ÷èñòîé òåïëîïðîâîäíîñòüþ
 double *oprEffDoliTepPerenkvi(double ko, double d, double por)
-{ 	int k, j, f, kost = ks, ksu = 2 * ks; double hvozd = ko, htch, hf = 1e0, e = tocraskvi;
+{ 	int k, j, f=cemdu, kost = ks, ksu = 2 * ks; double hvozd = ko, htch, hf = 1e0, e = tocraskvi;
 	ecktpkvi = new double[kost]; if (!ecktpkvi) { cout << snmk << endl; k = getchar(); exit(1); }
-	double *tepo = new double[ksu], *dol = new double[cemk], r, p, sa, sb, sc, t, fa, fb, fc;
-	if ((!tepo) || (!dol)) { cout << snmk << endl; k = getchar(); exit(1); }
+	double *tepo = new double[ksu], *dol = new double[cemk], **mu=new double*[f], r, p, sa, sb, sc, t, fa, fb, fc;
+	if ((!tepo) || (!dol) || (!mu)) { cout << snmk << endl; k = getchar(); exit(1); }
 	for (j = 0; j < ksu; j++) tepo[j] = 0.0;
 	hvozd = ko; htch = hvozd*(hf - por) / por;
-	k = 1; for (j = 0; j < cemk; j++) if (qobk[j] < e) k = 0;
-	if (!k) opredtemphckvi(ektpk, etek, tgork, tholk, qobk, cemk, dmkok, y0kvi); //cout << "hvoz = " << hvozd << "\tht = " << htch << endl;
-	for (j = 0; j < cemk; j++) { //Ã®Ã¯Ã°Ã¥Ã¤Ã¥Ã«Ã¿Ã¥Ã¬ ÃÃŠÃ’Ã Ã¬Ã­Ã®Ã£Ã®Ã±Ã«Ã®Ã©Ã­Ã®Ã© Ã±Ã²Ã¥Ã­ÃªÃ¨
-		tepo = opredTempStenShaFragm(tepo, 2 * kost, ktpvokvi, vtekvi, etek, kttkk, cemk, dmkvokvi, htch, hvozd, qobk[j], etek[j], -hf); //Ã¢ Ã±Ã¥Ã°Ã¥Ã¤Ã¨Ã­Ã¥ Ã±Ã«Ã®Ã¿
+	for (j = 0; j < cemk; j++) { //îïðåäåëÿåì ÝÊÒÏ ìíîãîñëîéíîé ñòåíêè
+		tepo = opredTempStenShaFragm(tepo, 2 * kost, ktpvokvi, vtekvi, etek, kttkk, cemk, dmkvokvi, htch, hvozd, qobk[j], etek[j], -hf); //â ñåðåäèíå ñëîÿ
 		r = 0.0; for (k = 0; k < ksu; k++) for (f = 0; f<ksu; f++) { p = tepo[k] - tepo[f]; if (p>r) r = p; }
 		p = hvozd*(d - hf) + htch*d; r = r / p; t = qobk[j] / r; ecktpkvi[j] = t;
 	} //for (j=0; j<cemi; j++) cout << "SKTPTK ( " << j << " ) = " << ecktpitom[j] << endl;
@@ -640,19 +489,20 @@ double *oprEffDoliTepPerenkvi(double ko, double d, double por)
 	f = 1000; for (j = 0; j<cemk; j++)
 	{	sa = 0.0; sb = 1e0; k = 0;
 		do { sc = (sa + sb) / 2e0;
-			fa = kttkk[j] * sa + ecktpkvi[j] * (hf - sa) - ektpk[j]; //Ã½Ã´Ã´Ã¥ÃªÃ²Ã¨Ã¢Ã­Ã»Ã¥ ÃŠÃ’Ã Ã¬Ã­Ã®Ã£Ã®Ã±Ã«Ã®Ã©Ã­Ã®Ã© Ã±Ã²Ã¥Ã­ÃªÃ¨ Ã¨  Ã¯Ã¥Ã°Ã¥Ã¬Ã»Ã·ÃªÃ¨ Ã¤Ã®Ã«Ã¦Ã­Ã» Ã±Ã°Ã Ã¢Ã­Ã¿Ã²Ã¼Ã±Ã¿
-			fb = kttkk[j] * sb + ecktpkvi[j] * (hf - sb) - ektpk[j]; //Ã·Ã²Ã®Ã¡Ã» Ã­Ã Ã©Ã²Ã¨ Ã®Ã²Ã­Ã®Ã±Ã¨Ã²Ã¥Ã«Ã¼Ã­Ã»Ã¥ Ã¤Ã®Ã«Ã¨ Ã¯Ã«Ã®Ã¹Ã Ã¤Ã¥Ã© Ã±Ã¥Ã·Ã¥Ã­Ã¨Ã¿ Ã¯Ã¥Ã°Ã¥Ã­Ã®Ã±Ã  Ã®Ã¡Ã¹Ã¥Ã© ÃÃ’Ã
+			fa = kttkk[j] * sa + ecktpkvi[j] * (hf - sa) - ektpk[j]; //ýôôåêòèâíûå ÊÒÏ ìíîãîñëîéíîé ñòåíêè è  ïåðåìû÷êè äîëæíû ñðàâíÿòüñÿ
+			fb = kttkk[j] * sb + ecktpkvi[j] * (hf - sb) - ektpk[j]; //÷òîáû íàéòè îòíîñèòåëüíûå äîëè ïëîùàäåé ñå÷åíèÿ ïåðåíîñà îáùåé ÏÒÏ
 			fc = kttkk[j] * sc + ecktpkvi[j] * (hf - sc) - ektpk[j];
 			if ((fc*fb>0.0) && (fa*fc<0.0)) sb = sc;
 			if ((fc*fa>0.0) && (fb*fc<0.0)) sa = sc;
 			r = fabs(sa - sb); k++;
 		} while ((r>e) && (k<f));
 		dol[j] = sc; }
+	if (mu) delete[]mu;
 	return dol; }
 double KorrZnachVozdProskviKon(double hps, double ksf, double por)
 { 	int j = 0, k = 1000; double pa = 1e-3, pb = 1e0, pc, ra = fabs(pa - pb);
 	double fa, fb, fc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc, e = tocraskvi; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	while ((ra>e) && (j < k)) { //Ã¯Ã®Ã¤Ã²Ã¿Ã£Ã¨Ã¢Ã Ã¥Ã¬ Ã¯Ã®Ã°Ã¨Ã±Ã²Ã®Ã±Ã²Ã¼ Ãª Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¾, ÃªÃ®Ã²Ã®Ã°Ã®Ã¥ Ã§Ã Ã¤Ã Ã«Ã¨ Ã¨Ã§Ã­Ã Ã·Ã Ã«Ã¼Ã­Ã®, Ã¢Ã® Ã¢Ã°Ã¥Ã¬Ã¿ Ã¯Ã®Ã¤Ã±Ã²Ã°Ã®Ã©ÃªÃ¨ ÃÃŠÃ’Ã
+	while ((ra>e) && (j < k)) { //ïîäòÿãèâàåì ïîðèñòîñòü ê çíà÷åíèþ, êîòîðîå çàäàëè èçíà÷àëüíî, âî âðåìÿ ïîäñòðîéêè ÝÊÒÏ
 		pc = (pa + pb) / 2e0;
 		kc = hps*pc / por;
 		tcc = kc*(1e0 - pc) / pc;
@@ -666,40 +516,40 @@ double KorrZnachVozdProskviKon(double hps, double ksf, double por)
 		if ((fc*fb > 0.0) && (fa*fc<0.0)) pb = pc;
 		if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
 		j++; ra = fabs(pa - pb);
-	} //Ã±ÃªÃ®Ã°Ã°Ã¥ÃªÃ²Ã¨Ã°Ã®Ã¢Ã Ã­Ã­Ã®Ã¥ Ã§Ã­Ã Ã·Ã¥Ã­Ã¨Ã¥ Ã²Ã®Ã«Ã¹Ã¨Ã­Ã» Ã¢Ã®Ã§Ã¤Ã³Ã¸Ã­Ã®Ã© Ã¯Ã°Ã®Ã±Ã«Ã®Ã©ÃªÃ¨ (Ã°Ã Ã§Ã¬Ã¥Ã° Ã¯Ã®Ã°Ã»), ÃªÃ®Ã£Ã¤Ã  Ã¢Ã¢Ã¥Ã«Ã¨ Ã¯Ã¥Ã°Ã¥Ã¬Ã»Ã·ÃªÃ³
+	} //ñêîððåêòèðîâàííîå çíà÷åíèå òîëùèíû âîçäóøíîé ïðîñëîéêè (ðàçìåð ïîðû), êîãäà ââåëè ïåðåìû÷êó
 	return kc; }
 void oprsodoxkvi()
 { int k=0; double wal, wsi, wmg, salok, smgok, ssiok, ko=1e-2;
 double tnd = 6e2, dtd = 2e2, tm; dkosckt[0] = tnd; 
 	for (k = 1; k < dkosckl; k++) dkosckt[k] = dkosckt[k - 1] + dtd;
 	if (vybkvi == 4) {
-		salok = 33e0; smgok = 15e0; ssiok = 52e0; porkvi = porkvi400; 
+		salok = 33e0; smgok = 15e0; ssiok = 52e0; 
 		wal = 25e0; wsi = 11e0; wmg = 4e1;
-	} //ÃŠÃ‚Ãˆ-400
+	} //ÊÂÈ-400
 	else if (vybkvi == 5) {
 		salok = 34e0; smgok = 11e0; ssiok = 54e0;
-		wal = 28e0; wmg = 8e0; wsi = 44e0; porkvi = porkvi500;
-	} //ÃŠÃ‚Ãˆ-500
+		wal = 28e0; wmg = 8e0; wsi = 44e0; 
+	} //ÊÂÈ-500
 	else if (vybkvi == 6) {
 		salok = 36e0; smgok = 9e0; ssiok = 55e0;
-		wal = 3e1; wsi = 7e0; wmg = 45e0; porkvi = porkvi600;
-	} //ÃŠÃ‚Ãˆ-600
+		wal = 3e1; wsi = 7e0; wmg = 45e0; 
+	} //ÊÂÈ-600
 	else if (vybkvi == 7) {
 		salok = 37e0; smgok = 8e0; ssiok = 55e0; 
-		wal = 31e0; wmg = 6e0; wsi = 45e0; porkvi = porkvi700;
-	} //ÃŠÃ‚Ãˆ-700
+		wal = 31e0; wmg = 6e0; wsi = 45e0; 
+	} //ÊÂÈ-700
 	else if (vybkvi == 8) {
 		salok = 38e0; smgok = 7e0; ssiok = 55e0; 
-		wal = 3e1; wmg = 5e0; wsi = 45e0; porkvi = porkvi800;
-	} //ÃŠÃ‚Ãˆ-800
+		wal = 3e1; wmg = 5e0; wsi = 45e0; 
+	} //ÊÂÈ-800
 	else if (vybkvi == 9) {
 		salok = 39e0; smgok = 6e0; ssiok = 55e0; 
-		wal = 32e0; wmg = 5e0; wsi = 45e0; porkvi = porkvi900;
-	} //ÃŠÃ‚Ãˆ-900
+		wal = 32e0; wmg = 5e0; wsi = 45e0; 
+	} //ÊÂÈ-900
 	else if (vybkvi == 10) {
 		salok = 39e0; smgok = 6e0; ssiok = 55e0; 
-		wal = 32e0; wmg = 4e0; wsi = 45e0; porkvi = porkvi1000;
-	} //ÃŠÃ‚Ãˆ-1000
+		wal = 32e0; wmg = 4e0; wsi = 45e0; 
+	} //ÊÂÈ-1000
 	else { cout << "Net takoy marki KVI!" << endl; k = getchar(); exit(1); }
 	salok = salok*ko; smgok = smgok*ko; ssiok = ssiok*ko;
 	wal = wal*ko; wsi = wsi*ko; wmg = wmg*ko;
@@ -709,6 +559,6 @@ double tnd = 6e2, dtd = 2e2, tm; dkosckt[0] = tnd;
 	for (k = 0; k < dkosckl; k++) {
 		tm = dkosckm[k]*ko; dkosckm[k] = 1e0 - tm; //cout << "dko = " <<dkosckm[k] << "\t";
 	}
-	sodoxkvi[0]=wal; sodoxkvi[1]=wsi; sodoxkvi[2]=wmg; 
-	sodoxkvi[3]=salok; sodoxkvi[4]=ssiok; sodoxkvi[5]=smgok; 
+	k=0; sodoxkvi[k]=wal; k++; sodoxkvi[k]=wsi; k++; sodoxkvi[k]=wmg; 
+	k++; sodoxkvi[k]=salok; k++; sodoxkvi[k]=ssiok; k++; sodoxkvi[k]=smgok; 
 }
