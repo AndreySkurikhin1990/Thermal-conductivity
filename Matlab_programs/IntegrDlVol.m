@@ -1,0 +1,27 @@
+function alsre = IntegrDlVol;
+%dlvo=[3000 2969.6 2947.8 2908.7 2847.8 2826.1 2782.6 2721.7 2691.3 2639.1 2500 2442.5 2436.7 2419.5 2400 2382.2 2322.9 2293.1 2250 2229.9 2206.9 2175.3 2125 2065.7 2062 2031.6 2005.6 2000 1972.4 1958.6 1936.2 1922.4 1905.2 1889.7 1862];
+%Tal=[40 50.8 60 64.6 66.7 71.5 74.4 76.8 80 81.2 81 80.8 80 79 77.4 78.3 79.4 77.4 72.9 75.5 65.7 60 49.5 44.5 44.2 47.4 48.6 48.2 40 30.1 20 9.3 7.5 5.2 4.6];
+%dob=201*(1e-6); 
+dlvo=dlvoi(); dlvo2=dlvoi2(); Tal=Trko(); Tal2=Trko2(); 
+ndlvo=length(dlvo);  ndlvo2=length(dlvo2); 
+mkbr=230.884; mv=1.6; tol=0.68; rokbr=2.75; rov=0.4; mkbr2=232.188; mv2=1.041; tol2=0.67; rov2=rov;
+vkbr=mkbr/(1e3*rokbr); vv=mv/(1e3*rov); vkbr2=mkbr2/(1e3*rokbr); vv2=mv2/(1e3*rov2);
+dlvo3=dlvoi3(); dlvo4=dlvoi4(); Tal3=Trko3(); Tal4=Trko4(); ndlvo3=length(dlvo3);  ndlvo4=length(dlvo4); 
+mkbr3=235.773; mv3=1.045; tol3=0.66; mkbr4=228.831; mv4=0.979; tol4=0.64; rov3=0.175; rov4=rov3;
+vkbr3=mkbr3/(1e3*rokbr); vv3=mv3/(1e3*rov3); vkbr4=mkbr4/(1e3*rokbr); vv4=mv4/(1e3*rov4); t0=273.15;
+xv=(vv/(vv+vkbr))*tol*1e3;xv2=(vv2/(vv2+vkbr2))*tol2*1e3;xv3=(vv3/(vv3+vkbr3))*tol3*1e3;xv4=(vv4/(vv4+vkbr4))*tol4*1e3;
+for k=1:ndlvo      dlvo(k)=(1e4/dlvo(k));         Tal(k)=-log(Tal(k))/xv; end; for k=1:ndlvo2     dlvo2(k)=(1e4/dlvo2(k));     Tal2(k)=-log(Tal2(k))/xv2;    end;  for k=1:ndlvo3     dlvo3(k)=(1e4/dlvo3(k));     Tal3(k)=-log(Tal3(k))/xv3; end; for k=1:ndlvo4     dlvo4(k)=(1e4/dlvo4(k));      Tal4(k)=-log(Tal4(k))/xv4; end;
+for k=1:ndlvo te1(k)=2898/dlvo(k)-t0; end; for k=1:ndlvo2 te2(k)=2898/dlvo2(k)-t0; end; for k=1:ndlvo3 te3(k)=2898/dlvo3(k)-t0; end; for k=1:ndlvo4 te4(k)=2898/dlvo4(k)-t0; end;
+j=1; for k=1:ndlvo if (te1(k)>0) if (te1(k)<1200) tem1(j)=te1(k); al1(j)=Tal(k); dlv1(j)=dlvo(k); j=j+1;  end; end; end; 
+j=1; for k=1:ndlvo2 if (te2(k)>0) if (te2(k)<1200) tem2(j)=te2(k); al2(j)=Tal2(k);  dlv2(j)=dlvo(k); j=j+1;  end; end; end;  
+j=1; for k=1:ndlvo3 if (te3(k)>0) if (te3(k)<1200) tem3(j)=te3(k); al3(j)=Tal3(k);  dlv3(j)=dlvo3(k); j=j+1;  end; end; end;  
+j=1; for k=1:ndlvo4 if (te4(k)>0) if (te4(k)<1200) tem4(j)=te4(k); al4(j)=Tal4(k);  dlv4(j)=dlvo4(k); j=j+1;  end; end; end; 
+ndlvo=length(dlv1); ndlvo2=length(dlv2); ndlvo3=length(dlv3); ndlvo4=length(dlv4);
+als=trapz(dlv1,al1)/(dlv1(ndlvo)-dlv1(1)); als2=trapz(dlv1,al2)/(dlv2(ndlvo2)-dlv2(1)); 
+als3=trapz(dlv3,al3)/(dlv3(ndlvo3)-dlv3(1)); als4=trapz(dlv4,al4)/(dlv4(ndlvo4)-dlv4(1));
+alsr(1)=trapz(dlv1,al1)/(dlv1(length(dlv1))-dlv1(1)); alsr(2)=trapz(dlv2,al2)/(dlv2(length(dlv2))-dlv2(1)); 
+alsr(3)=trapz(dlv3,al3)/(dlv3(length(dlv3))-dlv3(1)); alsr(4)=trapz(dlv4,al4)/(dlv4(length(dlv4))-dlv4(1));
+%p=plot(dlvo,Tal,'-b',dlvo2,Tal2,'-g',dlvo3,Tal3,'-m',dlvo4,Tal4,'-r');set(p,'LineWidth',2); hold on; grid on;xlabel({'Длина волны, мкм'}); ylabel({'Коэффициент поглощения, мкм-1'}); title({'График зависимости коэффициента поглощения от длины волны'});
+alsre=(alsr(3)+alsr(4))/2;
+IntegrDlVol=alsre;
+end
