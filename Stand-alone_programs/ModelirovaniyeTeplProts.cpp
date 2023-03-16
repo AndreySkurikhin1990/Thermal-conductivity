@@ -9,26 +9,26 @@
 #include <windows.h>
 #include <iostream>
 #include <time.h>
-/*#define vmivmf 0 //ГўГ»ГЎГ®Г° Г¬ГҐГІГ®Г¤Г  ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ© Г¤Г«Гї ГґГ°Г ГЄГ¶ГЁГЁ 2-0,7 Г¬Г¬: 0 - Г­ГҐГ±ГІГ Г¶ГЁГ®Г­Г Г°Г­Г»Г©, 1 - Г±ГІГ Г¶ГЁГ®Г­Г Г°Г­Г»Г©
-#define vyfv 0 //ГўГ»ГЎГ®Г° ГґГ°Г ГЄГ¶ГЁГЁ: 0 - ГґГ°Г ГЄГ¶ГЁГї 2-0,7 Г¬Г¬, 1 - ГґГ°Г ГЄГ¶ГЁГї 8-4 Г¬Г¬, 2 - ГґГ°Г ГЄГ¶ГЁГї 1,6-0,35 Г¬Г¬
-#define vyuv 1 //ГўГ»ГЎГ®Г° ГіГЄГ«Г Г¤ГЄГЁ: 1 - ГЇГ«Г®Г±ГЄГ®ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г Гї, 2 - ГўГҐГ°ГІГЁГЄГ Г«ГјГ­Г Гї
-#define vysv 0 //ГўГ»ГЎГ®Г° Г±Г®Г±ГІГ®ГїГ­ГЁГї: 0 - ГЁГ±ГµГ®Г¤Г­Г®ГҐ, 1 - ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г»Гµ ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ©, 2 - ГЇГ®Г±Г«ГҐ ГЇГ°Г®ГЄГ Г«ГЁГўГ Г­ГЁГї ГЇГ°ГЁ 1000 ГЈГ°Г Г¤ Г‘
+/*#define vmivmf 0 //выбор метода измерений для фракции 2-0,7 мм: 0 - нестационарный, 1 - стационарный
+#define vyfv 0 //выбор фракции: 0 - фракция 2-0,7 мм, 1 - фракция 8-4 мм, 2 - фракция 1,6-0,35 мм
+#define vyuv 1 //выбор укладки: 1 - плоскопараллельная, 2 - вертикальная
+#define vysv 0 //выбор состояния: 0 - исходное, 1 - после повторных измерений, 2 - после прокаливания при 1000 град С
 using namespace std;
-const int dso=12, dmko=4, isrp=0, vpkf=0, vpmf=0, cemdu=5, cemdum=2; //dmko - Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ  ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў
+const int dso=12, dmko=4, isrp=0, vpkf=0, vpmf=0, cemdu=5, cemdum=2; //dmko - длина массива коэффициентов
 const double ys0=3e1*1e-3, dete=1e2, te0=273.15, tnac=2e2+te0, templa=134.0*1e1+te0; 
 const double por207=66.35*1e-2, poris84=55.75*1e-2, porin84=81.53*1e-2;
 const double poro84=86.61*1e-2, poro16035=84.36*1e-2, por16035=83.97*1e-2;
 const double pori440=(8e1+82e0)*1e-2/2e0, pori620=(75e0+78e0)*1e-2/2e0, pori860=(65e0+68e0)*1e-2/2, pori1000=(62e0+65e0)*1e-2/2e0;
-const double porsha0=21.8*1e-2, porsha1=11.014*1e-2, porsha2=25.2*1e-2, porsha3=26.5*1e-2, porsha4=11.5*1e-2, porsha5=16.5*1e-2; //0 - ГђГ®ГіГ·ГЄГ , 1 - ГГЏГ„-41, 2 - ГГЃ-1 2-1, 3 - ГГ‚-1 1-1, 4 - ГГЏГ„, 5 - ГГЉГ“-32 3-1
+const double porsha0=21.8*1e-2, porsha1=11.014*1e-2, porsha2=25.2*1e-2, porsha3=26.5*1e-2, porsha4=11.5*1e-2, porsha5=16.5*1e-2; //0 - Роучка, 1 - ШПД-41, 2 - ШБ-1 2-1, 3 - ШВ-1 1-1, 4 - ШПД, 5 - ШКУ-32 3-1
 const double pork400=51.74*1e-2, pork500=52.07*1e-2, pork600=51.51*1e-2, pork700=39.75*1e-2;
 const double pork800=40.85*1e-2, pork900=39.37*1e-2, pork1000=36.07*1e-2;
 struct derevo {
-	int otre; //1 - Г®ГІГ°Г Г¦ГҐГ­ГЁГҐ ГЁГ«ГЁ 0 - ГЇГ°Г®ГЇГіГ±ГЄГ Г­ГЁГҐ
-	int ste; //Г­Г®Г¬ГҐГ° Г±ГІГҐГ­ГЄГЁ
-	int vis; //ГўГЁГ¤ГЁГ¬Г®Г±ГІГј: 1 - ГўГЁГ¤ГҐГ­, 0 - Г­ГҐГІ
-	int lev; //Г­Г®Г¬ГҐГ° ГіГ°Г®ГўГ­Гї
-	struct derevo *back; //ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г Г§Г Г¤
-	struct derevo *next; //ГіГЄГ Г§Г ГІГҐГ«Гј ГўГЇГҐГ°ГҐГ¤
+	int otre; //1 - отражение или 0 - пропускание
+	int ste; //номер стенки
+	int vis; //видимость: 1 - виден, 0 - нет
+	int lev; //номер уровня
+	struct derevo *back; //указатель назад
+	struct derevo *next; //указатель вперед
 };
 class KoePog { public: double alp, tem; KoePog *nex; };
 //----------------------------------------
@@ -46,8 +46,8 @@ double **opredtemphc(double *, double *, double *, double *, double *, int, int,
 double **vydelPol(double *, double *, double *, double *, double *, int, int, double **, int);
 double **opredTempHolGor(double *, double *, int, int, double, int, double **, int, double *, double *, int, double *, double *, double *);
 double **napMasEKTP(int, int, int, double *, int, double, int, int, int, double **, int, int);
-double **arrTem_Netzsch(double **); //Г¬Г Г±Г±ГЁГў ГІГҐГ¬ГЇГҐГ°Г ГІГіГ° - ГЅГЄГ±ГЇГҐГ°ГЁГ¬ГҐГ­ГІГ Г«ГјГ­Г»ГҐ Г¤Г Г­Г­Г»ГҐ Г­Г  Netzsch - ГµГ Г®ГІГЁГ·Г­Г Гї Г§Г Г±Г»ГЇГЄГ  ГґГ°Г ГЄГ¶ГЁГЁ 2-0,7 Г¬Г¬ (ГЁГ±ГµГ®Г¤Г­Г»Г©)
-double *arrKTP_Netzsch(); //Г¬Г Г±Г±ГЁГў ГЉГ’ГЏ ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
+double **arrTem_Netzsch(double **); //массив температур - экспериментальные данные на Netzsch - хаотичная засыпка фракции 2-0,7 мм (исходный)
+double *arrKTP_Netzsch(); //массив КТП вермикулита
 double *arrKTP_2020();
 double *arrTem1_2020();
 double **arrTem2_2020(double **);
@@ -80,25 +80,25 @@ double novNapMas(double tnach, int vyve, int vymave, int vmimfv, int vyfrve, int
 	snm=new char[dso]; if (!snm) { cout << "No memory"; k=getchar(); exit(1); } 
 	k=0; snm[k]='N'; k++; snm[k]='o'; k++; snm[k]='_'; k++; snm[k]='m'; k++; snm[k]='e'; k++; 
 	snm[k]='m';  k++; snm[k]='o'; k++; snm[k]='r'; k++; snm[k]='y'; k++; snm[k]='!'; k++; snm[k]='\0';
-	if (!vyve) //ГҐГ±Г«ГЁ ГўГ»ГЎГ°Г Г­ ГёГ Г¬Г®ГІ
+	if (!vyve) //если выбран шамот
 	{
 	if (!vymave) por=porsha0; else if (vymave==1) por=porsha1; else if (vymave==2) por=porsha2;
 	else if (vymave==3) por=porsha3; else if (vymave==4) por=porsha4; else if (vymave==5) por=porsha5;
 	}
-	else if (vyve==1) { //ГҐГ±Г«ГЁ ГўГ»ГЎГ°Г Г­ ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІ
-	if ((!vysv) || (vysv==1)) {  //ГЁГ±ГµГ®Г¤Г­Г»Г© ГЁГ«ГЁ ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г»Гµ ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ©
-	if (!vyfv) { if (!vpmf) por = por207; else if (vpmf==1) por=por16035; } //ГўГ»ГЎГ®Г° ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГЁ Г¬ГҐГ«ГЄГ®Г© ГґГ°Г ГЄГ¶ГЁГЁ
-	else if (vyfv==1) { if (!vpkf) por = poris84; else if (vpkf==1) por=porin84; } //ГўГ»ГЎГ®Г° ГЇГ®Г°ГЁГ±ГІГ®Г±ГІГЁ ГЄГ°ГіГЇГ­Г®Г© ГґГ°Г ГЄГ¶ГЁГЁ
+	else if (vyve==1) { //если выбран вермикулит
+	if ((!vysv) || (vysv==1)) {  //исходный или после повторных измерений
+	if (!vyfv) { if (!vpmf) por = por207; else if (vpmf==1) por=por16035; } //выбор пористости мелкой фракции
+	else if (vyfv==1) { if (!vpkf) por = poris84; else if (vpkf==1) por=porin84; } //выбор пористости крупной фракции
 	else if (vyfv==2) por = poro16035; }
-	if (vysv==2) { //ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
+	if (vysv==2) { //после обжига
 	if ((!vyfv) || (vyfv==2)) por=poro16035;
 	else if (vyfv==1) por=poro84; } 
 	}
-	else if (vyve==2) { //ГҐГ±Г«ГЁ ГўГ»ГЎГ°Г Г­ Г€Г’ГЋГЊ
+	else if (vyve==2) { //если выбран ИТОМ
 	if (!vymave) por=pori440; else if (vymave==1) por=pori620; 
 	else if (vymave==2) por=pori860; else if (vymave==3) por=pori1000;
 	}
-	else if (vyve==3) { //ГҐГ±Г«ГЁ ГўГ»ГЎГ°Г Г­ ГЉГ‚Г€
+	else if (vyve==3) { //если выбран КВИ
 	if (vymave==4) por=pork400; else if (vymave==5) por=pork500; 
 	else if (vymave==6) por=pork600; else if (vymave==7) por=pork700; 
 	else if (vymave==8) por=pork800; else if (vymave==9) por=pork900;
@@ -121,10 +121,10 @@ double **PoiskZavVelTem(int v, double **mu, int rmu, int n)
 	if ((!nvyfv) || (!nvysv) || (!nvmivmf) || (!nvyuv) || (!muv) || (!temhq) || (!temcq) || (!temvs) || (!tepv)) 
 	{ cout << snm << endl; k=getchar(); exit(1); }
 	for (k=0; k<n; k++) { temhq[k]=0.0; temcq[k]=0.0; temvs[k]=0.0; tepv[k]=0.0; }
-	k=0; nvyfv[k]=0; k++; nvyfv[k]=1; //ГґГ°Г ГЄГ¶ГЁГЁ ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
-	k=0; nvysv[k]=0; k++; nvysv[k]=1; k++; nvysv[k]=2; //Г±Г®Г±ГІГ®ГїГ­ГЁГї ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
-	k=0; nvmivmf[k]=1; k++; nvmivmf[k]=2; //Г±ГІГ Г¶ГЁГ®Г­Г Г°Г­Г»ГҐ Г¬ГҐГІГ®Г¤Г» ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ© - 2019 ГЁ 2020
-	k=0; nvyuv[k]=1; k++; nvyuv[k]=2; //ГіГЄГ«Г Г¤ГЄГ  ГўГҐГ°Г¬ГЁГЄГіГ«ГЁГІГ 
+	k=0; nvyfv[k]=0; k++; nvyfv[k]=1; //фракции вермикулита
+	k=0; nvysv[k]=0; k++; nvysv[k]=1; k++; nvysv[k]=2; //состояния вермикулита
+	k=0; nvmivmf[k]=1; k++; nvmivmf[k]=2; //стационарные методы измерений - 2019 и 2020
+	k=0; nvyuv[k]=1; k++; nvyuv[k]=2; //укладка вермикулита
 	for (kvf=0; kvf<nnvyfv; kvf++) {
 		vyfrve=nvyfv[kvf];
 		for (jvsv=0; jvsv<nnvysv; jvsv++) {
@@ -159,7 +159,7 @@ double **PoiskZavVelTem(int v, double **mu, int rmu, int n)
 	if (nvmivmf) delete[]nvmivmf; if (nvyuv) delete[]nvyuv; if (muv) delete[]muv;
 	if (k<=rmu) return mu;
 }
-double **opredtemphc(double *effktp, double *efftem, double *tgv, double *thv, double *qon, int dlma, int n, double h, double *qob, double *tgor, double *thol, double **mu) //n=3 - Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ  ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў ГЇГ°ГЁГЎГ«ГЁГ¦Г ГѕГ№ГҐГЈГ® Г¬Г­Г®ГЈГ®Г·Г«ГҐГ­Г , tgv - ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°Г  ГЈГ®Г°ГїГ·ГҐГ© Г±ГІГҐГ­ГЄГЁ, thv - ГІГҐГ¬ГЇГҐГ°Г ГІГіГ°Г  ГµГ®Г«Г®Г¤Г­Г®Г© Г±ГІГҐГ­ГЄГЁ, dlma - Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ  ГќГЉГ’ГЏ
+double **opredtemphc(double *effktp, double *efftem, double *tgv, double *thv, double *qon, int dlma, int n, double h, double *qob, double *tgor, double *thol, double **mu) //n=3 - длина массива коэффициентов приближающего многочлена, tgv - температура горячей стенки, thv - температура холодной стенки, dlma - длина массива ЭКТП
 {
 	int k=0, j=0; double *kq=new double[n], *kho=new double[n], *kgo=new double[n];
 	double *tesr=new double[n], ts=0.0, g=0.0, p=0.0, hf=1e0, r=0.0, s=0.0, tego=0.0, teho=0.0;
@@ -187,7 +187,7 @@ double **opredtemphc(double *effktp, double *efftem, double *tgv, double *thv, d
 	if (kho) delete[]kho; if (kgo) delete[]kgo;
 	k=0; mu[k]=tgor; k++; mu[k]=thol; k++; mu[k]=qob;
 }
-double **opredTempHolGor(double *ektp, double *ete, int n, int l, double h0, int v, double **mu, int rmu, double *temvs, double *qob, int ni, double *ktp, double *temvh, double *temvc) //Г¬Г®Г¤ГҐГ«ГЁГ°Г®ГўГ Г­ГЁГҐ ГЇГ°Г®Г¶ГҐГ±Г±Г  ГІГҐГЇГ«Г®Г®ГЎГ¬ГҐГ­Г  Гў Г®ГЎГ°Г Г§Г¶ГҐ
+double **opredTempHolGor(double *ektp, double *ete, int n, int l, double h0, int v, double **mu, int rmu, double *temvs, double *qob, int ni, double *ktp, double *temvh, double *temvc) //моделирование процесса теплообмена в образце
 {
 	int cemf=cemdu, k=0, j=1, w=0, rm=k; double del=1e0, g, p, *qon, *tena, nit=1e6, hf=1e0, *po=new double[j], nf=0.0;
 	double ep=1e-2, d=1e-3, Thna=ete[w], Thnac=0.0, *koeq=new double[l], ts, laef, dt=hf, **muv=new double*[cemf];
@@ -204,13 +204,13 @@ double **opredTempHolGor(double *ektp, double *ete, int n, int l, double h0, int
 			ts=ete[k]; g=0.0; p=g;
 			for (j=0; j<l; j++) { 
 				g=g+pow(ts, p)*koeq[j]; p=p+hf; } 
-			qob[k]=g; } //ГЇГ«Г®ГІГ­Г®Г±ГІГј ГІГҐГЇГ«Г®ГўГ®ГЈГ® ГЇГ®ГІГ®ГЄГ , ГЄГ®ГІГ®Г°ГіГѕ Г¬Г®Г¦ГҐГІ Г±Г®Г§Г¤Г ГІГј Г«Г ГЎГ®Г°Г ГІГ®Г°Г­Г Гї ГіГ±ГІГ Г­Г®ГўГЄГ  //for (k=0; k<n; k++) cout << "qob = " << qob[k] << "\tektp = " << ektp[k] << "\tte = " << ete[k] << endl; 
+			qob[k]=g; } //плотность теплового потока, которую может создать лабораторная установка //for (k=0; k<n; k++) cout << "qob = " << qob[k] << "\tektp = " << ektp[k] << "\tte = " << ete[k] << endl; 
 		if (koeq) delete[]koeq; for (k=0; k<cemf; k++) { po=muv[k]; delete[]po; } delete[]muv;
 		g=0.0; for (k=0; k<n; k++) {
 			if (qob[k]>0.0) {
 				laef=ektp[k]; p=0.0; Thnac=Thna+g*dt; del=hf; etem=ete[k];
 				while ((del>ep) && (p<nit)) {
-					thol=Thnac+p*d; //Tg - Г¬Г Г±Г±ГЁГў ГІГҐГ¬ГЇГҐГ°Г ГІГіГ° ГЈГ®Г°ГїГ·ГЁГµ Г±ГІГҐГ­Г®ГЄ, Th - Г¬Г Г±Г±ГЁГў ГІГҐГ¬ГЇГҐГ°Г ГІГіГ° ГµГ®Г«Г®Г¤Г­Г»Гµ Г±ГІГҐГ­Г®ГЄ
+					thol=Thnac+p*d; //Tg - массив температур горячих стенок, Th - массив температур холодных стенок
 					tgor=thol+qob[k]*h0/laef;
 					del=(2e0*etem-(thol+tgor));
 					p=p+hf; } 
@@ -251,7 +251,7 @@ double **napMasEKTP(int vyfrve, int vysove, int vymeizvemafr, double *te, int v,
 	double *koeft=NULL, *koefh=NULL, *koefc=NULL, *koefq=NULL, *koefs=NULL, **muv=NULL, s, t, r, *ma=NULL;
 	double *ktp=NULL, *temvs=NULL, *temvh=NULL, *temvc=NULL, *tepv=NULL, *vm=NULL;
 	//-------
-	if ((!vyfrve) || (vyfrve==2)) { //ГґГ°Г ГЄГ¶ГЁГї 2-0,7 Г¬Г¬ ГЁГ«ГЁ ГґГ°Г ГЄГ¶ГЁГї 1,6-0,35 Г¬Г¬
+	if ((!vyfrve) || (vyfrve==2)) { //фракция 2-0,7 мм или фракция 1,6-0,35 мм
 		th207=arrTemHigh207(); 
 		k=cemdum; muv=new double*[k]; if (!muv) { cout << snm << endl; k = getchar(); exit(1); }
 		muv=arrTemCold207(muv); k=0; po=muv[k]; k++; tc207=muv[k]; 
@@ -265,24 +265,24 @@ double **napMasEKTP(int vyfrve, int vysove, int vymeizvemafr, double *te, int v,
 		temvh[k]=th207[k]; temvc[k]=tc207[k]; tepv[k]=tp207[k]; }
 		for (k=0; k<n207; k++) { ktp[k]=fabs(temvh[k]-temvc[k])/h; tepv[k]=tepv[k]/F; ktp[k]=tepv[k]/ktp[k]; }
 		if (th207) delete[]th207; if (tp207) delete[]tp207; if (tc207) delete[]tc207; if (po) delete[]po; 
-			if (!vysove) { //ГЁГ±ГµГ®Г¤Г­Г»Г©
+			if (!vysove) { //исходный
 				if (muv) delete[]muv;
 				muv=new double*[cedu]; if (!muv) { cout << snm << endl; k=getchar(); exit(1); }
 				muv=oprkoefKTPiskhchao(vymeizvemafr, 0, temvs, tepv, h, temvh, temvc, ktp, nvm, muv, rmu, nt); 
 				k=0; koeft=muv[k]; k++; koefh=muv[k]; k++; koefc=muv[k]; k++; koefs=muv[k]; k++; koefq=muv[k]; }
-		else if (vysove == 1) { //ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г»Гµ ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ©
+		else if (vysove == 1) { //после повторных измерений
 			koefc = danPoTemTepl2072(temvs, temvc, nvm); koefh = danPoTemTepl2072(temvs, temvh, nvm); 
 			koefq = danPoTemTepl2072(temvs, tepv, nvm); koeft = danPoTemTepl2072(temvs, ktp, nvm); 
 			koefs = danPoTemTepl2072(temvs, temvs, nvm); }
-		else if (vysove == 2) { //ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ  ГЇГ°ГЁ 1000 В°Г‘
+		else if (vysove == 2) { //после обжига при 1000 °С
 			koefc = danPoTemTepl2073(temvs, temvc, nvm); koefh = danPoTemTepl2073(temvs, temvh, nvm); 
 			koefq = danPoTemTepl2073(temvs, tepv, nvm); koeft = danPoTemTepl2073(temvs, ktp, nvm); 
 			koefs = danPoTemTepl2073(temvs, temvs, nvm); }
-		else if (vysove == 3) { //ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г®ГЈГ® Г®ГЎГ¦ГЁГЈГ  ГЇГ°ГЁ 1000 В°Г‘
+		else if (vysove == 3) { //после повторного обжига при 1000 °С
 			koefc = danPoTemTepl2074(temvs, temvc, nvm); koefh = danPoTemTepl2074(temvs, temvh, nvm); 
 			koefq = danPoTemTepl2074(temvs, tepv, nvm); koeft = danPoTemTepl2074(temvs, ktp, nvm); 
 			koefs = danPoTemTepl2074(temvs, temvs, nvm); } }
-	else if (vyfrve == 1) { //ГґГ°Г ГЄГ¶ГЁГї 8-4 Г¬Г¬
+	else if (vyfrve == 1) { //фракция 8-4 мм
 		k=cemdum; muv=new double*[k]; muv=arrTemCold84(muv); k=0; po=muv[k]; k++; tc84=muv[k]; 
 		th84=arrTemHigh84();
 		tp84=arrTepPot84();
@@ -293,29 +293,29 @@ double **napMasEKTP(int vyfrve, int vysove, int vymeizvemafr, double *te, int v,
 		for (k=0; k<n84; k++) { temvs[k]=(th84[k]+tc84[k])/2e0; temvh[k]=th84[k]; 
 		temvc[k]=tc84[k]; tepv[k]=tp84[k]; tepv[k]=tepv[k]/F; ktp[k]=fabs(th84[k]-tc84[k])/h; ktp[k]=tepv[k]/ktp[k]; }
 		if (po) delete[]po; if (th84) delete[]th84; if (tp84) delete[]tp84; if (tc84) delete[]tc84; 
-		if (vyukve==1) { //ГЇГ«Г®Г±ГЄГ®-ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г Гї Г§Г Г±Г»ГЇГЄГ 
-			if (!vysove) { //ГЁГ±ГµГ®Г¤Г­Г»Г©
+		if (vyukve==1) { //плоско-параллельная засыпка
+			if (!vysove) { //исходный
 				koefc = danPoTemTepl840(temvs, temvc, nvm); koefh = danPoTemTepl840(temvs, temvh, nvm); 
 				koefq = danPoTemTepl840(temvs, tepv, nvm); koeft = danPoTemTepl840(temvs, ktp, nvm); 
 				koefs = danPoTemTepl840(temvs, temvs, nvm); }
-			else if (vysove == 1) { //ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г»Гµ ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ©
+			else if (vysove == 1) { //после повторных измерений
 				koefc = danPoTemTepl842(temvs, temvc, nvm); koefh = danPoTemTepl842(temvs, temvh, nvm); 
 				koefq = danPoTemTepl842(temvs, tepv, nvm); koeft = danPoTemTepl842(temvs, ktp, nvm); 
 				koefs = danPoTemTepl842(temvs, temvs, nvm); }
-			else if (vysove == 2) { //ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
+			else if (vysove == 2) { //после обжига
 				koefc = danPoTemTepl845(temvs, temvc, nvm); koefh = danPoTemTepl845(temvs, temvh, nvm); 
 				koefq = danPoTemTepl845(temvs, tepv, nvm); koeft = danPoTemTepl845(temvs, ktp, nvm); 
 				koefs = danPoTemTepl845(temvs, temvs, nvm); } }
-		else if (vyukve == 2) { //ГўГҐГ°ГІГЁГЄГ Г«ГјГ­Г Гї Г§Г Г±Г»ГЇГЄГ 
-			if (!vysove) { //ГЁГ±ГµГ®Г¤Г­Г»Г©
+		else if (vyukve == 2) { //вертикальная засыпка
+			if (!vysove) { //исходный
 				koefc = danPoTemTepl841(temvs, temvc, nvm); koefh = danPoTemTepl841(temvs, temvh, nvm); 
 				koefq = danPoTemTepl841(temvs, tepv, nvm); koeft = danPoTemTepl841(temvs, ktp, nvm); 
 				koefs = danPoTemTepl841(temvs, temvs, nvm); }
-			else if (vysove == 1) { //ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г»Гµ ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ©
+			else if (vysove == 1) { //после повторных измерений
 				koefc = danPoTemTepl844(temvs, temvc, nvm); koefh = danPoTemTepl844(temvs, temvh, nvm); 
 				koefq = danPoTemTepl844(temvs, tepv, nvm); koeft = danPoTemTepl844(temvs, ktp, nvm); 
 				koefs = danPoTemTepl844(temvs, temvs, nvm); }
-			else if (vysove == 2) { //ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ 
+			else if (vysove == 2) { //после обжига
 				koefc = danPoTemTepl843(temvs, temvc, nvm); koefh = danPoTemTepl843(temvs, temvh, nvm); 
 				koefq = danPoTemTepl843(temvs, tepv, nvm); koeft = danPoTemTepl843(temvs, ktp, nvm); 
 				koefs = danPoTemTepl844(temvs, temvs, nvm); } } }
@@ -332,13 +332,13 @@ double **napMasEKTP(int vyfrve, int vysove, int vymeizvemafr, double *te, int v,
 	if (muv) delete[]muv;
 	return mu;
 }
-double **oprkoefKTPiskhchao(int vmiv, int v, double *temvs, double *tepv, double h, double *temvh, double *temvc, double *ktp, int n, double **mu, int rmu, int cem) //n=4 - Г¤Г«ГЁГ­Г  Г¬Г Г±Г±ГЁГўГ  ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў, vmiv - ГўГ»ГЎГ®Г° Г¬ГҐГІГ®Г¤Г  ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГ©
+double **oprkoefKTPiskhchao(int vmiv, int v, double *temvs, double *tepv, double h, double *temvh, double *temvc, double *ktp, int n, double **mu, int rmu, int cem) //n=4 - длина массива коэффициентов, vmiv - выбор метода измерений
 {
 	int nk=n, k=0, j=0, q=0, qn=6, nn=n; 
 	double hf=1e0, nf207=0.0, *po=NULL, *koeft=NULL, *koefh=NULL, s=0.0;
 	double *koefc=NULL, *koefs=NULL, *koefq=NULL, **muv=NULL, r=0.0, e=1e-1;
 	double *tsv=NULL, *tgv=NULL, *thv=NULL, *qov=NULL, *ktpv=NULL, *mt=NULL, *ts=NULL; //for (k=0; k<n207; k++) cout << "th = " << th207[k] << "\ttc = " << tc207[k] << "\tts = " << ts207[k] << endl;
-	if (!vmiv) {  //0 - ГіГ±ГІГ Г­Г®ГўГЄГ  Netzsch - Г­ГҐГ±ГІГ Г¶ГЁГ®Г­Г Г°Г­Г»Г© Г¬ГҐГІГ®Г¤
+	if (!vmiv) {  //0 - установка Netzsch - нестационарный метод
 		k=cemdum; muv=new double*[k]; if (!muv) { cout << snm << endl; k = getchar(); exit(1); }
 		muv=arrTem_Netzsch(muv);
 		k=0; po=muv[k]; k++; mt=muv[k];
@@ -362,7 +362,7 @@ double **oprkoefKTPiskhchao(int vmiv, int v, double *temvs, double *tepv, double
 		if (tsv) delete[]tsv; if (tgv) delete[]tgv; if (thv) delete[]thv; if (ktpv) delete[]ktpv; 
 		if (qov) delete[]qov; if (po) delete[]po; if (mt) delete[]mt; if (ktp) delete[]ktp;
 	}
-	else if (vmiv==1) { //Г¤Г Г­Г­Г»ГҐ 2020 ГЈГ®Г¤Г  - ГѓГЋГ‘Г’ 12170 - Г±ГІГ Г¶ГЁГ®Г­Г Г°Г­Г»Г© Г¬ГҐГІГ®Г¤
+	else if (vmiv==1) { //данные 2020 года - ГОСТ 12170 - стационарный метод
 		ktp=arrKTP_2020(); 
 		tgv=arrTem1_2020(); 
 		k=cemdum; muv=new double*[k]; if (!muv) { cout << snm << endl; k=getchar(); exit(1); }
@@ -374,7 +374,7 @@ double **oprkoefKTPiskhchao(int vmiv, int v, double *temvs, double *tepv, double
 		tgv=danIskh207(tgv, k, nk, q); 
 		thv=danIskh207(thv, k, nk, q); 
 		tsv=danIskh207(tsv, k, nk, q);
-		ts=new double[q]; if (!ts) { cout << snm << endl; k = getchar(); exit(1); } //nk - Г°Г Г§Г¬ГҐГ° Г¬Г Г±Г±ГЁГўГ  ts
+		ts=new double[q]; if (!ts) { cout << snm << endl; k = getchar(); exit(1); } //nk - размер массива ts
 		if ((ts) && (tgv) && (thv)) for (k=0; k<nk; k++) ts[k]=(tgv[k]+thv[k])/2e0;
 		koeft=new double[n]; koefh=new double[n];
 		koefc=new double[n]; koefs=new double[n]; koefq=new double[n];
@@ -390,7 +390,7 @@ double **oprkoefKTPiskhchao(int vmiv, int v, double *temvs, double *tepv, double
 			qov[k]=s*fabs(tgv[k]-thv[k])/h; }
 		koefq=koefPribSha(qov, ts, nk, koefq, snm); if (muv) delete[]muv; 
 	}
-	else if (vmiv==2) { //Г¤Г Г­Г­Г»ГҐ 2019 ГЈГ®Г¤Г  - ГѓГЋГ‘Г’ 12170
+	else if (vmiv==2) { //данные 2019 года - ГОСТ 12170
 		koefq = danPoTemTepl2071(temvs, tepv, n);
 		koefh = danPoTemTepl2071(temvs, temvh, n);
 		koefc = danPoTemTepl2071(temvs, temvc, n);
@@ -406,7 +406,7 @@ double *danIskh207(double *ma, int v, int n, int np)
 		int k, p, q; double s=0.0, r=0.0, hf=1e0, *m=new double[n];
 		if (!m) { cout << snm << endl; k=getchar(); exit(1); }
 		for (k=0; k<np; k++) { s=s+ma[k]; r=r+hf; } s=s/r;
-		k=0; m[k]=s; k++; p=3; m[k]=ma[p]; k++; p=4; q=5; m[k]=(ma[p]+ma[q])/2e0; //600, 800 ГЁ 1000 В°C
+		k=0; m[k]=s; k++; p=3; m[k]=ma[p]; k++; p=4; q=5; m[k]=(ma[p]+ma[q])/2e0; //600, 800 и 1000 °C
 		delete[]ma; return m;
 	}
 	else return ma;
@@ -467,7 +467,7 @@ double *arrTem3_2020()
 	return a;
 }
 //---------
-double *danPoTemTepl840(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЇГ«Г®Г±ГЄГ®-ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г Гї, ГЁГ±ГµГ®Г¤Г­Г»Г©
+double *danPoTemTepl840(double *temvs, double *temvh, int n) //Засыпка плоско-параллельная, исходный
 {
 	double tho1=0.0, tho2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n]; 
 	int k=0, p=0, q=0;
@@ -484,7 +484,7 @@ double *danPoTemTepl840(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЇ
 	k=0; isdan[k]=k2; k++; isdan[k]=k1; 
 	return isdan;
 }
-double *danPoTemTepl841(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГўГҐГ°ГІГЁГЄГ Г«ГјГ­Г Гї, ГЁГ±ГµГ®Г¤Г­Г»Г©
+double *danPoTemTepl841(double *temvs, double *temvh, int n) //Засыпка вертикальная, исходный
 {
 	double tc1=0.0, tc2=0.0, tem1=0.0, tem2=0.0, *isdan = new double[n]; 
 	int k=0, p=0, q=0, r=0;
@@ -499,7 +499,7 @@ double *danPoTemTepl841(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  Гў
 	k=0; isdan[k]=k2; k++; isdan[k]=k1; 
 	return isdan;
 }
-double *danPoTemTepl842(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЇГ«Г®Г±ГЄГ®-ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г Гї, ГЇГ®ГўГІГ®Г°Г»
+double *danPoTemTepl842(double *temvs, double *temvh, int n) //Засыпка плоско-параллельная, повторы
 {
 	double tc1=0.0, tc2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n]; 
 	int k=0, p=0, q=0, r=0;
@@ -514,7 +514,7 @@ double *danPoTemTepl842(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЇ
 	k=0; isdan[k]=k2; k++; isdan[k]=k1; 
 	return isdan;
 }
-double *danPoTemTepl843(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГўГҐГ°ГІГЁГЄГ Г«ГјГ­Г Гї, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ  ГЇГ°ГЁ 1000 В°Г‘
+double *danPoTemTepl843(double *temvs, double *temvh, int n) //Засыпка вертикальная, после обжига при 1000 °С
 {
 	double tc1=0.0, tc2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n]; int k=0, p=0, q=0;
 	if (!isdan) { cout << snm << endl; k=getchar(); exit(1); }
@@ -528,7 +528,7 @@ double *danPoTemTepl843(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  Гў
 	k=0; isdan[k]=k2; k++; isdan[k]=k1; 
 	return isdan;
 }
-double *danPoTemTepl844(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГўГҐГ°ГІГЁГЄГ Г«ГјГ­Г Гї, ГЇГ®ГўГІГ®Г°Г»
+double *danPoTemTepl844(double *temvs, double *temvh, int n) //Засыпка вертикальная, повторы
 {
 	double tc1=0.0, tc2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n], k1=0.0, k2=0.0; 
 	int k=0, p=0, q=0;
@@ -543,7 +543,7 @@ double *danPoTemTepl844(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  Гў
 	k=0; isdan[k]=k2; k++; isdan[k]=k1; 
 	return isdan;
 }
-double *danPoTemTepl845(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЇГ«Г®Г±ГЄГ®-ГЇГ Г°Г Г«Г«ГҐГ«ГјГ­Г Гї, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ  ГЇГ°ГЁ 1000 В°Г‘
+double *danPoTemTepl845(double *temvs, double *temvh, int n) //Засыпка плоско-параллельная, после обжига при 1000 °С
 {
 	double tc1=0.0, tc2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n], hf=1e0; int k=0;
 	if (!isdan) { cout << snm << endl; k=getchar(); exit(1); }
@@ -558,7 +558,7 @@ double *danPoTemTepl845(double *temvs, double *temvh, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЇ
 	return isdan;
 }
 //---------
-double *danPoTemTepl2071(double *temvs, double *tepv, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЁГ±ГµГ®Г¤Г­Г Гї, ГґГ°Г ГЄГ¶ГЁГї 2-0,7 Г¬Г¬
+double *danPoTemTepl2071(double *temvs, double *tepv, int n) //Засыпка исходная, фракция 2-0,7 мм
 {
 	double tepv1=0.0, tepv2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n], hf=1e0; int k=0;
 	if (!isdan) { cout << snm << endl; k = getchar(); exit(1); }
@@ -572,7 +572,7 @@ double *danPoTemTepl2071(double *temvs, double *tepv, int n) //Г‡Г Г±Г»ГЇГЄГ  ГЁ
 	k=0; isdan[k]=k2; k++; isdan[k]=k1;
 	return isdan;
 }
-double *danPoTemTepl2072(double *temvs, double *tepv, int n) //Г”Г°Г ГЄГ¶ГЁГї 2-0,7 Г¬Г¬ (ГЇГ®ГўГІГ®Г°Г­Г»ГҐ ГЁГ§Г¬ГҐГ°ГҐГ­ГЁГї)
+double *danPoTemTepl2072(double *temvs, double *tepv, int n) //Фракция 2-0,7 мм (повторные измерения)
 {
 	double tepv1=0.0, tepv2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n]; 
 	int k=0, p=0, q=0;
@@ -587,7 +587,7 @@ double *danPoTemTepl2072(double *temvs, double *tepv, int n) //Г”Г°Г ГЄГ¶ГЁГї 2-
 	else k1=0.0; k2=tepv2-k1*tem2;
 	k=0; isdan[k]=k2; k++; isdan[k] = k1; return isdan;
 }
-double *danPoTemTepl2073(double *temvs, double *tepv, int n) //Г”Г°Г ГЄГ¶ГЁГї 2-0,7 Г¬Г¬, ГЇГ®Г±Г«ГҐ Г®ГЎГ¦ГЁГЈГ  ГЇГ°ГЁ 1000 В°Г‘
+double *danPoTemTepl2073(double *temvs, double *tepv, int n) //Фракция 2-0,7 мм, после обжига при 1000 °С
 {
 	double tepv1=0.0, tepv2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n]; 
 	int k=0, p=0, q=0;
@@ -603,7 +603,7 @@ double *danPoTemTepl2073(double *temvs, double *tepv, int n) //Г”Г°Г ГЄГ¶ГЁГї 2-
 	k=0; isdan[k]=k2; k++; isdan[k]=k1; 
 	return isdan;
 }
-double *danPoTemTepl2074(double *temvs, double *tepv, int n) //Г”Г°Г ГЄГ¶ГЁГї 2-0,7 Г¬Г¬, ГЇГ®Г±Г«ГҐ ГЇГ®ГўГІГ®Г°Г­Г®ГЈГ® Г®ГЎГ¦ГЁГЈГ  ГЇГ°ГЁ 1000 В°Г‘
+double *danPoTemTepl2074(double *temvs, double *tepv, int n) //Фракция 2-0,7 мм, после повторного обжига при 1000 °С
 {
 	double tepv1=0.0, tepv2=0.0, tem1=0.0, tem2=0.0, *isdan=new double[n], hf=1e0; 
 	int k=0, p=0;
@@ -753,7 +753,7 @@ double *koefPribSha(double *ktp, double *te, int le, double *ko, char *snome)
 		x3=x3+pow(te[k], 3e0); 
 		x2=x2+pow(te[k], 2e0); 
 		x=x+te[k];
-	} //ГЇГ°ГЁГ¬ГҐГ­ГҐГ­ГЁГҐ Г¬ГҐГІГ®Г¤Г  Г­Г ГЁГ¬ГҐГ­ГјГёГЁГµ ГЄГўГ Г¤Г°Г ГІГ®Гў
+	} //применение метода наименьших квадратов
 	k=0; b[k]=yx2; k++; b[k]=yx; k++; b[k]=y; 
 	p = 0.0; for (k = 0; k < le; k++) p = p + hf;
 	A[0][0] = x4; A[0][1] = x3; A[0][2] = x2; A[1][0] = x3; A[1][1] = x2; A[1][2] = x; A[2][0] = x2; A[2][1] = x; A[2][2] = p;
