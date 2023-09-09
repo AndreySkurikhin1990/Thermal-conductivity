@@ -25,8 +25,12 @@ function t = tmp52()
 %kp=RasshDiapDlinVoln();
 %kp=ZapisFileOptiodvkvi(kp);
 %kp=opredSredKPFrackvi();
-kp=3; kp=SreZnaKoefPoglitom620_1000(kp);
-%kp=opredSredKPFracitom();
+for kp=0:3
+    kp=kp'
+    e(kp+1)=SreZnaKoefPoglitom620_1000(kp);
+end
+kp=mean(kp);
+kp=opredSredKPFracitom();
 t=0;
 end
 
@@ -57,6 +61,7 @@ dv=dlinyvolnitom();
 for k =1:length(te)
     kp(k)=usrednen(te(k),als,dv,npp);
 end
+kp=kp';
 t=ZapisFileOptio440(kp);
 %p=plot(te,kp,'-b');
 %set(p,'LineWidth',2); 
@@ -78,6 +83,7 @@ dv=RasshDiapDlinVoln();
 for k =1:length(te)
     kp(k)=usrednen(te(k),als,dv,npp);
 end
+kp=kp';
 t=ZapisFileOptio620(kp);
 %p=plot(te,kp,'-b');
 %set(p,'LineWidth',2); 
@@ -98,6 +104,7 @@ dv=RasshDiapDlinVoln();
 for k =1:length(te)
 kp(k)=usrednen(te(k),als,dv,npp); 
 end
+kp=kp';
 t=ZapisFileOptio860(kp);
 szkp=t;
 end
@@ -112,6 +119,7 @@ dv=RasshDiapDlinVoln();
 for k =1:length(te)
 kp(k)=usrednen(te(k),als,dv,npp); 
 end
+kp=kp';
 t=ZapisFileOptio1000(kp);
 szkp=t;
 end
@@ -292,55 +300,55 @@ fileID = fopen('Koefficient_pogloscheniya_kvi400.txt','r'); formatSpec='%f';
 Tal=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi400();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal,dv,PokPrel); 
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_kvi500.txt','r'); formatSpec='%f';
 Tal2=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi500();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal2,dv,PokPrel);
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal2, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal2,dv,PokPrel);
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal2, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_kvi600.txt','r'); formatSpec='%f';
 Tal3=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi600();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal3,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal3, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal3,dv,PokPrel); 
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal3, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_kvi700.txt','r'); formatSpec='%f';
 Tal4=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi700();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal4,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal4, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal4,dv,PokPrel); 
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal4, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_kvi800.txt','r'); formatSpec='%f';
 Tal5=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi800();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal5,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal5, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal5,dv,PokPrel); 
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal5, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_kvi900.txt','r'); formatSpec='%f';
 Tal6=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi900();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal6,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal6, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal6,dv,PokPrel); 
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal6, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_kvi1000.txt','r'); formatSpec='%f';
 Tal7=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=0; PokPrel=Kramers_n_kvi1000();
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal7,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal7, n2); schot=schot+1;
+alsrSredkvi(schot)=usrednen(Tsr,koe*Tal7,dv,PokPrel); 
+alSrRoskvi(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal7, n2); schot=schot+1;
 %
-alsrSredVer=alsrSredVer';
-alSrRos=alSrRos';
-xv=ZapisFileOptioFractionskvi(alsrSredVer);
-xv=ZapisFileOptioRosskvi(alSrRos);
+alsrSredkvi=alsrSredkvi'
+alSrRoskvi=alSrRoskvi'
+xv=ZapisFileOptioFractionskvi(alsrSredkvi);
+xv=ZapisFileOptioRosskvi(alSrRoskvi);
 t=xv;
 end
 
@@ -368,7 +376,7 @@ function t = opredSredKPFracitom()
 schot=1; koe=1e0; koef=1e0;
 dv=RasshDiapDlinVoln();
 Sp=dlinyvolnitom();
-xv=0; Tsr=23+273.15; 
+xv=0; Tsr=22+273.15; 
 Tal=0; Tal2=0; Tal3=0; Tal4=0; 
 %
 Tal=SredGrafItom();
@@ -376,8 +384,8 @@ Tal=SredGrafItom();
 PokPrel=Kramers_n_Itom();
 %PokPrel=preobMasitom_n(PokPrel,koef*Sp,koef*dv);
 n2=opredn2(PokPrel,Tsr,Sp);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal,Sp,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,Sp, koe*Tal, n2); schot=schot+1;
+alsrSreditom(schot)=usrednen(Tsr,koe*Tal,Sp,PokPrel); 
+alSrRositom(schot)=sredRosSiegel(Tsr,PokPrel,Sp, koe*Tal, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_itom620.txt','r'); formatSpec='%f';
 Tal2=fscanf(fileID,formatSpec); fclose(fileID);
@@ -385,8 +393,8 @@ Tal2=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=Kramers_n_Itom620();
 %PokPrel=preobMasitom_n(PokPrel,koef*Sp,koef*dv);
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal2,dv,PokPrel);
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal2, n2); schot=schot+1;
+alsrSreditom(schot)=usrednen(Tsr,koe*Tal2,dv,PokPrel);
+alSrRositom(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal2, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_itom860.txt','r'); formatSpec='%f';
 Tal3=fscanf(fileID,formatSpec); fclose(fileID);
@@ -394,8 +402,8 @@ Tal3=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=Kramers_n_Itom860();
 %PokPrel=preobMasitom_n(PokPrel,koef*Sp,koef*dv);
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal3,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal3, n2); schot=schot+1;
+alsrSreditom(schot)=usrednen(Tsr,koe*Tal3,dv,PokPrel); 
+alSrRositom(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal3, n2); schot=schot+1;
 %
 fileID = fopen('Koefficient_pogloscheniya_itom1000.txt','r'); formatSpec='%f';
 Tal4=fscanf(fileID,formatSpec); fclose(fileID);
@@ -403,13 +411,16 @@ Tal4=fscanf(fileID,formatSpec); fclose(fileID);
 PokPrel=Kramers_n_Itom1000();
 %PokPrel=preobMasitom_n(PokPrel,koef*Sp,koef*dv);
 n2=opredn2(PokPrel,Tsr,dv);
-alsrSredVer(schot)=usrednen(Tsr,koe*Tal4,dv,PokPrel); 
-alSrRos(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal4, n2); schot=schot+1;
+alsrSreditom(schot)=usrednen(Tsr,koe*Tal4,dv,PokPrel); 
+alSrRositom(schot)=sredRosSiegel(Tsr,PokPrel,dv, koe*Tal4, n2); schot=schot+1;
 %
-alsrSredVer=alsrSredVer'
-alSrRos=alSrRos'
-xv=ZapisFileOptioFractionsitom(alsrSredVer);
-xv=ZapisFileOptioRossitom(alSrRos);
+Tsr=Tsr'
+alsrSreditom=alsrSreditom'
+alSrRositom=alSrRositom'
+alSritom=mean(alsrSreditom)
+alSrRositom=mean(alSrRositom)
+xv=ZapisFileOptioFractionsitom(alsrSreditom);
+xv=ZapisFileOptioRossitom(alSrRositom);
 t=xv;
 end
 
@@ -792,12 +803,17 @@ szkp=0;
 end
 
 function szkp = SreZnaKoefPoglitom620_1000(ide)
-tena=2e2; teko=9e2; te0=273.15; dt=1e2;
-tem=tena:dt:teko; tem=tem+te0; koe=1e0;
+tena=2e2; teko=9e2; 
+te0=273.15; dt=1e2; tem=tena:dt:teko; 
+%tem=23;
+tem=tem+te0; koe=1e0;
 n=length(tem);
 Sp=RasshDiapDlinVoln();
 %Tal=preobMasitom_n(alph,koef*Sp,koef*dv);
-if (ide==1)
+if (ide==0)
+PokPrel=Kramers_n_Itom();
+fileID=fopen('Koefficient_pogloscheniya_itom440.txt','r'); 
+elseif (ide==1)
 PokPrel=Kramers_n_Itom620();
 fileID=fopen('Koefficient_pogloscheniya_itom620.txt','r'); 
 elseif (ide==2)
@@ -814,10 +830,12 @@ fclose(fileID);
 for k=1:n
 Tsr=tem(k);
 n2=opredn2(PokPrel,Tsr,Sp);
-alsrSredVer(k)=usrednen(Tsr,koe*Tal,Sp,PokPrel); 
-alSrRos(k)=sredRosSiegel(Tsr,PokPrel,Sp, koe*Tal, n2);
+alsrSreditom(k)=usrednen(Tsr,koe*Tal,Sp,PokPrel); 
+alSrRositom(k)=sredRosSiegel(Tsr,PokPrel,Sp, koe*Tal, n2);
 end
-alsrSredVer=alsrSredVer'
-alSrRos=alSrRos'
+tem=tem'
+n2=n2'
+alsrSreditom=alsrSreditom'
+alSrRositom=alSrRositom'
 szkp=0;
 end

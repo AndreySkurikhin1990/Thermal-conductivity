@@ -1,4 +1,4 @@
-function [ t ] = VasFrayObsh(laefm,lavo, po, n)
+function [ t ] = VasFrayObsh(laefm, lavo, po)
 nit=1000; h=0; L=1e0; 
 maxlam=1e5; lamb=maxlam; minlam=1e-9; lama=minlam; 
 tocras=1e-9; ep=tocras; ra=1e0; 
@@ -11,6 +11,7 @@ Pn=125.0*9.8*30e-3; kk=(1.5+2)/2; kb=(2.2+2.9)/2;
 km=(4+5)/2; nu=2*(1-mu^2)/E; kc=(35e-2+45e-2)/2e0;
 rp=(725e-3)*((nu*Pn*L/2e0)^(1/3)); Q=(74e-2/(1-po))^(1/3);
 hsh=L*km*1e-3; sfk=pi*(rp^2);
+n=length(laefm);
 for k=1:n
 	laef=laefm(k); lavoz=lavo(k); h=0;
 while ((ra>ep) && (h<nit))

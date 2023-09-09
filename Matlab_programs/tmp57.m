@@ -1162,7 +1162,7 @@ for k=1:qg
     l=l+h;
 end
 s=s'
-t=0;
+t=raspr;
 end
 function [ r ] = NapMasRaspitom(vvi)
 if (vvi==0) 

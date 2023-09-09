@@ -1,9 +1,29 @@
 %Расчет коэффициента ослабления для ИТОМ и КВИ
 function t = tmp73()
 m=2;
-for n=4:10 
-k=RaschetDlyakvi(n,m);
+ko=1e-6; koe=1e-3; koo=1e2; rokbr=2.75;
+%mv=[0.95,1.19]*ko;
+tol=[0.64,0.64,0.65,0.66]*koe;
+n=length(tol);
+mkbr=zeros(1,n);
+hsl=zeros(1,n);
+vkbr=zeros(1,n);
+D=13e-3;
+for k=1:n
+mkbr(k)=(pi*(D^2)/4)*tol(k);
+vkbr(k)=mkbr(k)/rokbr;
+hsl(k)=8*k*ko;
 end
+for w=4:10 
+rov=w*koo; j=w-3;
+for k=1:n
+vkvi(j,k)=vkbr(k)*hsl(k)/(tol(k)-hsl(k));
+mv(j,k)=vkvi(j,k)*rov;
+%k=RaschetDlyakvi(w,m);
+%k=obratZadOprMasTol(w);
+end
+end
+mv=mv/ko
 %k=RaschetDlyaItom();
 t=0;
 end
@@ -625,4 +645,33 @@ chasz=trapz(dlv,Ibz);
 dlsvprfo2=chasc/chasz;
 dlsvprfo2=1/dlsvprfo2;
 rs=dlsvprfo2';
+end
+
+function t = obratZadOprMasTol(vkvi)
+c=num2str(vkvi);
+s=strcat('Koefficient_pogloscheniya_kvi',c,'00.txt');
+fid=fopen(s,'r');
+kpskvi=fscanf(fid,'%f');
+sv='DlinaVolny_kvi.txt';
+fidv=fopen(sv,'r');
+dv=fscanf(fidv,'%f');
+te0=273.15; tem=22; tem=tem+te0;
+switch (vkvi)
+case (4)
+npp=Kramers_n_kvi400();
+case (5)
+npp=Kramers_n_kvi500();
+case (6)
+npp=Kramers_n_kvi600();
+case (7)
+npp=Kramers_n_kvi700();
+case (8)
+npp=Kramers_n_kvi800();
+case (9)
+npp=Kramers_n_kvi900();
+case (10)
+npp=Kramers_n_kvi1000();
+end
+al=usrednen(tem,kpskvi,dv,npp);
+t=al;
 end
