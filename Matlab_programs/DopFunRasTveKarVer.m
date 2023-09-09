@@ -1,4 +1,4 @@
-function [ t ] = DopFunRasTveKarVer(tem, no, m22, r, laefm, lentem, lavo, wmg, wsi, wal, stchm)
+function [ t ] = DopFunRasTveKarVer(tem, no, m22, r, laefm, lentem, lavo, stchm)
 ta=0; 
 switch (no)
     case (0)
@@ -8,7 +8,7 @@ switch (no)
     case (2)
     ta=MetodDulnevaSigalovoyBezIspVer(tem,m22,r,laefm,stchm);
     case (3)
-    ta=VasFrayObsh(laefm, lavo, m22, lentem);
+    ta=VasFrayObsh(laefm, lavo, m22);
 end
 up=1;
 uo=urovPod(m22);

@@ -41,19 +41,19 @@ end
 for k=1:n
 switch (vy)
     case 0
-        lamvy(k)=lamadi(k); %куб, адиаб. - 23
+        lamvy(k)=lamadi(k); %куб, адиаб. - 23 %1
     case 1 
-        lamvy(k)=lamizo(k); %куб, изотерм. - 24
+        lamvy(k)=lamizo(k); %куб, изотерм. - 24 %2
     case 2 
-        lamvy(k)=lamodom(k); %по ќдолевскому (матрицы) - 25
+        lamvy(k)=lamodom(k); %по ќдолевскому (матрицы) - 25 %3
     case 3
-        lamvy(k)=lamodos(k); %по ќдолевскому (стат. смесь) - 26
+        lamvy(k)=lamodos(k); %по ќдолевскому (стат. смесь) - 26 %4
     case 4 
-        lamvy(k)=lamcyladi(k); %цилиндр., адиаб. - 27
+        lamvy(k)=lamcyladi(k); %цилиндр., адиаб. - 27 %5
     case 5 
-        lamvy(k)=lamcylizo(k); %цилиндр., изотерм. - 28
+        lamvy(k)=lamcylizo(k); %цилиндр., изотерм. - 28 %6
     case 6
-        lamvy(k)=lamcylper(k); %ось цилиндра перпендикул€рна тепловому потоку - 29
+        lamvy(k)=lamcylper(k); %ось цилиндра перпендикул€рна тепловому потоку - 29 %7
     otherwise
         lamvy(k)=0;
 end
@@ -80,19 +80,25 @@ BURP=lamvy';
 end
 
 %учет распределени€ пор
-function [ URP ] = UchetRapsredPorPoRazm(po, lameff, lamvoz, vy, rp, legr, prgr, sr, lamax, lamin, hko, tocras, nT, tem)
-le = length(legr); po=po'; %k=1; legr(k)=0; 
-sr=0; sr=(legr+prgr)/2e0; 
-j = 1; vo = 0; pw = 0; ep=tocras;
-if (po<1e0)
-    w=1e0;
+function [ URP ] = UchetRapsredPorPoRazm(po, lameff, lamvoz, vy, rp, legr, prgr, srk, lamax, lamin, hko, tocras, nT, tem)
+le = length(legr); po=po'; %k=1; legr(k)=0; sr=0; 
+for k=1:length(srk)
+sr(k)=((legr(k)+prgr(k))/2e0+srk(k))/2e0;
+end
+e=1e-6;
+j = 1; ep=tocras; hf=1e0;
+if (po<hf)
+    w=hf;
 else w=1e2;
 end
-for k=1:le
-    if (rp(k) > 0)
-    pw(j) = rp(k) * po / w; %объемна€ дол€ поры заданного размера в полном (во всем) объеме
-    vo(j) = (sr(k)^3) / pw(j); %все поры - кубы, объем пор заданного диапазона
-    j = j + 1;
+pw=zeros(1,le);
+vo=zeros(1,le);
+for k=1:le    
+    pw(k) = rp(k) * po / w; %объемна€ дол€ поры заданного размера в полном (во всем) объеме
+    if (rp(k) > e)
+        vo(k) = (sr(k)^3) / pw(k); %все поры - кубы, объем пор заданного диапазона    
+    else
+        vo(k)=0;
     end
 end
 mx=sum(vo); up=1; uo=urovPod(po); 

@@ -1,20 +1,13 @@
 function graydiffxch1
-format longg;
 % Program Graydiffxch
 
 N = 6;
 sigma = 5.670E-8;
 
 %dimensions
-ww = 0.4;
+ww = 1E1;
 hh = 0.3;
-ll = 1E6;
-
-A=zeros(1, N);
-HO=zeros(1, N);
-EPS=zeros(1, N);
-id=zeros(1, N);
-T=zeros(1, N);
+ll = 1E1;
 
 %surfaces 1&3(bottom and top)
 A(1) = ww*ll;	% ww x ll
@@ -25,8 +18,8 @@ EPS(1) = 0.3;
 EPS(3) = 0.3;
 id(1) = 1;	%T specified
 id(3) = 1;
-T(1) = 900.;	%T in K
-T(3) = 900.;
+T(1) = 400.;	%T in K
+T(3) = 400.;
 
 %surfaces 2&4(left and right)
 A(2) = hh*ll;	% ww x ll
@@ -37,8 +30,8 @@ EPS(2) = 0.8;
 EPS(4) = 0.8;
 id(2) = 1;	%T specified
 id(4) = 1;
-T(2) = 500.;	%T in K
-T(4) = 500.;
+T(2) = 405.;	%T in K
+T(4) = 405.;
 
 %surfaces 5&6(front and back)
 A(5) = hh*ww;	% ww x ll
@@ -49,8 +42,8 @@ EPS(5) = 0.8;
 EPS(6) = 0.8;
 id(5) = 1;	%T specified
 id(6) = 1;
-T(5) = 600.;	%T in K
-T(6) = 600.;
+T(5) = 405.;	%T in K
+T(6) = 405.;
 
 %fill PIN array with q ant T
 for  i = 1:N
@@ -113,9 +106,6 @@ arg(2) = hh;
 arg(3) = ll;	%a,b,c
 F(5,6) = view(38,3,arg);
 
-T=T
-A=A
-
 %Solve system of equations
 POUT  =  GRAYDIFF(iclsd, A, EPS, HO, F, id, PIN);
 %Output
@@ -123,7 +113,7 @@ POUT  =  GRAYDIFF(iclsd, A, EPS, HO, F, id, PIN);
 sumq = 0;                              %Check total flux = 0?
 for i = 1:N
     if  id(i) == 0
-        T(i) = (POUT(i)/sigma)^(1/4);
+        %T(i) = (POUT(i)/sigma)^(1/4);
     else
         q(i) = POUT(i);
     end
@@ -190,6 +180,13 @@ if(iclsd==1)
     end
 end
 
+%for k=1:N
+    %s=0.0;
+    %for j=1:N
+        %s=s+F(k,j);
+    %end
+%end
+
 % Fill q- and e-coefficient matrices
 for  i = 1:N
     for  j = 1:N
@@ -209,7 +206,7 @@ for i=1:N
     end
 end
 
-       F=F     
+            
 % Invert POUT-coefficient matrix and multiply by RHS to obtain POUT
 POUT = GAUSS(pm, B);
 

@@ -1,9 +1,9 @@
-function [ nf ] = DulnevZernVer(por, te, laefm,wmg,wsi,wal,vfv,la_voz,vyb)
-%por = 0.6635; %пористость вермикулита фракции 2-0,7 мм %disp('По методу Дульнева для зернистых систем для вермикулита');
-dkoscvm=oprdopkoefoslabstchver(1,wal,wmg,wsi);
-tdkoscvm=oprdopkoefoslabstchver(2,wal,wmg,wsi);
-kuscvm=oprdopkoefoslabstchver(3,wal,wmg,wsi);
-tkuscvm=oprdopkoefoslabstchver(4,wal,wmg,wsi);
+function [ nf ] = DulnevZernitom(por, te, laefm, x0,la_voz,vyb,stchi)
+%disp('По методу Дульнева для зернистых систем для вермикулита');
+%dkoscvm=oprdopkoefoslabstchver(1,wal,wmg,wsi);
+%tdkoscvm=oprdopkoefoslabstchver(2,wal,wmg,wsi);
+%kuscvm=oprdopkoefoslabstchver(3,wal,wmg,wsi);
+%tkuscvm=oprdopkoefoslabstchver(4,wal,wmg,wsi);
 up=1; uo=urovPod(por);
 lete=length(te);
 la_e=zeros(1, lete);
@@ -12,18 +12,19 @@ lam=zeros(1, lete);
 for k=1:length(te)
     ts=te(k);
     la_e(k)=opredKTPTKTochSha(laefm, te, ts, length(te));
-dkusct=opredKTPTKTochSha(dkoscvm, tdkoscvm, ts, length(tdkoscvm));
-dkusct=ProvAdek(dkusct);
-dkosce=opredKTPTKTochSha(kuscvm, tkuscvm, ts, length(tkuscvm));
-dkosce=ProvAdek(dkosce);
-ume=dkusct*dkosce;
-eps=epsisred(ts)*ume;
-stchm(k)=eps;
-lam(k)=opredDulnLam1Ver(por,ts,eps,la_voz(k),la_e(k),vfv);
+%dkusct=opredKTPTKTochSha(dkoscvm, tdkoscvm, ts, length(tdkoscvm));
+%dkusct=ProvAdek(dkusct);
+%dkosce=opredKTPTKTochSha(kuscvm, tkuscvm, ts, length(tkuscvm));
+%dkosce=ProvAdek(dkosce);
+%ume=dkusct*dkosce;
+%eps=epsisred(ts)*ume;
+%stchm(k)=eps;
+eps=stchi(k);
+lam(k)=opredDulnLam1itom(por,ts,eps,la_voz(k),la_e(k),x0);
 end
 lam = proverkaVer(lam, la_e, la_voz, up, uo, length(lam));
 %stchm=stchm'; f=ZapisFileOptio(stchm); disp('Степень черноты'); lam=lam'; laefm=laefm'; srk=lam';
-lam=provnanuli(lam)';
+lam=provnanuli(lam, te)';
 switch (vyb)
     case (0)
         nf=lam;
@@ -54,15 +55,15 @@ else
 u=uo;
 end
 
-function ol1 = opredDulnLam1Ver(po,T,eps,lavo,lae,vfv)
+function ol1 = opredDulnLam1itom(po,T,eps,lavo,lae,x0)
 ladb=1e5; lada=1e-5; ra=1e2; ep=1e-7; h=0; la=0; kit=1e3;
 while ((ra>ep) && (h<kit))
 ladc=(lada+ladb)/2;    
-fa=DulnevSloForVer(po,T,eps,lavo,lada,vfv);
+fa=DulnevSloForitom(po,T,eps,lavo,lada,x0);
 fa=fa-lae;
-fb=DulnevSloForVer(po,T,eps,lavo,ladb,vfv);
+fb=DulnevSloForitom(po,T,eps,lavo,ladb,x0);
 fb=fb-lae;
-fc=DulnevSloForVer(po,T,eps,lavo,ladc,vfv);
+fc=DulnevSloForitom(po,T,eps,lavo,ladc,x0);
 fc=fc-lae;
 la = VybCAB(fa,fb,fc,lada,ladb,ladc);
 lada=la(1); ladb=la(2); ladc=la(3);
@@ -72,15 +73,9 @@ end
 ol1=ladc;
 end
 
-function lam4 = DulnevSloForVer(m2,T,eps,lavo,lam1,vfv)
-switch (vfv)
-    case (0)
-        r=(2e0+7e-1)*1e-3/2e0/2e0; 
-    case (1)
-        r=(8e0+4e0)*1e-3/2e0/2e0; 
-end
+function lam4 = DulnevSloForitom(m2,T,eps,lavo,lam1,r)
 d=2e0*r;
-Nk=sqrt(m2^2-10e0*m2+9e0);
+Nk=sqrt(m2^2-1e1*m2+9e0);
 Nk=(m2+3e0+Nk)/2/m2;
 %y2=3.3e-3*(1-m2)^(-2/9); %pud=0; hsl=30e-3; rona=0.2; ro1=rona/(1-m2); %y2=y2*(pud+9.8*ro1*(1-m2)*hsl)^(1/3); %y1=1e-20; y2=y1;
 eta=1e-4; 
@@ -593,7 +588,7 @@ end
 om=dkoscvm;
 end
 
-function [ vm ] = provnanuli(srk)
+function [ vm ] = provnanuli(srk, te)
 f = 1; ep=1e-6;
 for k=1:length(srk)
     if ((srk(k)<ep) && (f > 0))
@@ -602,7 +597,7 @@ for k=1:length(srk)
     end
 end
 if (f < 0)
-for j=1:length(srk)
+for j=1:length(te)
     srk(j)=0;
 end
 end
