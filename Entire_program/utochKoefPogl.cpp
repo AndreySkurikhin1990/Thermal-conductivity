@@ -13,534 +13,400 @@
 using namespace std;
 class KoePog { public: double alp, tem; KoePog *nex; };
 //-------
-double **RaschRTAkvi(int, double, double, double, int, int, double, int, double, int, int, int);
-double **vybFunRasPorpoRazSha(double, int, int);
-double F0_lamT(double);
-double oprProcSoderpoPoris(double *, double *, double, int);
-double *zadrkt(int, int, double, int, double, double, int, int, double, int, int, double *);
-double *EffectTols(double *, double *, double *, double, double, int);
-double RasFracXeffVer60(int);
-double RasFracXeffVer60_100(int);
-double RasFracXeffVer100_150(int);
-double RasFracXeffVer150_200(int);
-double RaschAlphaTvKarSha();
-double **chaRTA(int, double *, double *, double *, double *, double *, double *, int);
-double **izmRTA(double *, int, double *, double *, double *, double *, double *, double *, int, int);
-double **RaschVneshIzluch(double *, double *, double *, double *, double *, int, double, double, char *);
+double **RaschRTA(int, double, double, double, int, double, int, double, int, int, int, int, double *, double, int, double, double, 
+	double, double, double, char *, double, double *, double *, int, double *, double *, int, double, double *, double *, int, double, double);
+double **KoefPoglSten(double, double, int, double, int, double, double, int, double, double, double, int, double, double, double, int, int);
+double **izmRTA(int, int, double *, double *, double *, double *, double *, double *, double *, double *, double *, char *, double **, double *, 
+	double *, double *, int, double *, double *, int);
+char **napolStrok(int, int, char);
+char **napNazvFile(int, int, char *, char);
+double F0_lamT(double, char *);
+double *EffectTols(double *, double *, double *, double, double, int, char *);
+double RaschAlphaTvKar(int, int, int, int, int, int, int, double, char *, int, double, int, double *, double *, double *, int, int, 
+	int, double *, int, double *, double *, double *, double *, int, double, double, double, double, double, double, double, int, 
+	double, double, double, double *, double, double, int, double *, double *, int, int);
+double *KoefPoglRosselNac(double *, int, double, double, int, int);
+double **RasPorPoRazVer(double, int, int, int, int, char *);
+double **opredTempLPSten(double, int, double *, double *, double *, double *, int, int, double, double, double, int, char *, double);
+double UtochKoefPogl(double, double, double, int, int, double);
+double **RaschSobLuchPlotTepPot(int, double *, double *, double *, double *, double *, double *, double, double, double *, int, char *); //double **VybFunRasPorpoRazSha(double, int, int); double **RasPorPoRazitom(int); double **RasPorpoRazkvi(int);
+double opredPokPreSr(double, int, int, double);
+double **oprRasTemNach(int, double, double, double, double, double, int, double, double, double, char *);
+double bbfn(double);
+double *opredKoefOtr(double *, int, int, int, double *, int, char *, double);
 double opredKTPTKToch(double *, double *, double, int);
-double *opredKoefOtr(double *, double *, int, double, int, int, double *, double *, int);
-double ReflSredSha(double);
-double ReflSredVer(double);
-double ReflSreditom(double, int);
-double ReflSredkvi(double, int);
-double *kopo(double, double, int, double, int, double, double, int, double *, char *, char *, char *, double, double, double, int, int);
-double *podschchiele(int, int, int, double *, double *);
-double *KoefPoglRosselNac(double *, int, int, double, double, double, double *, double *, int, double, double, double *, double *, int, int, int);
-double **rasPorpoRazVer(double, int, int, int, int, int);
+double ***zadrkt(int, char *, int, double *, double *, double, double, double, double, int);
+double BolTochRasAlpha(int, double, double, double, double *, double *, double *, int, int, char *, double *, int, int, int, double *, 
+	double *, double *, double *, int, double, double, double, double, double, double, double, int, double, double, double, double, 
+	double *, double, double, int, double *, double *, int, int);
+double oprSrRazPor(int, int, double, int, int, int, int, int, int, char *);
+double oprMaxRazPor(int, int, double, int, int, int, int, int, int, char *);
+double opredTolTverChasObFig(double, double, double, double, double);
+double opredTolTverChasObFigObPor(double, double, double, double, double);
+double opredTempStenFragm(double, int, double *, double *, double *, double *, int, int, double, double, double, double);
+double *RasIzlSerStenNacSok(double *, double *, double *, double ***, double ***, double, double, double, double, double, double, double, int, double *, 
+	double *, int, double *, double *, char *, double *, int, double, double, double, double, double, double, double, int, int, int,
+	double *, int, double, int, int, int, int);
+double koefPoglSred(double, int, int, double);
+double integroexponen(int, double);
+double VIEW(int, int, double *, int);
 //-------
-double RaschAlphaTvKar(double por, int vr, int vss, char *snm)
-{
-	int l=2, k=0, d=10, q=0, cfk=l, cei=0;
-	long j=0, jk=100*100*100, pj=0, h=0;
-	double x=0.0, y=0.0, p=0.0, xt=0.0, yp=0.0, hf=1e0, te0=273.15, tc=22.0+te0;
-	double altc, *srra=NULL, pors=1e-6, lamtem=1448.0, dvpn = lamtem*pors / tc / 4e0;
-	double *pn = new double[d], *alx = new double[d], *rcf = new double[cfk], e=1e-15;
-	double *rapo, srp, marp, ce, cet, *pp=NULL, *legr=NULL, **pt=NULL, *prgr=NULL;
-	pt=vybFunRasPorpoRazSha(por, vr, vss);
-	k=0; rapo=pt[k]; k++; srra=pt[k]; k++; prgr=pt[k]; k++;
-	legr=pt[k]; k++; pp=pt[k]; j=0; srp=pp[j]; if (pp) delete[]pp; k++;
-	pp=pt[k]; marp=pp[j]; if (pp) delete[]pp; if (pt) delete[]pt;
-	cet = ce; j = 0; while (cet > e) { cet = cet - hf; j++; } cei = j; //cout << "cem_srp = " << cei << "\tsrp = " << srp << "\t"; cout << endl; for (j=0; j<cei; j++) if (j<10) cout << "j = " << j << "\trpr = " << rapo[j] << "\tlegr = " << legr[j] << "\t"; cout << endl;
-	x = 0.0; for (j = 0; j < cei; j++) if (j <= 31) x = x + srra[j] * rapo[j]; pors = x*por / srp;
-	double pr = 0.0, rmf = 0.0, prf = 0.0, po = 0.0, *alsf = new double[cfk];
-	for (j = 0; j < RAND_MAX; j++) rmf = rmf + hf; for (j = 0; j < jk; j++) po = po + hf;
-	if ((pn) && (alx) && (rcf) && (alsf)) { for (j = 0; j < d; j++) { pn[j] = 0.0; alx[j] = 0.0; } 
-	for (j = 0; j < cfk; j++) { rcf[j] = 0.0; alsf[j] = 0.0; } }
-	else { cout << snm << endl; j = getchar(); exit(1); }
-	long lt; unsigned int st; lt = time(NULL); st = (unsigned int)(lt - (lt % 2)) / 2; srand(st);
-	for (k = 0; k < l; k++) {
-		x = RasFracXeffSha60(k); //размер частицы
-		rcf[k] = x*1e-6; y = x*pors; //размер поры
-		for (j = 0; j < d; j++) pn[j] = 0.0;
-		for (j = 0; j < jk; j++) {
-			pj = rand(); prf = 0.0; for (h = 0; h < pj; h++) prf = prf + hf; pr = prf / rmf;
-			yp = y*pr; xt = yp*(hf - pors) / pors;
-			p = x / (xt + yp);
-			pr = 0.0; for (h = 0; h < d; h++)	{ xt = pr + hf; if ((p >= pr) && (p < xt)) pn[h] = pn[h] + hf; pr = xt; }
-		}
-		pr = 0.0; for (j = 0; j < d; j++) { pn[j] = pn[j] / po; pr = pr + pn[j]; } //cout << "Summa = " << pr << endl; for (j=0; j<d; j++) cout << "pn ( " << j << " ) = " << pn[j] << "\t";
-		for (j = 0; j < d; j++) pn[j] = pn[j] / pr;
-		for (j = 2; j < d; j++) {
-			p = 0.0; for (h = 0; h<j; h++) p = p + hf;
-			yp = pors*x*1e-6 / (p - hf); xt = (hf - pors)*x*1e-6 / p; //cout << "x = " << x << "\txp = " << yp << "\txt = " << xt << "\t";
-			if (yp>dvpn) {
-				lamtem = F0_lamT(yp*tc); if (lamtem<0.0) lamtem = 0.0; if (lamtem>hf) lamtem = hf;
-				alx[j] = BolTochRasAlpha(0, j, yp, xt, tc, ktpvosha, vtesha, etesha, cem, dmkv, snms, Tsh, Rsh, 2 * N, kttk, Ash, 1, Rash, Tash, Aash, Rtsh, Ttsh, Atsh)*lamtem;
-			}
-			else alx[j] = 0.0;
-		}
-		pt = RaschRTA(d, xt, 0.0, 0.0, yp, tc, 1, 0, 0, 0); pp = pt[0]; altc = pp[0]; delete[]pp; delete[]pt;
-		alx[0] = 0.0; alx[1] = altc / (hf - pors); //for (j=0; j<d; j++) cout << "j = " << j << "\talx = " << alx[j] << "\t";
-		for (j = 1; j<d; j++) {
-			p = 0.0; for (h = 0; h <= j; h++) p = p + hf;
-			yp = pors*x*1e-6 / (p - hf); if (j>1) xt = oprProcSoderpoPoris(rapo, legr, yp, cei); else xt = 1e0; //cout << "j = " << j << "\txt = " << xt << "\t";
-			alsf[k] = alsf[k] + pn[j] * alx[j] * xt;
-		}
-	}
-	x = 0.0; yp = 0.0; for (j = 0; j < cfk; j++) { x = x + alsf[j]; yp = yp + hf; } x = x / yp; //for (j=0; j<cfk; j++) cout << "j = " << j << "\tal_sr = " << alsf[j] << endl; 
-	delete[]rapo; delete[]srra; delete[]rcf; delete[]pn; delete[]alx; 
-	delete[]alsf; delete[]legr; delete[]prgr;
-	x = (x / altc); printf("dkops = %0.10lf\n", x); //ослабление КП за счет пористой структуры вермикулита
-	return x;
-}
-double RasFracXeffSha60(int v)
-{
-	int l = 2, k; double *mkbr = new double[l], *mv = new double[l], *tol = new double[l];
-	k = 0; mkbr[k] = 238.57; k++; mkbr[k] = 227.973; k++;
-	k = 0; mv[k] = 1.706; k++; mv[k] = 1.1; k++;
-	k = 0; tol[k] = 0.7; k++; tol[k] = 0.68; k++;
-	double rokbr = 2.75, rov = 2.69, *xv = EffectTols(mkbr, mv, tol, rov, rokbr, l), xsr = 0.0;
-	if (!v) xsr = xv[0]; else if (v == 1) xsr = xv[1];
-	delete[]mkbr; delete[]mv; delete[]tol; delete[]xv; return xsr;
-}
-double BolTochRasAlpha(int vyte, int kost, double hvp, double htk, double tc, double *ktpvo, double *vte, double *ete, int ce, int dmk, char *snm, double *Tra, double *Ref, int nao, double *ktptk, double *Ab, int vyv, double *Refa, double *Traa, double *Aba, double *Reft, double *Trat, double *Abt)
-{
-	int j, l = nao, k; double *prot = NULL, hlr0 = 1e0, hrl0 = 0.0, alks, ra = fabs(hlr0 - hrl0), tol = 1e0;
-	double *ao = new double[l], *Ts = NULL, *Tss = NULL, *Tsr = NULL, *Tna = NULL, **mu, *po, *sislr = NULL, *sisrl = NULL;
-	double *reiz, *hrl1 = NULL, *hlr1 = NULL, d = 0.0, slr = 0.0, srl = 0.0, hf = 1e0; for (j = 0; j < kost; j++) d = d + hf;
-	prot = zadrkt(1, kost, d, 0, htk, hvp, 0, 0, tc, 1, 0, prot); //vyv - выбор вещества: 0 - шамот, 1 - вермикулит
-	if (vyv>=4) { cout << "Net takogo veschestva!" << endl; k = getchar(); exit(1); }
-	mu = RaschRTA(kost, htk, 0.0, 0.0, 1, 0, hvp, 0, tc, 0, 0, 1);
-	k=0; 
-	Refa = mu[k]; k++; Traa = mu[k]; k++; Aba = mu[k];  k++; Ref = mu[k];  k++;
-	Tra = mu[k];  k++; Ab = mu[k];   k++; Reft = mu[k]; k++; Trat = mu[k]; k++; Abt = mu[k]; delete[]mu;
-	mu = opredTempLPStenSha(Ts, Tss, Tsr, Tna, tc, 2 * kost, ktpvo, vte, ete, ktptk, ce, dmk, htk, hvp, 0.0, kost, snm);
-	k = 0; Ts = mu[k]; k++; Tss = mu[k]; k++; Tsr = mu[k]; k++; Tna = mu[k]; delete[]mu;
-	mu = RaschVneshIzluchSha(Tra, Ref, prot, hlr1, hrl1, kost, hlr0, hrl0, snm);
-	k = 0; hlr1 = mu[k]; k++; hrl1 = mu[k]; k++; reiz = mu[k]; delete[]mu;
-	k = 0; slr = reiz[k]; k++; srl = reiz[k];
-	delete[]Tsr; delete[]Tna; delete[]hlr1; delete[]hrl1;
-	mu = RaschSobLuchPlotTepPot(kost, prot, Ts, Tss, Tra, Ref, Ab, slr, srl, ao, 0, snm);
-	k = 0; ao = mu[k]; k++; sislr = mu[k]; k++; sisrl = mu[k]; delete[]mu;
-	k = 0; slr = ao[k]; k++; srl = ao[k];
-	delete[]ao; delete[]prot; delete[]Ts; delete[]Tss; delete[]reiz;
-	slr = fabs(srl - slr); ra = fabs(hlr0 - hrl0); ra = slr / ra;
-	tol = d*htk + (d - hf)*hvp;
-	alks = -log(ra) / tol;
-	return alks;
-}
-double oprProcSoderpoPoris(double *raspor, double *legr, double rp, int ce)
-{
-	double *prgr = new double[ce], x = 0.0, hf = 1e-6; int k;
-	if (prgr) { for (k = 0; k < (ce - 1); k++) prgr[k] = legr[k + 1]; prgr[ce - 1] = prgr[ce - 2] + hf; }
-	else { cout << snmv << endl; k = getchar(); exit(1); }
-	for (k = 0; k < ce; k++) if ((legr[k]<rp) && (prgr[k]>rp)) { x = raspor[k] * (rp - legr[k]) / hf; break; } //cout << "x = " << x << endl;
-	for (k = 0; k<ce; k++) if (rp>prgr[k]) x = x + raspor[k]; if (x < 0.0) x = 0.0; //cout << "ra_po = " << rp << "\tx = " << x << "\t"; cout << endl;
-	delete[]prgr; return x;
-}
-double **RaschRTA(int kost, double htm, double kta, double ktb, int izm, int vyte, double hvo, int v, double ti, int c, int w, int u, double tocras, char *snm, double *Ra, double *Rt, double *R, double *Aa, double *At, double *A, double *Ta, double *Tt, double *T, double *alpha, int vybves, int cem, double *mko, double *ete, double dkoal, double dkosp)
-{
-	int k=kost, j=0, i=0; double *te=NULL, e=tocras, **mauk=NULL, hf=1e0;
-	if (!v) {
-		if ((vybves>=0) && (vybves<4)) {
-		alpha=kopo(kta, ktb, 2, ti, kost, htm, hvo, 0, alpha, snm, sfno, skpt, dkoal, dkosp, hk, cem, cektp);
-		te = kopo(kta, ktb, 0, ti, kost, htm, hvo, 0, alpha, snm, sfno, skpt, dkoal, dkosp, hk, cem, cektp); }
-		if (!c) { k = kost;
-if (Ra) delete[]Ra; Ra=new double[k];
-if (R) delete[]R; R=new double[k];
-if (Rt) delete[]Rt; Rt=new double[k];
-Ra=opredKoefOtr(te, Ra, k, tocras, 1, cem, mko, ete, 0);
-for (j = 0; j < k; j++) { Rt[j] = Ra[j]; R[j] = Ra[j]; }
-if (Ta) delete[]Ta; Ta=new double[k];
-if (Tt) delete[]Tt; Tt=new double[k];
-if (T) delete[]T; T=new double[k];
-if (Aa) delete[]Aa; Aa=new double[k];
-if (At) delete[]Atver; At=new double[k];
-if (A) delete[]A; A=new double[k];
-	for (j = 0; j < k; j++) {
-	Ta[j]=-alphaVer[j]*htm; Ta[j]=exp(Ta[j]); Aa[j]=hf-Taver[j]-Raver[j];
-	if (Aaver[j] < 0.0) { Aaver[j] = alphaVer[j] * htm; Taver[j] = 1e0 - Raver[j] - Aaver[j]; }
-				Atver[j] = Aaver[j]; Ttver[j] = Taver[j]; Aver[j] = Aaver[j]; Tver[j] = Taver[j];
-			}
-			k = kost; mauk = izmRTAVer(te, k, 1, Rver, Tver, Aver, Raver, Taver, Aaver, 0);
-			i=6; mauk[i] = Rtver; i++; mauk[i] = Ttver; i++; mauk[i] = Atver;
-		}
-		else if (c == 1) { i=1; mauk = new double*[i]; 
-		if (!mauk) { cout << snm << endl; j = getchar(); exit(1); } i=0; mauk[i] = te; }
-	}
-	else if (v == 1) {
-		te = kopoVer(0.0, 0.0, 1, ti, kost, c, htm, hvo, w, alpha); i=1;
-		mauk=new double*[i]; if (!mauk) { cout << snm << endl; j = getchar(); exit(1); } i=0; mauk[i] = te;
-	}
-	if (!u) mauk[0] = te; 
+double **RaschRTA(int kost, double htk, double kta, double ktb, int izm, double hvo, int v, double ti, int c, int w, int vybves, int cem, 
+	double *ete, double hk, int vybmar, double dkusce, double dkoscee, double thol, double tgor, double y0, char *snm, double dkosp, 
+	double *kusc, double *tkusc, int dmkoosc, double *dkoscm, double *dkosct, int dkoscl, double dkoal, double *Rmp, double *rts, int dmRef,
+	double a, double b)
+{ 
+	int k=kost, j=0, q=0, x=0; //cout << "ht = " << htk << "\thv = " << hvo << endl;
+	double *te=NULL, **mauk=NULL, hf=1e0, *alpha=NULL, t=0.0, r=0.0, *po=NULL, dko=dkoal*dkosp, *arg=NULL; 
+	if (dko<0.0) dko=0.0; if (dko>hf) dko=hf;
+	if (!v) { if ((vybves>=0) && (vybves<4)) { //определение коэффициентов поглощения при температуре стенок
+		mauk=KoefPoglSten(kta, ktb, v, ti, kost, htk, hvo, x, dkoal, dkosp, hk, cem, thol, tgor, y0, vybves, vybmar);
+		q=0; alpha=mauk[q]; q++; te=mauk[q]; /*for (k=0; k<kost; k++) cout << "al = " << alpha[k] << "\tte = " << te[k] << endl;*/ }
+		if (!c) { k=kost; //задание коэффициентов отражения, поглощения и пропускания: v=0, c=0
+double *Ra=NULL, *R=new double[kost], *Rt=new double[kost]; //Ra=opredKoefOtr(te, k, vybves, cem, ete, vybmar, snm, dko); //for (k=0; k<kost; k++) cout << "R = " << Ra[k] << "\t"; cout << endl;
+Ra=new double[kost]; for (k=0; k<kost; k++) { t=opredKTPTKToch(Rmp, rts, te[k], dmRef);
+if (t<0.0) t=0.0; if (t>hf) t=hf; Ra[k]=t; }
+for (k=0; k<kost; k++) { Rt[k]=Ra[k]; R[k]=Ra[k]; }
+double *Ta=new double[kost], *Tt=new double[kost], *T=new double[kost];
+double *Aa=new double[kost], *At=new double[kost], *A=new double[kost];
+k=3; x=k; j=38; arg=new double[k]; 
+k=0; arg[k]=a; k++; arg[k]=b; k++; arg[k]=hvo;
+if ((!A) || (!Aa) || (!At) || (!Ta) || (!Tt) || (!T) || (!Rt) || (!R) || (!Ra) || (!arg)) { cout << snm << endl; k=getchar(); exit(1); }
+	for (k=0; k<kost; k++) {
+	Ta[k]=-alpha[k]*htk; Ta[k]=exp(Ta[k]);
+	T[k]=Ta[k];
+	Aa[k]=hf-Ta[k]-Ra[k];
+	A[k]=Aa[k];
+	q=3; Tt[k]=integroexponen(q, alpha[k]*htk)*VIEW(j, x, arg, k);
+	At[k]=hf-Rt[k]-Tt[k]; }
+		if (mauk) delete[]mauk; if (arg) delete[]arg;
+		k=9; mauk=new double*[k]; if (!mauk) { cout << snm << endl; k=getchar(); exit(1); }
+		k=kost; q=1;
+		mauk=izmRTA(k, q, R, T, A, Ra, Ta, Aa, Rt, Tt, At, snm, mauk, te, kusc, tkusc, dmkoosc, dkoscm, dkosct, dkoscl); 
+		if (alpha) delete[]alpha; if (te) delete[]te; } } //отправляется массив температур
+	else if (v == 1) mauk=KoefPoglSten(t, r, v, ti, kost, htk, hvo, w, dkoal, dkosp, hk, cem, thol, tgor, y0, vybves, vybmar); //поиск коэффициента поглощения при температуре ti
 	return mauk;
 }
-double *kopo(double kta, double ktb, int vyb, double tl, int kost, double htk, double hvp, int w, double *al, char *snm, char *sfno, char *skpt, double dkoal, double dkosp, double hk, int cem, int cektp)
+//-----
+double **KoefPoglSten(double kta, double ktb, int vyb, double tl, int kost, double htk, double hvp, int w, double dkoal, 
+	double dkosp, double hk, int cem, double thol, double tgor, double tol, int vybves, int vybmar)
 {
-	int k=0, q=100, j=0, r=0, f=0;
-	double te0=273.15, t0=2e1, te=t0+te0, dte=1e0, t=0.0, *p=NULL, a1=0.0, a2=0.0, t1=0.0, t2=0.0;
+	int k=0, q=100, j=0, r=0, f=0, i=2, u=1;
+	char ch='\0', **unau=napolStrok(vybves, vybmar, ch), *snm=unau[k], *sfno=unau[u];
+	char **mauk=napNazvFile(vybves, vybmar, snm, ch), *skpt=mauk[i];
+	double te0=273.15, t0=22.0, te=t0+te0, dte=1e0, t=0.0, *p=NULL, dko=0.0, hf=1e0;
+	double a1=0.0, a2=0.0, t1=0.0, t2=0.0, **mu=NULL, **muv=NULL;
 	char *s=new char[q]; KoePog *kp=new KoePog, *ne=NULL, *roo=NULL, *pre=NULL;
-	if ((!kp) || (!s)) { cout << snm << endl; j=getchar(); exit(1); } for (j=0; j < q; j++) s[j] = '\0';
+	if ((!kp) || (!s)) { cout << snm << endl; j=getchar(); exit(1); } for (j=0; j<q; j++) s[j]=ch;
 	ifstream fin; fin.open(skpt); if (!fin.is_open()) { cout << sfno << endl; j=getchar(); exit(1); }
-	roo = kp; k = 0; while (!fin.eof()) {
+	if (dkosp>hf) dkosp=hf; if (dkosp<0.0) dkosp=0.0; if (dkoal>hf) dkoal=hf; if (dkoal<0.0) dkoal=0.0;
+	dko=dkoal*dkosp;
+	roo=kp; k=0; while (!fin.eof()) {
 		fin.getline(s, q, '\n');
 		ne = new KoePog; if (!ne) { cout << snm << endl; j = getchar(); exit(1); }
-		kp->alp = atof(s)*dkoal*dkosp; kp->tem = te; 
-		kp->nex = ne; pre = kp; kp = ne; k++; te = te + dte; kp->nex = NULL;
-	}
-	if (ne) delete[]ne; kp=NULL; pre->nex=kp; if (s) delete[]s; r=k;	fin.close(); //cout << "r = " << r << "\tvyb = " << vyb << endl;
-	if ((!vyb) || (vyb == 2)) { //поиск массива коэффициентов поглощения при температурах стенок
-		f = 2; double *xi = new double[kost], *teks = new double[kost], *koe = new double[f], knat=0.0;
-		if ((!teks) || (!koe) || (!xi)) { cout << snm << endl; j = getchar(); exit(1); }
-		teks = oprRasTemNach(cem, cektp, teks, koe, kost, xi, htk, hvp, hk, kta, ktb, w);
-		for (k = 0; k < kost; k++) {
-			kp = roo->nex; pre = roo; j = 0; t = teks[k];
+		kp->alp=atof(s)*dko; kp->tem=te; 
+		kp->nex=ne; pre=kp; kp=ne; k++; te=te+dte; kp->nex=NULL; }
+	if (ne) delete[]ne; kp=NULL; pre->nex=kp; if (s) delete[]s; r=k; fin.close(); 
+	if (!vyb) { //поиск массива коэффициентов поглощения при температурах стенок
+		f=2; mu=new double*[i]; 
+		double knat=0.0, *al=new double[kost], *teks=NULL, *xi=NULL;
+		if ((!al) || (!mu)) { cout << snm << endl; j=getchar(); exit(1); }
+		muv=oprRasTemNach(kost, htk, hvp, hk, kta, ktb, w, thol, tgor, tol, snm); //cout << "w = " << w << "\tvyb = " << vyb << endl;
+		k=0; teks=muv[k]; k++; xi=muv[k]; 
+		for (k=0; k<kost; k++) {
+			kp=roo->nex; pre=roo; j=0; t=teks[k];
 			while ((kp) && (j<r)) {
-				if (kp->tem>t) {
-					a1 = pre->alp; a2 = kp->alp; 
-					t1 = pre->tem; t2 = kp->tem; 
-					knat = (a2 - a1) / (t2 - t1); 
-					al[k] = a1 + knat*(t - t1); break; }
-				else { pre = kp; kp = kp->nex; } j++; } } 
-		if (xi) delete[]xi; if (koe) delete[]koe;
-		if (vyb == 2) { p = al; delete[]teks; }
-		else p = teks;
-	}
-	if (vyb == 1) { //поиск конкретного коэффициента поглощения при данной температуре tl
-		kp = roo->nex; j = 0; pre = roo; t = 0.0;
+				if (kp->tem>=t) {
+					a1=pre->alp; a2=kp->alp; 
+					t1=pre->tem; t2=kp->tem; 
+					knat=(a2-a1)/(t2-t1); 
+					al[k]=a1+knat*(t-t1); break; }
+				else { pre=kp; kp=kp->nex; } j++; } } 
+		if (xi) delete[]xi; if (muv) delete[]muv;
+		k=0; mu[k]=al; k++; mu[k]=teks; }
+	if (vyb==1) { //поиск конкретного коэффициента поглощения при данной температуре tl
+		kp=roo->nex; j=0; pre=roo; t=0.0;
 		while ((kp) && (j<r)) {
-			if (kp->tem>tl)
-			{
-				a1 = pre->alp; a2 = kp->alp; 
-				t1 = pre->tem; t2 = kp->tem; 
-				t = a1 + (a2 - a1)*(tl - t1) / (t2 - t1); break; }
-			else { pre = kp; kp = kp->nex; } j++; } j = 1; p = new double[j]; j=0;
-		if (p) p[j] = t; else { cout << snm << endl; j = getchar(); exit(1); } }
-	kp = roo; while (kp) { ne = kp->nex; delete kp; kp = ne; } //удаление списка
-	return p;
+			if (kp->tem>tl) {
+				a1=pre->alp; a2=kp->alp; 
+				t1=pre->tem; t2=kp->tem; 
+				t=a1+(a2-a1)*(tl-t1)/(t2-t1); break; }
+			else { pre=kp; kp=kp->nex; } j++; } j=1; p=new double[j]; j=0; w=1; mu=new double*[w];
+			if ((p) && (mu)) { p[j]=t; mu[j]=p; } else { cout << snm << endl; j=getchar(); exit(1); } }
+	kp=roo; while (kp) { ne=kp->nex; delete kp; kp=ne; } //удаление списка
+	j=4; for (k=0; k<j; k++) { skpt=mauk[k]; if (skpt) delete[]skpt; } if (mauk) delete[]mauk; //удаление имен файлов
+	j=2; for (k=0; k<j; k++) { skpt=unau[k]; if (skpt) delete[]skpt; } if (unau) delete[]unau; 
+	return mu;
 }
-double *oprRasTemNach(int ce, int cee, double *teks, double *koe, int kost, double *xi, double htch, double hvozd, double hko, double a, double b, int w, double tocras, int cemunau, int vt, double *thol, double *tgor, double tol)
-{
-	int k=0, j=0, f=cemunau; 
-	double e=tocras, hkx=0.0, ht=0.0, tsre=0.0, **mu=new double*[f]; 
-	if (!w) {
-		hkx=hko; k=0; koe[k]=(thol[vt]-tgor[vt])/tol; k++; koe[k]=tgor[vt];
-	}
-	else if (w==1) { hkx=tol/2e0; k=0; koe[k]=a; k++; koe[k]=b; }
-	k=0; xi[k]=hkx+htch/2e0; ht=hvozd+htch; for (k=1; k<kost; k++) xi[k]=xi[k-1]+ht; //массив середин каждой из стенок по толщине
-	j=0; for (k=0; k<kost; k++) teks[k]=koe[j]*xi[k]+koe[j+1];
-	k=0; j=kost-1; tsre=(teks[k]+teks[j])/2e0; //qobsha = opredKTPTKTochSha(qob, etesha, tsre, ce); //for (k=0; k<kost; k++) cout << "k = " << k << "\txk = " << xi[k] << "\ttex = " << teks[k] << endl;
-	if (mu) delete[]mu;
-	return teks;
+//-----
+double **izmRTA(int kost, int izm, double *Ra, double *Ta, double *Aa, double *Rb, double *Tb, double *Ab, double *Rc, 
+	double *Tc, double *Ac, char *snm, double **mu, double *temp, double *kusc, double *tkusc, int dmkoosc, double *dkoscm, 
+	double *dkosct, int dkoscl)
+{ //поиск изменения степени черноты или безразмерного коэффициента поглощения
+	double hf=1e0, dkusce=hf, dkoscee=hf, dko=hf; 
+	int k=0, v=0;
+	if (izm) { for (k=0; k<kost; k++) {
+	dkusce=opredKTPTKToch(kusc, tkusc, temp[k], dmkoosc); if (dkusce>hf) dkusce=hf; if (dkusce<0.0) dkusce=0.0;
+	dkoscee=opredKTPTKToch(dkoscm, dkosct, temp[k], dkoscl); if (dkoscee>hf) dkoscee=hf; if (dkoscee<0.0) dkoscee=0.0; //izm = 0 - нет изменений, izm=1 - учитываются изменения
+	dko=dkusce*dkoscee;
+	Aa[k]=Aa[k]*dko; Ta[k]=hf-Aa[k]-Ra[k]; Tb[k]=Ta[k]; Ab[k]=Aa[k]; } } //Ra - КО с учетом уменьшения, Rb - с учетом переотражений для внешнего излучения, Rc - для собственного излучения
+		for (k=0; k<kost; k++) {
+			Rb[k]=pow((hf-Ra[k])*Ta[k], 2e0)*Ra[k]/(hf-pow(Ra[k]*Ta[k], 2e0)*(hf-Ra[k]))+Ra[k]; 
+			Rc[k]=pow((hf-Ra[k])*Tc[k], 2e0)*Ra[k]/(hf-pow(Ra[k]*Tc[k], 2e0)*(hf-Ra[k]))+Ra[k]; 
+			Tb[k]=pow(hf-Ra[k], 2e0)*Ta[k]/(hf-pow(Ra[k]*Ta[k], 2e0)*(hf-Ra[k]));
+			Tc[k]=pow(hf-Ra[k], 2e0)*Tc[k]/(hf-pow(Ra[k]*Tc[k], 2e0)*(hf-Ra[k]));
+			Ab[k]=hf-Tb[k]-Rb[k]; 
+			Ab[k]=hf-Tc[k]-Rc[k]; } 
+	k=0; mu[k]=Ra; k++; mu[k]=Ta; k++; mu[k]=Aa; k++; mu[k]=Rb; k++; mu[k]=Tb; k++; mu[k]=Ab;
+	k++; mu[k]=Rc; k++; mu[k]=Tc; k++; mu[k]=Ac;
+	return mu;
 }
-double *zadrkt(int zf, int kost, double d, int vyte, double htk, double hvo, int prod, int vy, double tc, int c, int u, double *rta, char *snm)
+//-----
+double BolTochRasAlpha(int kost, double hvp, double por, double tc, double *ktpvo, double *vte, double *ete, int cem, int dmkvoz, 
+	char *snm, double *ktptk, int vybves, int vybmar, int dmkoosc, double *kusc, double *tkusc, double *dkoscm, double *dkosct, 
+	int dkoscl, double thol, double tgor, double y0, double dkoal, double dkosp, double hk, double qobsh, int kolPok, double htk, 
+	double dkusce, double dkoscee, double dpctpe, double *stch, double p1, double p2, int vp, double *Refm, double *rts, int dmrts, 
+	int vfqi)
 {
-	int j; double **mu = RaschRTA(kost, htk, 0.0, 0.0, 1, vyte, hvo, 0, tc, 1, 0, 0), *tt = mu[0], *te = new double[kost];
-	if (!te) { cout << snm << endl; j = getchar(); exit(1); }
-	else for (j = 0; j < kost; j++) te[j] = tt[j];
-	if (!u) {
-		int k = 0, kst, q = 0, m = 4, b;
-		double *prs = new double[m*kost*kost], *pr = new double[m], Er;
-		if ((!prs) || (!pr)) { cout << snm << endl; k = getchar(); exit(1); }
-		for (k = 0; k < (m*kost*kost); k++) prs[k] = 0.0;
-		q = 0; for (kst = 1; kst <= kost; kst++)
-		{
-			for (b = 0; b < m; b++) pr[b] = 0.0;
-			for (k = 1; k <= kost; k++) {
-				pr = izstN(k, kst, m, kost);
-				for (b = 0; b < m; b++) prs[q + b] = pr[b]; q = q + m;
-			}
-		}
-		if (prod == 1) Er = opredLuchSost(prs, te, q, zf, vyte);
-		delete[]pr; delete[]te; delete[]tt; delete[]mu; return prs;
-	}
-	else { delete[]tt; delete[]mu; return te; }
+	int j=0, nk=j, l=0, k=0, zf=0, iz=1, v=0, c=0, w=0; //w - расчет температуры, iz - изменение
+	double ***protv=NULL, ***prots=NULL, hf=1e0, hlr0=hf, hrl0=0.0, vyzn=0.0, ra=fabs(hlr0-hrl0), tol=0.0, *ktr=NULL, *reiz=NULL;
+	double *Ts=NULL, *Tss=NULL, **mu=NULL, **mauk=NULL, *po=NULL, *sislr=NULL, *sisrl=NULL;
+	double d=0.0, ka=d, kb=d, e=1e-9, mo=-hf, tx=tgor-fabs(tgor-thol)*hk/y0, r=0.0;
+	for (j=0; j<kost; j++) d=d+hf; tol = d*htk + (d - hf)*hvp;
+	if (vybves>=4) { cout << "Net takogo veschestva!" << endl; k = getchar(); exit(1); }
+	mauk=RaschRTA(kost, htk, ka, kb, iz, hvp, v, tc, c, w, vybves, cem, ete, hk, vybmar, dkusce, dkoscee, thol, tgor, y0, snm, dkosp, 
+		kusc, tkusc, dmkoosc, dkoscm, dkosct, dkoscl, dkoal, Refm, rts, dmrts, p1*hvp, p2*hvp);
+	double *Refa=NULL, *Traa=NULL, *Aba=NULL, *Ref=NULL, *Tra=NULL, *Ab=NULL, *Reft=NULL, *Trat=NULL, *Abt=NULL;
+	k=0; Refa=mauk[k]; k++; Traa=mauk[k]; k++; Aba=mauk[k];  k++; Ref=mauk[k];
+	k++; Tra=mauk[k];  k++; Ab=mauk[k];   k++; Reft=mauk[k]; k++; Trat=mauk[k]; k++; Abt=mauk[k]; k++; nk=k; //for (k=0; k<kost; k++) cout << "R = " << Ref[k] << "\tT = " << Tra[k] << "\tA = " << Ab[k] << endl;
+	j=0; protv=zadrkt(kost, snm, kolPok, Ref, Tra, htk, hvp, p1*hvp, p2*hvp, j); //vyv - выбор вещества: 0 - шамот, 1 - вермикулит
+	j++; prots=zadrkt(kost, snm, kolPok, Ref, Tra, htk, hvp, p1*hvp, p2*hvp, j); 
+	mu=opredTempLPSten(tc, 2*kost, ktpvo, vte, ete, ktptk, cem, dmkvoz, htk, hvp, qobsh, kost, snm, mo);
+	k=0; Ts=mu[k]; k++; Tss=mu[k]; k++; if (mu) delete[]mu;
+	ktr=KoefPoglRosselNac(ete, cem, dkosp, dkoal, vybves, vybmar); //for (k=0; k<cem; k++) cout << "ktr ( " << k << " ) = " << ktr[k] << "\t"; cout << endl;
+	hlr0=opredKTPTKToch(ktr, ete, tc, cem); if (hlr0<0.0) hlr0=0.0; //cout << "KTP_Ros = " << hlr0 << endl;
+	hlr0=fabs(hlr0*opredTempStenFragm(tc, 2*kost, ktpvo, vte, ete, ktptk, cem, dmkvoz, htk, hvp, qobsh, mo)/tol); //cout << "hlr = " << hlr0 << endl;
+	k=0; r=0.0; 
+	po=RasIzlSerStenNacSok(Ref, Tra, Ab, protv, prots, tc, hlr0, hrl0, por, dpctpe, htk, hvp, kost, ete, ktptk, cem, ktpvo, vte, snm, stch, dmkvoz, 
+		qobsh, hk, p1, p2, tx, dkosp, dkoal, vybves, vybmar, vp, ktr, cem, r, k, -1, vfqi, kolPok); //for (k=0; k<kost; k++) cout << "Ts = " << Ts[k] << "\tTss = " << Tss[k] << "\t\t"; cout << endl; 
+	k=0; vyzn=po[k]; if (po) delete[]po;
+	if (protv) delete[]protv; if (prots) delete[]prots; if (Ts) delete[]Ts; if (Tss) delete[]Tss; 
+	for (k=0; k<nk; k++) { po=mauk[k]; if (po) delete[]po; } if (mauk) delete[]mauk; if (ktr) delete[]ktr;
+	return vyzn;
 }
-double *izstN(int izst, int kst, int l, int ocs, double *R, double *T, int N)
+//-----
+double RasFracXeff(int fr, int v, int vyve, int vyma, char *snm)
 {
-	int k; double *o;
-	if (abs(izst - kst) <= N) o = podschchiele(izst, kst, ocs, R, T);
-	else {
-		o = new double[l]; if (!o) { cout << "No memory!"; k = getchar(); exit(1); }
-		for (k = 0; k < l; k++) o[k] = 0.0;
-	}
-	return o;
+	int l=6, k=0, j=0, i=0; 
+	if (!vyve) l=2; //если выбран шамот
+	else if (vyve==1) { if ((!fr) || (fr==3)) l=6; else if ((fr==1) || (fr==2)) l=9; } //если выбран  вермикулит
+	double *mkbr=new double[l], *mv=new double[l], *tol=new double[l];
+	double rokbr=2.75, rov=0.0, *xv=NULL, xsr=0.0, hf=1e0;
+	if (!vyve) { //если выбран шамот
+	k=0; mkbr[k]=238.57; k++; mkbr[k]=227.973; k++;
+	k=0; mv[k]=1.706;    k++; mv[k]=1.1;       k++;
+	k=0; tol[k]=0.7;     k++; tol[k]=0.68;     k++;
+	rov = 2.69; xv=EffectTols(mkbr, mv, tol, rov, rokbr, l, snm);
+	k=0; j=1; if (!v) xsr = xv[k]; else if (v == 1) xsr = xv[j]; }
+	if (vyve==1) { //если выбран  вермикулит
+	if (!fr) {
+	k=0; mkbr[k]=250.239; k++; mkbr[k]=249.740; k++; mkbr[k]=249.223; k++;
+		 mkbr[k]=250.395; k++; mkbr[k]=250.336; k++; mkbr[k]=249.55;
+	k=0; mv[k]=0.283;     k++; mv[k]=0.464;     k++; mv[k]=0.812; k++;
+		 mv[k]=0.22;      k++; mv[k]=0.547;     k++; mv[k]=0.777;
+	k=0; tol[k]=0.73;     k++; tol[k]=0.72;     k++; tol[k]=0.72; k++;
+		 tol[k]=0.72;     k++; tol[k]=0.71;     k++; tol[k]=0.7;
+	rov=0.49; xv=EffectTols(mkbr, mv, tol, rov, rokbr, l, snm);
+		if (!v) { k=0; j=3; } //выбор концентрации вермикулита
+		if (v == 1) { k=1; j=4; }
+		if (v == 2) { k=2; j=5; } xsr=(xv[k]+xv[j])/2e0; }
+	else if (fr==1) {	
+	k=0; mkbr[k]=250.0;  k++; mkbr[k]=249.629; k++; mkbr[k]=249.294; k++; mkbr[k]=249.706; k++;
+	     mkbr[k]=249.51; k++; mkbr[k]=249.307; k++; mkbr[k]=250.328; k++; mkbr[k]=249.604; k++; mkbr[k]=249.206;
+	k=0; mv[k]=0.255;    k++; mv[k]=0.539;     k++; mv[k]=0.809;     k++; mv[k]=0.295;     k++;
+	     mv[k]=0.517;    k++; mv[k]=0.756;     k++; mv[k]=0.36;      k++; mv[k]=0.534;	   k++; mv[k]=0.843;
+	k=0; tol[k]=0.72;    k++; tol[k]=0.71;     k++; tol[k]=0.7;      k++; tol[k]=0.7;      k++;
+		 tol[k]=0.73;    k++; tol[k]=0.72;     k++; tol[k]=0.74;     k++; tol[k]=0.7;      k++; tol[k]=0.76;
+	rov=0.52; xv=EffectTols(mkbr, mv, tol, rov, rokbr, l, snm);
+	if (!v) { k=0; j=3; i=6; } 
+	if (v == 1) { k=1; j=4; i=7; } 
+	if (v == 2) { k=2; j=5; i=8; } xsr=(xv[k]+xv[j]+xv[i])/3e0; }
+	else if (fr==2) {
+	k=0; mkbr[k]=249.913; k++; mkbr[k]=249.607; k++; mkbr[k]=249.218; k++; mkbr[k]=249.929; k++;
+		 mkbr[k]=249.695; k++; mkbr[k]=249.306; k++; mkbr[k]=250.405; k++; mkbr[k]=249.625; k++; mkbr[k]=249.348;
+	k=0; mv[k]=0.315;     k++; mv[k]=0.473;     k++; mv[k]=0.709;     k++; mv[k]=0.293;     k++;
+		 mv[k]=0.528;     k++; mv[k]=0.83;      k++; mv[k]=0.27;      k++; mv[k]=0.493;     k++; mv[k]=0.764;
+	k=0; tol[k]=0.74;     k++; tol[k]=0.74;     k++; tol[k]=0.72;     k++; tol[k]=0.72;     k++;
+		 tol[k]=0.71;     k++; tol[k]=0.7;      k++; tol[k]=0.78;     k++; tol[k]=0.73;     k++; tol[k]=0.76;
+	rov = 0.53; xv = EffectTols(mkbr, mv, tol, rov, rokbr, l, snm);
+	if (!v) { i=0; j=3; k=6; } 
+	if (v == 1) { i=1; j=4; k=7; } 
+	if (v == 2) { i=2; j=5; k=8; } xsr=(xv[i]+xv[j]+xv[k])/3e0; }
+	else if (fr==3) {
+	k=0; mkbr[k]=250.882; k++; mkbr[k]=249.590; k++; mkbr[k]=249.213; k++;
+		 mkbr[k]=250.299; k++; mkbr[k]=249.441; k++; mkbr[k]=249.365;
+	k=0; mv[k]=0.320;     k++; mv[k]=0.533;     k++; mv[k]=0.849; k++;
+		 mv[k]=0.223;     k++; mv[k]=0.502;     k++; mv[k]=0.797;
+	k=0; tol[k]=0.76;     k++; tol[k]=0.72;     k++; tol[k]=0.69; k++;
+		 tol[k]=0.73;     k++; tol[k]=0.73;     k++; tol[k]=0.73;
+	rov = 0.56; xv=EffectTols(mkbr, mv, tol, rov, rokbr, l, snm);
+	if (!v) { j=0; k=3; } 
+	if (v == 1) { j=1; k=4; } 
+	if (v == 2) { j=2; k=5; } xsr=(xv[j]+xv[k])/2e0; } }
+	else if (vyve==2) { //если выбран ИТОМ
+	k=0; mkbr[k]=230.078; k++; mkbr[k]=231.006; k++;
+	k=0; mv[k]=0.95;      k++; mv[k]=1.19;      k++;
+	k=0; tol[k]=0.64;     k++; tol[k]=0.64;     k++;
+	if (!vyma) rov=0.44; else if (vyma==1) rov=0.62; 
+	else if (vyma==2) rov=0.86; else if (vyma==4) rov=1e0;
+	xv = EffectTols(mkbr, mv, tol, rov, rokbr, l, snm);
+	if ((!v) || (v==1)) xsr = xv[v]; }
+	else if (vyve==3) { //если выбран КВИ
+	k=0; mkbr[k]=230.078; k++; mkbr[k]=231.006; k++;
+	k=0; mv[k]=0.95;  k++; mv[k]=1.19;  k++;
+	k=0; tol[k]=0.64; k++; tol[k]=0.64; k++;
+	rov=0.4; xv = EffectTols(mkbr, mv, tol, rov, rokbr, l, snm); xsr = 0.0;
+	if ((!v) || (v==1)) xsr=xv[v]; }
+	if (mkbr) delete[]mkbr; if (mv) delete[]mv; if (tol) delete[]tol; if (xv) delete[]xv; 
+	return xsr;
 }
-double *FuncRaschIzl(double ta, double tb, double d, double tc, int m, double *prot, double de, double *ao, double rez, double rap, double b, double c, int vybo, double *qobve, double *eteve, int cemve, int vyve, char *snm, double dpct, int vyte, double *ektpve, double y0ve, double *ktrve, double *kttkve, int kost, double *ktpvove, double *vteve, int dmkvove, double *ecktpve, double htch, double hvoz, double *Refe, double *Trae, double *Abse, double *Reft, double *Trat, double *Abst, double *txve, double *qxve, double *dtxve, int sctve, double tocrasve, double poristost, int dmao, double *stchsrve, double *Tpctve, double b0, double c0, double mk, char *navyfa, int fla)
+double *EffectTols(double *mkbr, double *mv, double *tol, double rov, double rokbr, int n, char *snm)
 {
-	int j, zf = 1, cels = 6, k, nvm = 11, ksu = 2 * kost, nfm = 28;
-	double qrr = 0.0, qr = 0.0, gtm = 0.0, dtma = 0.0, t = 0.0, hlr0 = 0.0, hrl0 = 0.0, rhlr0 = 0.0, slr = 0.0, srl = 0.0, ra10, **mu, ra9, ra, ra7;
-	double *Ts = NULL, *Tss = NULL, *sislr = NULL, *sisrl = NULL, *Tna = NULL, *reiz = NULL, *hrl1 = NULL, *hlr1 = NULL, *Tsr = NULL, qis;
-	double *fm = new double[nfm], ktptk, ecktp, ktpr, dp = (1e0 - dpct), qs, *tevy = NULL, r, tesr, dote, p, *vm = new double[nvm];
-	double qobvee, gg, ep = tocrasve, rr, ra0, tcc=(ta+tb)/2e0, *Evsv=NULL;
-	if (!vm) { cout << snm << endl; k = getchar(); exit(1); }
-	gtm = LuchKTPChudnovsky(Abse, tc, kost, hvoz); //по Чудновскому
-	qobvee = opredKTPTKTochSha(qobve, eteve, tc, cemve); if (qobvee <= 0.0) qobvee = opredKTPTKTochSha(qobve, eteve, eteve[vyte], cemve);
-	qs = dp*qobvee;
-	p = opredKTPTKTochSha(ektpve, eteve, tc, cemve);
-	dtma = fabs(tb - ta);
-	gtm = dtma / y0ve;
-	ktpr = opredKTPTKTochSha(ktrve, eteve, tc, cemve);
-	qr = ktpr*gtm; qrr = qr;
-	ktptk = opredKTPTKTochSha(kttkve, eteve, tc, cemve);
-	ecktp = opredKTPTKTochSha(ecktpve, eteve, tc, cemve);
-	if (!m) { t = (dpct*ecktp*b + (1e0 - dp*b)*ktptk); if (fabs(t) > ep) hlr0 = qs*ktpr / t; else hlr0 = 0.0; }
-	else hlr0 = rez; hrl0 = 0.0; rhlr0 = hlr0 - hrl0;
-	if (qs<rhlr0) { rhlr0 = qs; hlr0 = rhlr0 + hrl0; }
-	mu = opredTempLPStenSha(Ts, Tss, Tsr, Tna, tc, ksu, ktpvove, vteve, eteve, kttkve, cemve, dmkvove, htch, hvoz, qs - rhlr0, kost, snm);
-	k = 0; Ts = mu[k]; k++; Tss = mu[k]; k++; Tsr = mu[k]; k++; Tna = mu[k]; delete[]mu;
-	mu = RaschVneshIzluchSha(Trae, Refe, prot, hlr1, hrl1, ks, hlr0, hrl0, snms);
-	k = 0; hlr1 = mu[k]; k++; hrl1 = mu[k]; k++; reiz = mu[k]; slr = reiz[0]; srl = reiz[1]; ra0 = slr - srl; delete[]mu;
-	tevy = reshnewtrafs(prot, Tna, hlr1, hrl1, zf, Trae, Abse, kost, kttkve, eteve, cemve, ktpvove, vteve, dmkvove, qs, txve, qxve, sctve, htch, hvoz, tocrasve, ektpve, cels + 2 * kost, tb, ta, y0ve, snms);
-	tesr = tevy[2]; txve[sctve] = tesr; qxve[sctve] = tevy[1]; dtxve[sctve] = tevy[0]; gtm = tevy[4];
-	if ((m>0) && (fabs(tevy[4]) > 0.0)) r = tevy[1] * b*dp / tevy[4] + opredKTPTKTochSha(kttkve, eteve, tesr, cemve)*(1e0 - b*dp); else r = 0.0; dote = tevy[5]; delete[]tevy;
-	if (r<0.0) r = 0.0; if (fabs(p) > ep) gg = fabs((r - p) / p)*1e2; else gg = mk; if (mk < gg) { b0 = b; c0 = c; mk = gg; }
-	for (j = 0; j < dmao; j++) ao[j] = 0.0;
-	mu = RaschSobLuchPlotTepPot(kost, prot, Ts, Tss, Trae, Refe, Abse, slr, srl, ao, 0, snm); 
-	k = 0; ao = mu[k]; k++; sislr = mu[k]; k++; sisrl = mu[k]; delete[]mu;
-	mu = RasLuchPloTepPot(kost, hrl1, hlr1, ao, Trae, Refe, Abse, 2, sislr, sisrl, Tsr, snm); 
-	k = 0; ao = mu[k]; k++; delete[]reiz; reiz = mu[k]; k++; Evsv=mu[k]; delete[]mu; 
-	k = 0; slr = ao[k]; k++; srl = ao[k]; ra = slr - srl;
-	qr = RasIzlSerStenNac(Refe, Trae, Abse, prot, Reft, Trat, Abst, tc, hlr0, hrl0, b, vyve, poristost, dpct, htch, hvoz, kost, eteve, kttkve, cemve, vyte, qobve, ktpvove, vteve, snm, dmao, stchsrve, Tpctve, dmkvove); qis = qr; //0 - шамот, 1 - вермикулит, 2 - ИТОМ
-	qr = (qr*(d - 1e0) + ra)*dp*b / d;
-	k = 7; ra7 = (ra + ao[k] * (d - 1e0)) / d; ra7 = ra7*dp*c*b; //ra7=qrr+ra7; 
-	k = 9; ra9 = (ra + ao[k] * (d - 1e0)) / d; ra9 = ra9*dp*c*b; //ra9=ra9+qrr; //c - поправка на разрешающие угловые коэффициенты из-за небесконечности стенок, b - их аспектное соотношение (поправка на их некубичность)
-	k = 10; ra10 = (ra + ao[k] * (d - 1e0)) / d; ra10 = ra10*dp*c*b; //ra10=qrr+ra10; 
-	rez = ra; t = opredKTPTKTochSha(kttkve, eteve, tc, cemve); 
-	if (fabs(p) > ep) gg = fabs((r - p) / p)*1e2; else gg = mk; if (mk>gg) { b0 = b; c0 = c; mk = gg; }
-	if (fabs(qr) > ep) rr = ra9/qr; else rr = 0.0;
-	k = 0; fm[k] = rr; k++; fm[k] = dote;     k++; fm[k] = qr;      k++; fm[k] = qrr;      k++; fm[k] = r;         k++; fm[k] = gg;    k++;
-	fm[k] = b;         k++; fm[k] = c;        k++; fm[k] = qis;     k++; fm[k] = ao[5];    k++; fm[k] = ao[7];     k++; fm[k] = ao[9]; k++;
-	fm[k] = ao[10];    k++; fm[k] = qobvee;   k++; fm[k] = rap;     k++; fm[k] = t;        k++; fm[k] = ra9;       k++; fm[k] = ra10;  k++;
-	fm[k] = ta;        k++; fm[k] = tb;       k++; fm[k] = ra0;	    k++; fm[k] = ra9 - qr; k++; fm[k] = ra10 - qr; k++; fm[k] = ra7;   k++; 
-	fm[k] = ra7 - qr;  k++; fm[k] = ra;       k++; fm[k] = hksha;   k++; fm[k] = tcc;	   k++;
-	if (fla) { vyvodfile(fm, nfm, 2, 0.0, navyfa); //cout << "tc = " << tc << "\ttNR = " << dote << "\tqr = " << qr << "\tqrr = " << qrr; cout << "\tktp = " << r << "\topktp = " << gg << "\tb = " << b << "\tc = " << c << "\tqss = " << qis; cout << "\tao5 = " << ao[5] << "\tao7 = " << ao[7] << "\tao9 = " << ao[9] << "\tao10 = " << ao[10] << "\tqob = " << qobvee; cout << "\trap = " << rap << "\tktp_tk = " << t << "\tra9 = " << ra9 << "\tra10 = " << ra10; cout << "\tta = " << ta << "\ttb = " << tb << "\tslr-srl = " << slr - srl << "\tra9-qr = " << (ra9 - qr) << "\tra10-qr = " << ra10 - qr << endl; 
-	} delete[]fm; delete[]sislr; delete[]sisrl; delete[]hlr1; delete[]hrl1; 
-	delete[]reiz; delete[]Tsr; delete[]Ts; delete[]Tss; delete[]Tna; delete []Evsv;
-	k = 0; vm[k] = ra; k++; vm[k] = qr; k++; vm[k] = qrr; k++; vm[k] = ra9 - qr; k++; vm[k] = dote; k++; 
-	vm[k] = b0; k++; vm[k] = c0; k++; vm[k] = mk; k++; vm[k] = rr; k++; vm[k] = gg; k++; vm[k] = r; return vm;
+	int k=0; 
+	double *vkbr=new double[n], *vv=new double[n], *xvo=new double[n], hf=1e0, t=hf*1e3;
+	if ((!vkbr) || (!vv) || (!xvo)) { cout << snm << endl; k=getchar(); exit(1); }
+	for (k = 0; k < n; k++) {
+		vkbr[k] = mkbr[k] / (t*rokbr);
+		vv[k] = mv[k] / (t*rov);
+		xvo[k] = (vv[k] / (vv[k] + vkbr[k]))*tol[k] * t; }
+	if (vkbr) delete[]vkbr; if (vv) delete[]vv; 
+	return xvo;
 }
-double oprEffDoliTepPeren(double ko, double d, double por, double ektp, int kost, double qobsh, double e, double *ktpvo, double *vte, int cem, char *snm, double *ete, double kttk, int dmkvo, double *ete, double tsr)
+double RaschAlphaTvKar(int vybves, int vybmar, int vystsha, int vfv, int vsv, int isrp, int vpkf, double por, char *snm, int d, double dpctpe, 
+	int vrsh, double *ktpvo, double *vte, double *ete, int cem, int dmkvoz, int kost, double *ktptk, int dmkoosc, double *kusc, double *tkusc, 
+	double *dkoscm, double *dkosct, int dkoscl, double thol, double tgor, double y0, double dkoal, double dkosp, double hk, double qobsh, 
+	int kolPok, double dkusce, double dkoscee, double tc, double *stch, double p1, double p2, int vp, double *Rmp, double *rts, int dmRef, 
+	int vfqi)
 {
-	int k=0, j=0, f=0, ksu=2*kost; double hvozd=ko, htch=0.0, hf=1e0, *ecktp=NULL;
-	double *ecktp=new double[kost], *tepo=new double[ksu], r, p, sa, sb, sc, t, fa, fb, fc;
-	if ((!tepo) || (!ecktp)) { cout << snm << endl; k=getchar(); exit(1); }
-	for (j=0; j<ksu; j++) tepo[j]=0.0;
-	hvozd=ko; htch=hvozd*(hf-por)/por; //cout << "hvoz = " << hvozd << "\tht = " << htch << endl;
-	tepo=opredTempStenShaFragm(tepo, ksu, ktpvo, vte, ete, kttk, cem, dmkvo, htch, hvozd, qobsh, ete[j], -hf); //в середине слоя
-	r=0.0; for (k=0; k<ksu; k++) for (f=0; f<ksu; f++) { p=tepo[k]-tepo[f]; if (p>r) r=p; } //максимальная разность температур - на краях стенок
-	p = hvozd*(d - hf) + htch*d; r = r / p; t = qobsh / r; ecktp=t; //средний КТП многослойной стенки
-	f = 10000; sa = 0.0; sb = hf; k = 0;
-		do {
-			sc = (sa + sb) / 2e0;
-			fa = kttk * sa + ecktp * (hf - sa) - ektp; //эффективные КТП многослойной стенки и  перемычки должны сравняться
-			fb = kttk * sb + ecktp * (hf - sb) - ektp; //чтобы найти относительные доли площадей сечения переноса общей ПТП
-			fc = kttk * sc + ecktp * (hf - sc) - ektp;
-			if ((fc*fb>0.0) && (fa*fc<0.0)) sb = sc;
-			if ((fc*fa>0.0) && (fb*fc<0.0)) sa = sc;
-			r = fabs(sa - sb); k++;	} 
-		while ((r>e) && (k<f));
-	if (tepo) delete[]tepo; if (ecktp) delete[]ecktp;
-	return sc;
-}
-double *KorrZnachVozdPros(double hps, double ksf, double por, int vy, double e)
-{ 	int j=0, k=1000, q=3; double pa = 1e-2, pb = 1e0, *po=NULL, pc=0.0, hf = 1e0, ra = hf;
-	double fa, fb, fc, ta, tb, tc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc, *pkc=new double[q]; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	j=0; pa=1e-2; pb = 1e0; ra = hf; ka = hps*pa / por; kb = pb*hps / por;
-	while ((ra>e) && (j < k)) { //подтягиваем пористость к значению, которое задали изначально, во время подстройки ЭКТП
-		pc = (pa + pb) / 2e0; //эффективная пористость
-		kc = hps*pc / por;
-		tc = oprEffDoliTepPeren(kc, ksf, pc); //доля площади, переносимая чистой теплопроводностью твердого каркаса
-		tcc = kc*(hf - pc) / pc; //толщина твердой части слоя
-		fc = (hf - tc)*kc / (kc + tcc) - por;
-		ka = hps*pa / por;
-		ta = oprEffDoliTepPeren(ka, ksf, pa); //определяем долю площади сечения перемычки
-		tca = ka*(hf - pa) / pa;
-		fa = (hf - ta)*ka / (ka + tca) - por;
-		kb = hps*pb / por;
-		tb = oprEffDoliTepPeren(kb, ksf, pb); //через перемычку тепло распространяется чистой теплопроводностью
-		tcb = kb*(hf - pb) / pb;
-		fb = (hf - tb)*kb / (kb + tcb) - por;
-		if (((fc*fb) > 0.0) && ((fa*fc)<0.0)) pb = pc; if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
-		j++; ra = fabs(pa - pb); }
-	cout << "Tolschina vozdushnoy prosloyki = " << kc << "\tDolya Ploschadi CTP = " << tc << "\tEffectivnaya poristost = " << pc << endl;
-	j=0; pkc[j]=kc; j++; pkc[j]=tc; j++; //скорректированное значение толщины воздушной прослойки (размер поры), когда ввели перемычку
-	pkc[j]=KorrZnachVozdProsUtoch(hps, ksf, por, tc, e, tem)
-	return pkc;
-} //доля площади, через которую происходит перенос тепла чистой теплопроводностью
-double KorrZnachVozdProsUtoch(double hps, double ksf, double por, double dpctv, double e, double tj)
-{
-	int j = 0, k = 1000, q=0; double pa=1e-3, hf=1e0, pb=hf, pc=0.0, ra=hf;
-	double fa, fb, fc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	while ((ra>e) && (j < k)) { //подтягиваем пористость к значению, которое задали изначально, во время подстройки ЭКТП
-		pc = (pa + pb) / 2e0;
-		kc = hps*pc / por; //один период стенки
-		tcc = kc*(hf-pc) / pc; //толщина твердой части
-		fc = (hf-dpctv)*kc / (kc + tcc) - por;
-		ka = hps*pa / por;
-		tca = ka*(hf-pa) / pa;
-		fa = (hf-dpctv)*ka / (ka + tca) - por;
-		kb = hps*pb / por;
-		tcb = kb*(hf-pb) / pb;
-		fb = (hf-dpctv)*kb / (kb + tcb) - por;
-		if ((fc*fb > 0.0) && (fa*fc<0.0)) pb = pc;
-		if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
-		j++; ra = fabs(pa - pb);
-	} //скорректированное значение толщины воздушной прослойки (размер поры), когда ввели перемычку
-	return kc;
-}
-double opredLuchSost(double *prot, double *Tsr, int le, int zf, int vyte, int N, int kost, double bn, double bk, double cn, double ck, char *snm, double qob, int vt, int vtn, int sctx, int nxt, int nnxt, double y0, double *dkosct, double *dkoscm, int dkoscl, double dkosp, double dkoal, double *tkusc, double *kusc, int dmkoosc, double *thol, double *tgor, double *ete, int cem, double smgo, double ssio, double salo)
-{
-	int k=0, j=0, q=0, m=0, l=3, mma=3000, mm=0, mt=0, vy=9, idr=1;
-	double **mauk=NULL, *pt=NULL, s=0.0, p=0.0, rez=0.0, rap=0.0, *temras=NULL;
-	double *ao=new double[2*N], *po=NULL, d=0.0, hb=5e-1, hb0=hb, hf=1e0, *ktpr=NULL;
-	d=0.0; for (j = 0; j < kost; j++) d = d + hf;
-	double de=hf, ta=0.0, tb=ta, tc=ta, fa=ta, fb=tb, fc=tc;
-	double ba=bn, bb=bk, bc=bn, xk=0.0, dxk=1e-3, co=0.0, bo=co;
-	double ca=cn, cb=ck, cc=cb, hc=1e-1, hc0=hc, tt=0.0, raz=1e2;
-	double mk=raz, mkm=mk, c00=0.0, b0=bc, c0=cc, kdc=5e0, kdb=5e0, tmin=0.0, tmax=0.0;
-	double *R=NULL, *T=NULL, *A=NULL, *Ra=NULL, *Ta=NULL, *Aa=NULL, *Rt=NULL, *Tt=NULL, *At=NULL;
-	if (!ao) { cout << snm << endl; k = getchar(); exit(1); }
-	for (k=0; k<(2*N); k++) ao[k]=0.0; //cout << "qo = " << qob << "\n";
-	if ((vt==vtn) && (sctx<=2) && (!temras)) {
-		j=nxt-nnxt; temras=new double[j]; if (!temras) { cout << snm << endl; k = getchar(); exit(1); }
-		ta=(thol[vt]-tgor[vt])/y0; tb=tgor[vt];
-		xk=0.0; for (k=0; k<j; k++) { temras[k]=tb+ta*xk; xk=xk+dxk; }	}
-	if ((vt==vtn) && (sctx<=2) && (!ktpr)) {
-		ktpr=KoefPoglRosselNac(ete, idr, cem, smgo, ssio, salo, dkosct, dkoscm, dkoscl, dkosp, dkoal, tkusc, kusc, dmkoosc, idr, 1);
-		for (k = 0; k < cem; k++) cout << "ktr = " << ktpr[k] << "\ttem = " << ete[k] << endl; } 
-	l=vt; tmin=thol[l]; tmax=tgor[l];
-	ta=tmin; tb=tmax; tc=temras[sctx];
-	mauk=RaschRTA(kost, h, 0.0, 0.0, 1, vt, hvo, 0, tc, 0, 0, 1);
-	k=0; Ra=mauk[k]; k++; Ta=mauk[k]; k++; Aa=mauk[k]; k++; R=mauk[k]; k++; T=mauk[k]; k++;
-	A=mauk[k]; k++; Rt=mauk[k]; k++; Tt=mauk[k]; k++; At=mauk[k]; delete[]mauk;
-	ca=cn; cb=ck; m=0; q=0;
-	while ((m<mma) && (raz>1e-3) && (!q)) {
-		cc=(ca+cb)/2e0;
-		pt=FuncRaschIzl(ta, tb, d, tc, m, prot, de, ao, rez, rap, bc, cc, vy, qob, ete, cem, 0, snm, dpct, vt, ektp, y0, ktpr, kttk, kost, ktpvo, vte, dmkvo, ecktp, h, hvo, R, T, A, Rt, Tt, At, tx, qx, dtx, sctx, tocras, por, 2*N, stchsr, Tpct, b0, c0, mk, svfdv, 0);
-		k=3; fc=pt[k]; delete[]pt;
-		if (fabs(fc)<hf) { c0=cc; break; }
-		pt=FuncRaschIzl(ta, tb, d, tc, m, prot, de, ao, rez, rap, bc, ca, vy, qob, ete, cem, 0, snm, dpct, vt, ektp, y0, ktpr, kttk, kost, ktpvo, vte, dmkvo, ecktp, h, hvo, R, T, A, Rt, Tt, At, tx, qx, dtx, sctx, tocras, por, 2*N, stchsr, Tpct, b0, c0, mk, svfdv, 0);
-		k=3; fa=pt[k]; delete[]pt;
-		if (fabs(fa)<hf) { c0=ca; break; }
-		pt=FuncRaschIzl(ta, tb, d, tc, m, prot, de, ao, rez, rap, bc, cb, vy, qob, ete, cem, 0, snm, dpct, vt, ektp, y0, ktpr, kttk, kost, ktpvo, vte, dmkvo, ecktp, h, hvo, R, T, A, Rt, Tt, At, tx, qx, dtx, sctx, tocras, por, 2*N, stchsr, Tpct, b0, c0, mk, svfdv, 0);
-		k=3; fb=pt[k]; delete[]pt;
-		if (fabs(fb)<hf) { c0 = cb; break; }
-		if ((fa*fc)<0.0) { cb = cc; q = 0; }
-		if ((fb*fc)<0.0) { ca = cc; q = 0; }
-		if (((fb*fc)<0.0) && ((fa*fc)<0.0)) { cb = cc; q = 0; }
-		if (((fb*fc)>0.0) && ((fa*fc)>0.0)) q = 1;
-		m++; raz=fabs(cb-ca);
-	}
-	c0=cc; c00=c0; co=c00; cout << "c0 = " << c0 << "\ttb = " << tb << "\ttc = " << tc; 
-	m=0; ba=bn; bb=bk; l=vt; ta=thol[l]; tb=tgor[l]; tc=temras[sctx];
-	while ((m<mma) && ((bb-ba)>1e-1)) {
-		bc=(ba+bb)/2e0; b0=bc; c0=c00; cc=c0; 
-		pt=FuncRaschIzl(ta, tb, d, tc, m, prot, de, ao, rez, rap, bc, c0, vy, qob, ete, cem, 0, snm, dpct, vt, ektp, y0, ktpr, kttk, kost, ktpvo, vte, dmkvo, ecktp, h, hvo, R, T, A, Rt, Tt, At, tx, qx, dtx, sctx, tocras, por, 2*N, stchsr, Tpct, b0, c0, mk, svfdv, 0);
-		k=9; s=pt[k]; k=7; mk=pt[k]; k=5; b0=pt[k]; k=4; tt=pt[k]; k=10; r=pt[k]; delete[]pt;
-		if ((mk<mkm) && (mk>0.0)) { mkm=mk; bo=bc; b0=bc; lx[sctxv] = r; oox[sctxv] = s; tx[sctx] = tt; qx[sctxv] = qob; } //cout << "\tbc = " << bc << "\tmk = " << mk << "\tmkm = " << mkm << endl;
-		m++; if (bc<hf) hb=hb0/kdb; else hb=hb0; bb=bb-hb;
-	} cout << "\tbop = " << bo << "\tmop = " << mkm << "\tcop = " << co << endl;
-	if (fabs(tnr-tt)>1e-1)
-		tnr=tt; else {
-			cn=co-hc0; if (cn<=0.0) cn = 1e-2;
-			ck=co+2e0*hc0;
-			bn=bo-hb0; if (bn<=0.0) bn=1e-2;
-			bk=bo+2e0*hb0;
-			tnr=tt;
-		}
-	delete[]ao; return rez;
-}
-double KorrZnachVozdProsSham(double hps, double ksf, double por)
-{
-	int j = 0, k = 1000; double pa = 1e-3, pb = 1e0, pc, ra = fabs(pa - pb); 
-	dpcts=opredKTPTKTochSha(dpctsm, etesha, etesha[vtsh], cem);
-	double fa, fb, fc, tca, tcb, tcc, ka = hps*pa / por, kb = pb*hps / por, kc; //cout << "hps = " << hps << "\tksuf = " << ksf << "\tpor = " << por << endl;
-	while ((ra > tocrassha) && (j < k)) { //подтягиваем пористость к значению, которое задали изначально, во время подстройки ЭКТП
-		pc = (pa + pb) / 2e0;
-		kc = hps*pc / por;
-		tcc = kc*(1e0 - pc) / pc;
-		fc = (1e0 - dpcts)*kc / (kc + tcc) - por;
-		ka = hps*pa / por;
-		tca = ka*(1e0 - pa) / pa;
-		fa = (1e0 - dpcts)*ka / (ka + tca) - por;
-		kb = hps*pb / por;
-		tcb = kb*(1e0 - pb) / pb;
-		fb = (1e0 - dpcts)*kb / (kb + tcb) - por;
-		if ((fc*fb > 0.0) && (fa*fc<0.0)) pb = pc;
-		if ((fc*fa>0.0) && (fb*fc < 0.0)) pa = pc;
-		j++; ra = fabs(pa - pb);
-	} //скорректированное значение толщины воздушной прослойки (размер поры), когда ввели перемычку
-	return kc;
-}
-double RaschAlphaTvKar(int vfv, int vsv, int isrp, int vpkf, double por)
-{
-	int l=3, k=0, fr=0, nfr=4, d=10, q=0, cfk=l*nfr, cei=0;
-	long j=0, jk=100*100*100, pj=0, h=0;
-	double x=0.0, y=0.0, p=0.0, xt=0.0, yp=0.0, hf=1e0, te0=273.15, tc=22.0+te0, altc=1e-6;
-	double *srra=NULL, *porm=new double[nfr], srp=0.0, e=1e-6;
+	int l=3, k=0, fr=0, nfr=4, q=0, cfk=l*nfr, cei=0, u=0;
+	long j=0, jk=100*100*100, pj=0, h=0, w=0;
+	double x=0.0, y=0.0, p=0.0, xt=0.0, yp=0.0, hf=1e0;
+	double *srra=NULL, *porm=new double[nfr], srp=0.0, e=1e-10, koefc=1e-6, s=srp, r=s;
+	double gfv1=6e1, gfv2=1e2, gfv3=15e1, gfv4=2e2, x1=0.0, x2=x1, x3=x1, x4=x1;
 	double *pn=new double[d], *alx=new double[d], *rcf=new double[cfk];
-	double *rapo=NULL, **unau=NULL, ce=0.0, cet=0.0, *pp=NULL, lamtem=0.0; 
-	double *legr=NULL, *prgr=NULL, dvpn=1448.0*altc/tc/4e0; //меньше 1 %
-	unau=rasPorpoRazVer(por, vfv, 1, vsv, isrp, vpkf);
-	k=0; rapo=unau[k]; k++; srra=unau[k]; k++; prgr=unau[k]; k++; 
-	legr=unau[k]; k++; pp=unau[k]; j=0; srp=pp[j]; if (pp) delete[]pp; k++; pp=unau[k];
-	ce=pp[j]; cet=ce; if (pp) delete[]pp; if (unau) delete[]unau;
-	j = 0; x=e; while (x<cet) { x=x+hf; j++; } cei = j; //cout << "cem_srp = " << cei << "\tsrp = " << srp << "\t"; cout << endl; //for (j=0; j<cei; j++) if (j<10) cout << "j = " << j << "\trpr = " << rapo[j] << "\tlegr = " << legr[j] << "\t"; cout << endl;
-	if (porm) {
-		x = 0.0; yp = 0.0; xt = 0.0;
-		for (j = 0; j < cei; j++) {
-			if (yp <= 3e1) x = x + srra[j] * rapo[j];
-			if (yp <= 8e1) xt = xt + srra[j] * rapo[j]; yp = yp + hf; }
-		k=0; porm[k]=x*por/srp; k++; porm[k]=xt*por/srp; k++; porm[k]=porver; k++; porv[k]=por; }
-	else { cout << snmv << endl; j = getchar(); exit(1); } //for (j=0; j<nfr; j++) cout << "por = " << porv[j] << "\t";
-	double pr = 0.0, rmf = 0.0, prf = 0.0, po = 0.0, *alsf = new double[cfk];
-	for (j = 0; j < RAND_MAX; j++) rmf = rmf + hf; for (j = 0; j < jk; j++) po = po + hf;
-	if ((pn) && (alx) && (rcf) && (alsf))
-	{
-		for (j = 0; j < d; j++) { pn[j] = 0.0; alx[j] = 0.0; }
-		for (j = 0; j < cfk; j++) { rcf[j] = 0.0; alsf[j] = 0.0; }
-	}
-	else { cout << snmv << endl; j = getchar(); exit(1); }
-	long lt; unsigned int st; lt = time(NULL); st = (unsigned int)(lt - (lt % 2)) / 2; srand(st);
-	for (fr = 0; fr < nfr; fr++) {
-		for (k = 0; k < l; k++) {
-			if (!fr) x = RasFracXeffVer60(k);
-			if (fr == 1) x = RasFracXeffVer60_100(k);
-			if (fr == 2) x = RasFracXeffVer100_150(k);
-			if (fr == 3) x = RasFracXeffVer150_200(k); //размер частицы
-			rcf[k + fr*l] = x*(1e-6); y = x*porv[fr]; //размер поры //cout << "x = " << x << "\ty = " << y << "\tp = " << porv[fr] << endl;
-			for (j = 0; j < d; j++) pn[j] = 0.0;
-			for (j = 0; j < jk; j++) {
-				pj = rand(); prf = 0.0; for (h = 0; h < pj; h++) prf = prf + hf; pr = prf / rmf;
-				yp = y*pr; xt = yp*(hf - porv[fr]) / porv[fr];
-				p = x / (xt + yp);
-				pr = 0.0; for (h = 0; h < d; h++)	{ xt = pr + hf; if ((p >= pr) && (p < xt)) pn[h] = pn[h] + hf; pr = xt; }
-			}
-			pr = 0.0; for (j = 0; j < d; j++) { pn[j] = pn[j] / po; pr = pr + pn[j]; } //cout << "Summa = " << pr << endl; for (j=0; j<d; j++) cout << "pn ( " << j << " ) = " << pn[j] << "\t"; cout << endl;
-			for (j = 0; j < d; j++) pn[j] = pn[j] / pr;
-			for (j = 2; j<d; j++) {
-				p = 0.0; for (h = 0; h<j; h++) p = p + hf;
-				yp = porv[fr] * x*(1e-6) / (p - hf); xt = (hf - porv[fr])*x*(1e-6) / p;
+	double *rapo=NULL, **unau=NULL, **mu=NULL, ce=0.0, *pp=NULL, lamtem=0.0; 
+	double dvpn=1448.0/tc, df=0.0, tmss=df, htc=df, asp=0.0; //меньше 1 %
+	double pr=0.0, rmf=0.0, prf=0.0, po=0.0, *alsf=new double[cfk]; //cfk - число различных вариантов таблеток
+	if (vybves==1) unau=RasPorPoRazVer(por, vfv, vsv, isrp, vpkf, snm); //if (!vybves) unau=VybFunRasPorpoRazSha(por, vybmar, vystsha); if (vybves==2) unau=RasPorPoRazitom(vybmar); if (vybves==3) unau=RasPorpoRazkvi(vybmar); else { cout << "Nepravilno vybran nomer!" << endl; k=getchar(); exit(1); }
+	k=0; rapo=unau[k]; k++; srra=unau[k]; 
+	srp=oprSrRazPor(vybves, vybmar, por, vfv, vsv, isrp, vpkf, vrsh, vystsha, snm)/koefc; //в микронах
+	ce=oprMaxRazPor(vybves, vybmar, por, vfv, vsv, isrp, vpkf, vrsh, vystsha, snm)/koefc; //в микронах
+	for (j=0; j<d; j++) df=df+hf; 
+	htc=opredTolTverChasObFig(dpctpe, df, srp*koefc, por, ce*koefc);
+	if (htc<e) htc=opredTolTverChasObFigObPor(dpctpe, df, srp*koefc, por, ce*koefc);
+	tmss=srp*(df-hf)+htc*df;
+	j=0; x=e; while (x<ce) { x=x+hf; j++; } cei=j; cout << endl;
+	if ((!pn) || (!alx) || (!rcf) || (!alsf) || (!porm)) { cout << snm << endl; j = getchar(); exit(1); }
+		x1=0.0; yp=x1; x2=x1; x3=x1; x4=x1;
+		cout << "cei = " << cei << "\tce = " << ce << "\tsrp = " << srp << "\ttmss = " << tmss << "\tpor = " << por << "\tdp = " << dpctpe << "\thtc = " << htc << "\tdv_min = " << dvpn << endl;
+		for (j=0; j<cei; j++) {
+			x=srra[j]; p=rapo[j];
+			if (yp<=gfv1) x1=x1+x*p; //размер пор должен быть ограничен размерами частиц
+			if (yp<=gfv2) x2=x2+x*p; 
+			if (yp<=gfv3) x3=x3+x*p; 
+			if (yp<=gfv4) x4=x4+x*p; 
+			yp=yp+hf; }
+		k=0; porm[k]=x1*por/srp; k++; porm[k]=x2*por/srp; 
+		k++; porm[k]=x3*por/srp; k++; porm[k]=x4*por/srp; //пористость для фракций
+	rmf=0.0; po=rmf; for (j=0; j<RAND_MAX; j++) rmf=rmf+hf; for (j=0; j<jk; j++) po=po+hf; //cout << "x1 = " << x1 << "\tx2 = " << x2 << "\tx3 = " << x3 << "\tx4 = " << x4; cout << endl; //for (j=0; j<nfr; j++) cout << "j = " << j << "\tporm = " << porm[j] << "\t"; cout << endl;
+	srand(time(0));
+	for (j=0; j<d; j++) { pn[j]=0.0; alx[j]=0.0; } for (j=0; j<cfk; j++) { rcf[j]=0.0; alsf[j]=0.0; } u=0; //long lt=0; unsigned int st=0; lt = time(NULL); cout << "t = " << lt << endl; st = (unsigned int)(lt - (lt % 2)) / 2; cout << "st = " << st << endl;
+	for (fr=0; fr<nfr; fr++) {
+		for (k=0; k<l; k++) { //концентрация от 0,1 до 0,3 %
+			x = RasFracXeff(fr, k, vybves, vybmar, snm); //эффективная толщина образца в таблетке
+			rcf[u]=x; 
+			y=x*porm[fr]; //размер поры 
+			cout << "Tol Obr = " << x << "\ty = " << y << "\tp = " << porm[fr] << "\tfr = " << fr << "\tk = " << k << "\tlTm = " << dvpn << endl;
+			j=0; while (j<jk) {
+				pj=rand();
+				prf=0.0; for (h=0; h<pj; h++) prf=prf+hf; 
+				pr=prf/rmf; //формируем случайное число от 0 до 1 с равномерной функцией распределения
+				yp=y*pr; //выстрел по размеру пор
+				p=porm[fr]; 
+				if (fabs(p)>0.0) xt=opredTolTverChasObFig(dpctpe, df, yp*koefc, p, ce*koefc)/koefc; //xt=yp*(hf-p)/p; //определяем толщину стенки твердого каркаса
+				xt=xt+yp;
+				if (fabs(xt)>0.0) p=x/xt; else continue; //определяем число стенок, укладывающихся в одной частице
+				h=0; pr=hf+e; while (pr<p) { pr=pr+hf; h++; } 
+				if (h<d) pn[h]=pn[h]+hf; 
+				j++; } 
+pr=0.0; for (j=0; j<d; j++) { pn[j]=pn[j]/po; pr=pr+pn[j]; } for (j = 0; j < d; j++) pn[j] = pn[j]/pr; //нормировка на единицу, получение вероятности для числа стенок, укладывающихся в тонком слое образца //pr=0.0; for (j=0; j<d; j++) pr=pr+pn[j];
+	for (j=0; j<d; j++) cout << "pn ( " << j << " ) = " << pn[j] << "\t"; //cout << "sum = " << pr << endl; 
+	for (j=0; j<d; j++) alx[j]=0.0;
+	for (j=2; j<d; j++) {
+		p = 0.0; for (h = 0; h<j; h++) p = p + hf;
+			yp = porm[fr]*x/(p-hf); xt=opredTolTverChasObFig(dpctpe, p, yp*koefc, porm[fr], ce*koefc)/koefc; //xt = (hf - porm[fr])*x/p;
 				if (yp>dvpn) {
-					lamtem = F0_lamT(yp*tc); lamtem = bbfn(yp*tc*1e6); 
-					if (lamtem <= 0.0) lamtem = 0.0; if (lamtem>hf) lamtem = hf;
-					alx[j] = BolTochRasAlpha(0, j, yp, xt, tc, ktpvover, vtever, etev, cemv, dmkvover, snmv, Tver, Rver, 2 * N, kttkv, Aver, 0, Raver, Taver, Aaver, Rtver, Ttver, Atver)*lamtem;
-				}
-				else alx[j] = 0.0;
-			}
-			unau = RaschRTAVer(d, xt, 0.0, 0.0, 1, 0, yp, 1, tc, 0, 0, 0); pp = unau[0]; altc = pp[0]; delete[]unau; delete[]pp;
-			alx[0] = 0.0; alx[1] = altc / (1e0 - porv[fr]); //for (j=0; j<d; j++) cout << "j = " << j << "\talx = " << alx[j] << "\t"; cout << endl;
-			q = k + fr*l; for (j = 1; j<d; j++) {
-				p = 0.0; for (h = 0; h <= j; h++) p = p + hf;
-				yp = porv[fr] * x*(1e-6) / (p - hf); if (j>1) xt = oprProcSoderpoPoris(rapo, legr, yp, cei); else xt = 1e0;
-				alsf[q] = alsf[q] + pn[j] * alx[j] * xt;
-			}
-		}
-	}
-	x = 0.0; yp = 0.0; for (j = 0; j < cfk; j++) { x = x + alsf[j]; yp = yp + hf; } x = x / yp; //for (j=0; j<cfk; j++) cout << "j = " << j << "\tal_sr = " << alsf[j] << "\t"; cout << endl;
-	delete[]rapo; delete[]srra; delete[]rcf; delete[]pn; delete[]alx; 
-	delete[]alsf; delete[]legr; delete[]porv; delete[]prgr;
-	x = x / altc; printf("sr_okp = %0.10lf\n", x); //ослабление КП за счет пористой структуры вермикулита
+					cout << "Tol voz Pros = " << yp << "\ttc = " << tc << "\tlam*T = " << yp*tc << "\txt = " << xt << "\tks = " << j << endl;
+			lamtem=bbfn(yp*tc); if (lamtem<=0.0) lamtem=0.0; if (lamtem>hf) lamtem=hf; cout << "F(lam*T) = " << lamtem << "\t"; //lamtem=F0_lamT(yp*tc*koefc, snm); if (lamtem<=0.0) lamtem=0.0; if (lamtem>hf) lamtem=hf; cout << "F(lam*T) = " << lamtem << "\n";
+			alx[j]=BolTochRasAlpha(j, yp*koefc, porm[fr], tc, ktpvo, vte, ete, cem, dmkvoz, snm, ktptk, vybves, vybmar, dmkoosc, 
+				kusc, tkusc, dkoscm, dkosct, dkoscl, thol, tgor, y0, dkoal, dkosp, hk, qobsh, kolPok, xt*koefc, dkusce, dkoscee, 
+				dpctpe, stch, p1, p2, vp, Rmp, rts, dmRef, vfqi); alx[j]=alx[j]*lamtem; } } //kolPok - число поколений
+	for (j=0; j<d; j++) alsf[u]=alsf[u]+alx[j]*pn[j]; alsf[u]=alsf[u]*x; u++; } } //for (j=0; j<d; j++) cout << "j = " << j << "\talx = " << alx[j] << "\t"; cout << endl; 
+	for (j=0; j<cfk; j++) cout << "j = " << j << "\talsf = " << alsf[j] << "\tra_ch = " << rcf[j] << "\t"; cout << endl; 
+	x = 0.0; yp = 0.0; for (j = 0; j < cfk; j++) { x = x + alsf[j]; yp = yp + rcf[j]; } 
+	asp=koefPoglSred(tc, vybves, vybmar, dkoal*dkosp);
+	if (fabs(yp)>e) { x = x / yp; if (fabs(asp)>e) x=(x+asp)/asp; } else x=0.0;
+	q=6; for (k=0; k<q; k++) { pp=unau[k]; if (pp) delete[]pp; } if (unau) delete[]unau;
+	if (rcf) delete[]rcf; if (pn) delete[]pn; if (alx) delete[]alx; 
+	if (alsf) delete[]alsf; if (porm) delete[]porm;
+	printf("sr_okp = %0.10lf\talpha_sr = %0.10lf\n", x, asp); //ослабление КП за счет пористой структуры вермикулита //k=getchar();
 	return x;
 }
+//-----
+double UtochKoefPogl(double alp, double htc, double T, int vybves, int vybmar, double dko)
+{
+	double ns=opredPokPreSr(T, vybves, vybmar, dko), hf=1e0;
+	double Refl=pow(ns-hf,2e0)/pow(ns+hf,2e0), Dnom=exp(-alp*htc), al=0.0;
+	double Ap=(hf-Refl)*(hf-Dnom*(hf+Refl*Dnom-Refl))/(hf-pow(Refl*Dnom,2e0));
+	al=fabs(log(Ap)/htc);
+	return al;
+}
+double integroexponen(int n, double x)
+{ 
+	int Ni=100, k=0, m=0, j=0, i=0;
+	double E=0.0, hf=1e0, s=0.0, e=0.577215665057043, nf=s, t=s, r=s, d=s, eps=1e-6, psi=s, ksi=s;
+	if (((n==1) && (x<eps)) || (x<0.0)) { cout << "Beskonechnost!" << endl; k=getchar(); exit(1); }
+	for (k=0; k<n; k++) nf=nf+hf;
+if ((x<eps) && (n>1))
+    E=hf/(nf-hf);
+if (x>eps) {
+	s=0.0;
+for (m=0; m<=Ni; m++) { 
+    if (m==(n-1))
+        continue; 
+        t=hf;
+        for (k=1; k<=m; k++) {
+			r=0.0; for (j=0; j<k; j++) r=r+hf;
+            t=t*r; }
+		k=m-(n-1); d=hf; if (k<0) { d=-d; k=-k; }
+		r=0.0; for (j=0; j<k; j++) r=r+d;
+		ksi=0.0; for (j=0; j<m; j++) ksi=ksi+hf;
+		if (fabs(r)>eps)
+			s=s+pow(-x, ksi)/(r*t); } 
+t=hf;
+for (k=1; k<=(n-1); k++) {
+	r=0.0; for (j=0; j<k; j++) r=r+hf;
+	t=t*r; } //(n-1)!
+k=n-1; r=0.0; for (j=0; j<k; j++) r=r+hf;
+E=pow(-x, r); //(-x)^(n-1)
+E=E/t; 
+psi=-e;
+if (n>1) { 
+t=0.0;
+for (k=1; k<=(n-1); k++) {
+	r=0.0; for (j=0; j<k; j++) r=r+hf;
+	t=t+hf/r; }
+psi=psi+t; } 
+if (x>eps) E=E*(-log(x)+psi); else E=0.0;
+E=E-s; }
+return E; }
