@@ -1,55 +1,98 @@
 function [ vmua ] = RaschAlphaTvKar(por, vr, vss)
-{
-	int l=2, k=0, d=10, q=0, cfk=l, cei=0;
-	long j=0, jk=100*100*100, pj=0, h=0;
-	double x=0.0, y=0.0, p=0.0, xt=0.0, yp=0.0, hf=1e0, te0=273.15, tc=22.0+te0;
-	double altc, *srra=NULL, pors=1e-6, lamtem=1448.0, dvpn = lamtem*pors / tc / 4e0;
-	double *pn = new double[d], *alx = new double[d], *rcf = new double[cfk], e=1e-15;
-	double *rapo, srp, marp, ce, cet, *pp=NULL, *legr=NULL, **pt=NULL, *prgr=NULL;
-	pt=vybFunRasPorpoRazSha(por, vr, vss);
-	k=0; rapo=pt[k]; k++; srra=pt[k]; k++; prgr=pt[k]; k++;
-	legr=pt[k]; k++; pp=pt[k]; j=0; srp=pp[j]; if (pp) delete[]pp; k++;
-	pp=pt[k]; marp=pp[j]; if (pp) delete[]pp; if (pt) delete[]pt;
-	cet = ce; j = 0; while (cet > e) { cet = cet - hf; j++; } cei = j; //cout << "cem_srp = " << cei << "\tsrp = " << srp << "\t"; cout << endl; for (j=0; j<cei; j++) if (j<10) cout << "j = " << j << "\trpr = " << rapo[j] << "\tlegr = " << legr[j] << "\t"; cout << endl;
-	x = 0.0; for (j = 0; j < cei; j++) if (j <= 31) x = x + srra[j] * rapo[j]; pors = x*por / srp;
-	double pr = 0.0, rmf = 0.0, prf = 0.0, po = 0.0, *alsf = new double[cfk];
-	for (j = 0; j < RAND_MAX; j++) rmf = rmf + hf; for (j = 0; j < jk; j++) po = po + hf;
-	if ((pn) && (alx) && (rcf) && (alsf)) { for (j = 0; j < d; j++) { pn[j] = 0.0; alx[j] = 0.0; } 
-	for (j = 0; j < cfk; j++) { rcf[j] = 0.0; alsf[j] = 0.0; } }
-	else { cout << snm << endl; j = getchar(); exit(1); }
-	long lt; unsigned int st; lt = time(NULL); st = (unsigned int)(lt - (lt % 2)) / 2; srand(st);
-	for (k = 0; k < l; k++) {
-		x = RasFracXeffSha60(k); //размер частицы
-		rcf[k] = x*1e-6; y = x*pors; //размер поры
-		for (j = 0; j < d; j++) pn[j] = 0.0;
-		for (j = 0; j < jk; j++) {
-			pj = rand(); prf = 0.0; for (h = 0; h < pj; h++) prf = prf + hf; pr = prf / rmf;
-			yp = y*pr; xt = yp*(hf - pors) / pors;
+	l=2; k=0; d=10; q=0; cfk=l; cei=0; razfra=31;
+	j=0; jk=1e6; pj=0; h=0;
+	x=0.0; y=0.0; p=0.0; xt=0.0; yp=0.0; hf=1e0; te0=273.15; tc=22.0+te0;
+	pors=1e-6; lamtem=1448.0; dvpn = lamtem*pors / tc / 4e0;
+	pn = zeros(1,d); alx = zeros(1,d); rcf = zeros(1,cfk); e=1e-15;
+	rapo=vybFunRasPorpoRaz(por, vr, vss, 0);
+    srra=vybFunRasPorpoRaz(por, vr, vss, 1);
+    prgr=vybFunRasPorpoRaz(por, vr, vss, 2);
+    legr=vybFunRasPorpoRaz(por, vr, vss, 3);
+    pt=vybFunRasPorpoRaz(por, vr, vss, 4);
+	k=1; srp=pt(k); marp=max(prgr);
+    cei=length(srra); 
+	x = 0.0;
+    koe=1e-6;
+    if (srp<hf)
+        ko=1e6;
+    else ko=1e6;
+    end
+    srp=srp*ko; marp=ko*marp; 
+    for j = 1:razfra
+        x = x + srra(j) * rapo(j); 
+    end
+    pors = x*por / srp;
+	pr = 0.0; rmf = 0.0; prf = 0.0; po = 0.0; alsf = zeros(1,cfk);
+	po=jk;
+	for j = 1:d 
+        pn(j) = 0.0; alx(j) = 0.0;
+    end
+	for j = 1:cfk
+        rcf(j) = 0.0; alsf(j) = 0.0;
+    end
+	for k = 1:l
+		x = RasFracXeffSha60(k); %размер частицы
+		rcf(k) = x*ko; y = x*pors; %размер поры
+		for j = 1:d 
+            pn(j) = 0.0;
+        end
+		for j = 1:jk
+			pr = rand(); 
+			yp = y*pr; xt = yp*(hf - por) / por;
 			p = x / (xt + yp);
-			pr = 0.0; for (h = 0; h < d; h++)	{ xt = pr + hf; if ((p >= pr) && (p < xt)) pn[h] = pn[h] + hf; pr = xt; }
-		}
-		pr = 0.0; for (j = 0; j < d; j++) { pn[j] = pn[j] / po; pr = pr + pn[j]; } //cout << "Summa = " << pr << endl; for (j=0; j<d; j++) cout << "pn ( " << j << " ) = " << pn[j] << "\t";
-		for (j = 0; j < d; j++) pn[j] = pn[j] / pr;
-		for (j = 2; j < d; j++) {
-			p = 0.0; for (h = 0; h<j; h++) p = p + hf;
-			yp = pors*x*1e-6 / (p - hf); xt = (hf - pors)*x*1e-6 / p; //cout << "x = " << x << "\txp = " << yp << "\txt = " << xt << "\t";
-			if (yp>dvpn) {
-				lamtem = F0_lamT(yp*tc); if (lamtem<0.0) lamtem = 0.0; if (lamtem>hf) lamtem = hf;
-				alx[j] = BolTochRasAlpha(0, j, yp, xt, tc, ktpvosha, vtesha, etesha, cem, dmkv, snms, Tsh, Rsh, 2 * N, kttk, Ash, 1, Rash, Tash, Aash, Rtsh, Ttsh, Atsh)*lamtem;
-			}
-			else alx[j] = 0.0;
-		}
-		pt = RaschRTA(d, xt, 0.0, 0.0, yp, tc, 1, 0, 0, 0); pp = pt[0]; altc = pp[0]; delete[]pp; delete[]pt;
-		alx[0] = 0.0; alx[1] = altc / (hf - pors); //for (j=0; j<d; j++) cout << "j = " << j << "\talx = " << alx[j] << "\t";
-		for (j = 1; j<d; j++) {
-			p = 0.0; for (h = 0; h <= j; h++) p = p + hf;
-			yp = pors*x*1e-6 / (p - hf); if (j>1) xt = oprProcSoderpoPoris(rapo, legr, yp, cei); else xt = 1e0; //cout << "j = " << j << "\txt = " << xt << "\t";
-			alsf[k] = alsf[k] + pn[j] * alx[j] * xt;
-		}
-	}
-	x = 0.0; yp = 0.0; for (j = 0; j < cfk; j++) { x = x + alsf[j]; yp = yp + hf; } x = x / yp; //for (j=0; j<cfk; j++) cout << "j = " << j << "\tal_sr = " << alsf[j] << endl; 
-	delete[]rapo; delete[]srra; delete[]rcf; delete[]pn; delete[]alx; 
-	delete[]alsf; delete[]legr; delete[]prgr;
-	x = (x / altc); printf("dkops = %0.10lf\n", x); //ослабление  ѕ за счет пористой структуры вермикулита
+			pr = 0.0; 
+            for h = 1:d
+                xt = pr + hf; 
+                if ((p >= pr) && (p < xt)) 
+                    pn(h) = pn(h) + hf; pr = xt;
+                end
+            end
+		pr = 0.0; 
+        for j = 1:d
+            pn(j) = pn(j) / po; 
+            pr = pr + pn(j);
+        end
+		for j = 1:d
+            pn(j) = pn(j) / pr;
+		for j = 2:d
+			p = 0.0; 
+            for h = 1:j
+                p = p + hf;
+            end
+			yp = pors*x*koe / (p - hf); xt = (hf - pors)*x*koe / p; 
+			if (yp>dvpn)
+				lamtem = F0_lamT(yp*tc); 
+                if (lamtem<0.0) 
+                    lamtem = 0.0; 
+                end
+                    if (lamtem>hf) 
+                        lamtem = hf;
+                    end
+				alx(j) = BolTochRasAlpha(0, j, yp, xt, tc, ktpvosha, vtesha, etesha, cem, dmkv, snms, Tsh, Rsh, 2 * N, kttk, Ash, 1, Rash, Tash, Aash, Rtsh, Ttsh, Atsh)*lamtem;
+            end
+			else alx(j) = 0.0;
+            end
+		pt = RaschRTA(d, xt, 0.0, 0.0, yp, tc, 1, 0, 0, 0); k=1; pp = pt(k); altc = pp(k); 
+		k=1; alx(k) = 0.0; k=k+1; alx(k) = altc / (hf - por);
+		for j = 1:d
+			p = 0.0; 
+            for h = 1:j
+                p = p + hf;
+			yp = pors*x*koe / (p - hf); 
+            if (j>1) 
+                xt = oprProcSoderpoPoris(rapo, legr, yp, cei); 
+            else
+                xt = 1e0;
+            end
+			alsf(k) = alsf(k) + pn(j) * alx(j) * xt;
+            end
+        end
+	x = 0.0; yp = 0.0; 
+    for j = 1:cfk
+        x = x + alsf(j); 
+        yp = yp + hf; 
+    end
+    x = x / yp; 	
+	x = (x / altc) %ослабление  ѕ за счет пористой структуры вермикулита
 	return x;
-}
+        end
