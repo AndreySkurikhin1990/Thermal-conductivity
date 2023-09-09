@@ -1,5 +1,5 @@
 %определение КТП твердой части шамота иными способами
-function [ srelam ] = opredTvChaKoeTepSrInSpSha(vyb, po, tem, te0, laefm, x0, lavoz) %пористость шамота
+function [ srelam ] = opredTvChaKoeTepSrInSpSha(vyb, po, tem, laefm, x0, lavoz) %пористость шамота
 %format long g; srla=0; ep=1e-8; pm=[5,12.5,17.5,22.5]*1e-2; am=[1.5,2,2.4,2.6]; pap=polyfit(pm,am,2); apo=polyval(pap,po)*po; urso=1/(1-apo); 
 up=1; ep=1e-8; uo=urovPod(po);
 lamax=1e5;

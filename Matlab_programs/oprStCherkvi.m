@@ -22,18 +22,21 @@ for k=1:cemk
         stchsrkvi(k) = s; 
 end
 end
-if (vyma==1)
+switch (vyma)
+    case (1)
     stch=stchsrkvi';
-elseif (vyma==2)
+    case (2)
     stch=[wsi, wal, wmg];
-elseif (vyma==3)
+    case (3)
     stch=kusck';
-elseif (vyma==4)
+    case (4)
     stch=tkusck';
-elseif (vyma==5)
+    case (5)
     stch=dkosckm';
-elseif (vyma==6)
+    case (6)
     stch=dkosckt';
+    otherwise 
+        stch=[0];
 end
 end
 

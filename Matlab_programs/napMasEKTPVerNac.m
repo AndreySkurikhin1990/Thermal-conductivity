@@ -1,70 +1,20 @@
-function [ npv ] = napMasEKTPVerNac(vybvesch, vybmar, vyfv, vysv, vpmf, vpkf, vybvykhmas, ys0, vyuv, vmivmf, ete) %isrp=0; %выбор метода измерений для фракции 2-0,7 мм: 0 - нестационарный, 1 - стационарный %выбор фракции: 0 - фракция 2-0,7 мм, 1 - фракция 8-4 мм, 2 - фракция 1,6-0,35 мм %выбор укладки: 1 - плоскопараллельная, 2 - вертикальная %выбор состояния: 0 - исходное, 1 - после повторных измерений, 2 - после прокаливания при 1000 град °С
-format longg; hf = 1e0; 
-h=ys0; cem=length(ete); %dete=1e2; te0=273.15; tnac=2e2+te0; cem=11; ete=tnac:dete:tnac+(cem-1)*dete;
-switch (vybvesch)
-    case (0) %шамот
-    vybsha=vybmar; vystsha=0; cems=cem; 
-    por=novNapMas(vybvesch, vybmar, vyfv, vysv, vpmf, vpkf);
-    kektps=poisMasKoefsha(vybsha); dmkos=length(kektps);
-	for k = 1:cems
-        t=ete(k); s=0; g=0; 
-	for j = 1:dmkos
-        s = s + kektps(j)*(t^g); 
-        g = g + hf;
-    end
-    ektps(k) = s; 
-    end
-    f=1; fl=1; m=1; k=0; thol=opredTempHolGor(ektps, ete, h, k, ete, m, f, fl);
-    f=0; fl=0; m=-m; k=1; tgor=opredTempHolGor(ektps, ete, h, k, ete, m, f, fl);   
-    k=2; qob=opredTempHolGor(ektps, ete, h, k, ete, m, f, fl);
-    k=3; ektps=opredTempHolGor(ektps, ete, h, k, ete, m, f, fl);
-    k=4; ete=opredTempHolGor(ektps, ete, h, k, ete, m, f, fl);
-    case (3) %КВИ
-        vpk=vybmar; cemk=cem; 
-    kektpk=poisMasKoefkvi(vpk); dmkok=length(kektp); k=0;
-	por=novNapMas(vybvesch, vpk, vyfv, vysv, vpmf, vpkf);
-	for k = 1:cemk
-        t=ete(k); s=0; g=0; 
-	for j = 1:dmkok
-        s = s + kektpk(j)*(t^g); 
-        g = g + hf;
-    end
-    ektpk(k) = s; 
-    end
-    f=1; fl=1; m=1; k=0; thol=opredTempHolGor(ektpk, ete, h, k, ete, m, f, fl);
-    f=0; fl=0; m=-m; k=1; tgor=opredTempHolGor(ektpk, ete, h, k, ete, m, f, fl);   
-    k=2; qob=opredTempHolGor(ektpk, ete, h, k, ete, m, f, fl);
-    k=3; ektpv=opredTempHolGor(ektpk, ete, h, k, ete, m, f, fl);
-    k=4; ete=opredTempHolGor(ektpk, ete, h, k, ete, m, f, fl);        
-    case (2) %ИТОМ
-    vpi=vybitom; cemi=cem; 
-	kektpi=poisMasKoefItom(vpi); k=0;
-	por=novNapMas(vybvesch, vpi, vyfv, vysv, vpmf, vpkf);
-	for k = 1:cemi
-        t=ete(k); s=0; g=0; 
-	for j = 1:dmkoi
-        s = s + kektpi(j)*(t^g); 
-        g = g + hf;
-    end
-    ektpi(k) = s; 
-    end
-    f=1; fl=1; m=1; k=0; thol=opredTempHolGor(ektpi, ete, h, k, ete, m, f, fl);
-    f=0; fl=0; m=-m; k=1; tgor=opredTempHolGor(ektpi, ete, h, k, ete, m, f, fl);   
-    k=2; qob=opredTempHolGor(ektpi, ete, h, k, ete, m, f, fl);
-    k=3; ektpv=opredTempHolGor(ektpi, ete, h, k, ete, m, f, fl);
-    k=4; ete=opredTempHolGor(ektpi, ete, h, k, ete, m, f, fl);        
-    case (1) %вермикулит
-	ident=0; f=1; thol=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv, f);
-	ident=1; f=-f; tgor=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv, f);
-    ident=2; qob=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv, f);
-    ident=3; ektpv=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv, f);
-    ident=4; ete=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv, f);
-end
-    k=0; f=1; tholn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
-    k=1; tgorn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
-    k=2; qobn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
-    k=3; ektpvn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
-    k=4; eten=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
+function [ npv ] = napMasEKTPVerNac(vyfv, vysv, vybvykhmas, ys0, vyuv, vmivmf, ete) %isrp=0; %выбор метода измерений для фракции 2-0,7 мм: 0 - нестационарный, 1 - стационарный %выбор фракции: 0 - фракция 2-0,7 мм, 1 - фракция 8-4 мм, 2 - фракция 1,6-0,35 мм %выбор укладки: 1 - плоскопараллельная, 2 - вертикальная %выбор состояния: 0 - исходное, 1 - после повторных измерений, 2 - после прокаливания при 1000 град °С
+format longg; vybvesch=1; %cem=length(ete); dete=1e2; te0=273.15; tnac=2e2+te0; cem=11; ete=tnac:dete:tnac+(cem-1)*dete;
+    ident=0; thol=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv);
+    ident=ident+1; tgor=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv);
+    ident=ident+1; qob=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv);
+    ident=ident+1; ektpv=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv);
+    ident=ident+1; ete=napMasEKTP(vyfv, vysv, vmivmf, ete, ident, ys0, vyuv);
+    thol=thol;
+    ete=ete;
+    f=1;
+    k=0; tholn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
+    k=k+1; tgorn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
+    k=k+1; qobn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
+    k=k+1; ektpvn=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
+    k=k+1; eten=vydelPol(thol, tgor, qob, ektpv, ete, k, f, vybvesch);
+    eten=eten;
+    tholn=tholn;
     switch (vybvykhmas)
         case (0)
             npv=tholn;
@@ -81,16 +31,23 @@ end
     end
 end
            
-function [ mv ] = PoiskZavVelTem(v, efte, h, fla, flag, fl1, fl2, fl3)
-	hf=1e0; e=1e-6; vyukve=1; n=length(efte); c=0; vybvesch=1;
-    for k=1:n
-    temvs(k)=0; temhq(k)=0; temcq(k)=0; ktpq(k)=0; tepv(k)=0; cemt(k)=0;
-    temvct(k)=0; temvht(k)=0; tepvt(k)=0; ktp(k)=0; ts(k)=0; 
-    end
-	nvyfv=[0,1]; nnvyfv=length(nvyfv); %фракции вермикулита
+function [ vyma ] = PoiskZavVelTem(v, efte, h, f)
+	hf=1e0; e=1e-6; vybvesch=1;
+    n=length(efte);
+    nvyfv=[0,1]; nnvyfv=length(nvyfv); %фракции вермикулита
 	nvysv=[0,1,2]; nnvysv=length(nvysv); %состояния вермикулита
 	nvmivmf=[1,2]; nnvmivmf=length(nvmivmf); %стационарные методы измерений - 2019 и 2020
 	nvyuv=[1,2]; nnvyuv=length(nvyuv); %укладка вермикулита
+    m=length(nvyfv)*length(nvysv)*(length(nvmivmf)+length(nvyuv));
+temvs=zeros(m,n);
+temhq=zeros(m,n);
+temcq=zeros(m,n);
+ktpq=zeros(m,n);
+tepv=zeros(m,n);
+    nomer=1;
+    vyfrve=0;
+    vyukve=1;
+    vysove=0;
 	for kvf=1:nnvyfv
 		vyfrve=nvyfv(kvf);
 		for jvsv=1:nnvysv
@@ -99,245 +56,228 @@ function [ mv ] = PoiskZavVelTem(v, efte, h, fla, flag, fl1, fl2, fl3)
 				for qvmi=1:nnvmivmf
 					vymivmf=nvmivmf(qvmi); 
                     ident=0; temvct=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
-                    ident=1; temvht=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
-                    ident=2; tepvt=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
-                    ident=3; ktp=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
-                    ident=4; ts=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
-                    k=0; f=-1; temvctn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, f, vybvesch);
-                    k=1; temvhtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, f, vybvesch);
-                    k=2; tepvtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, f, vybvesch);
-                    k=3; ktpn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, f, vybvesch);
-                    k=4; tsn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, f, vybvesch);
-                    if ((fla>0) && (flag>0) && (fl1>0) && (fl2>0) && (fl3>0))
-                        temvctn=temvctn;
-                        temvhtn=temvhtn;
-                        tepvtn=tepvtn;
-                        ktpn=ktpn;
-                        tsn=tsn;
+                    ident=ident+1; temvht=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
+                    ident=ident+1; tepvt=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
+                    ident=ident+1; ktp=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
+                    ident=ident+1; ts=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve);
+                    fl=-1;
+                    k=0; temvctn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, fl, vybvesch);
+                    k=k+1; temvhtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, fl, vybvesch);
+                    k=k+1; tepvtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, fl, vybvesch);
+                    k=k+1; ktpn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, fl, vybvesch);
+                    k=k+1; tsn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, fl, vybvesch);
+                    if (f>0)
+                    fl=1;
                     end
-                    q=length(tsn); d=1; k=1; cfp=tepvt(k); 
-                    for k=(d+1):q
-                        cft=tepvt(k); 
-                        if ((cft<=cfp) && (d>0))
-                            d=-1; break;
-                        end
-                            cfp=cft;
-                    end
-						if (d>0)
-                            for w=1:q 
-                                tf=tsn(w); cf=tepvtn(w)*tf;
-							for k=1:n
-							if (abs(tf-efte(k))<=hf)
-                                temvs(k)=temvs(k)+tf;
-								temhq(k)=temhq(k)+tf*temvhtn(w); 
-                                temcq(k)=temcq(k)+tf*temvctn(w); 
-                                ktpq(k)=ktpq(k)+tf*ktpn(w);
-								tepv(k)=tepv(k)+cf; 
-                                cemt(k)=cemt(k)+hf; 
-								break; 
-                            end
-                            end
-                            end
-                        end
-                        if (vysove>0)
+                    ident=0; temcq=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    fl=-1;
+                    ident=ident+1; temhq=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    ident=ident+1; tepv=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    ident=ident+1; ktpq=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    ident=ident+1; temvs=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    nomer=nomer+1;
+                    if (vysove>0) 
                         break;
-                        end
+                    end
                 end
             elseif (vyfrve==1)
 				for qvuv=1:nnvyuv
 					vyukve=nvyuv(qvuv);
-					ident=0; temvct=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
+                    ident=0; temvct=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
                     ident=ident+1; temvht=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
                     ident=ident+1; tepvt=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
                     ident=ident+1; ktp=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
                     ident=ident+1; ts=napMasEKTP(vyfrve, vysove, vymivmf, efte, ident, h, vyukve); 
-                    k=0; j=-1; temvctn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
-                    k=1; temvhtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
-                    k=2; tepvtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
-                    k=3; ktpn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
-                    k=4; tsn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
-                    if ((fla>0) && (flag>0) && (fl1>0) && (fl2>0) && (fl3>0))
+                    j=-1;
+                    k=0; temvctn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
+                    k=k+1; temvhtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
+                    k=k+1; tepvtn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
+                    k=k+1; ktpn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
+                    k=k+1; tsn=vydelPol(temvct, temvht, tepvt, ktp, ts, k, j, vybvesch); 
+                    if (f>0)
+                    fl=1;
+                    end
+                    ident=0; temcq=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    fl=-1;
+                    ident=ident+1; temhq=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    ident=ident+1; tepv=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    ident=ident+1; ktpq=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    ident=ident+1; temvs=rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, fl, ident);
+                    nomer=nomer+1;
+                end
+            end
+        end
+    end
+    n=length(efte);
+    m=nomer;
+    mv=zeros(m,n);
+    vymas=zeros(1,n);
+    for k=1:n
+        for j=1:m
+            for i=1:n
+                if (abs(temvs(j,i)-efte(k))<=hf)
+                    mv(j,i)=hf;
+                end
+            end
+        end
+        vymas(k)=usrmas(mv, temvs, temhq, temcq, ktpq, tepv, efte, v);
+        for j=1:m
+            for i=1:n
+                mv(j,i)=0;
+            end
+        end
+    end
+    v=v';
+switch (v)
+    case (0)
+        temc=vymas;
+    case (1)
+        temh=vymas;
+    case (2)
+        tepv=vymas;
+    case (3)
+        ktpq=vymas;
+    case (4)
+        temvs=vymas;
+end
+    vyma=vymas;
+end
+%-----
+function [ vyma ] = rasMas(efte, temvhtn, temvctn, ktpn, tepvtn, tsn, temvs, temhq, temcq, ktpq, tepv, nomer, vyfrve, vysove, vymivmf, vyukve, f, v)
+hf=1;
+e=1e-1;
+    for k=1:length(efte)
+            tf=efte(k);
+                    for w=1:length(tsn)
+                        temr=tsn(w);
+                        if (abs(tf-temr)<=hf)
+                            temvs(nomer,w)=temr;
+                            temhq(nomer,w)=temr*temvhtn(w); 
+                            temcq(nomer,w)=temr*temvctn(w); 
+                            ktpq(nomer,w)=temr*ktpn(w);
+                            tepv(nomer,w)=tepvtn(w)*temr;
+                        break; 
+                        end
+                    end
+    end
+    if ((f>0) && (vyfrve==2))
+                        vyfv=vyfrve';
+                        vysv=vysove';
+                        if (vyfv<e)
+                        vymivmf=vymivmf';
+                        else
+                        vyuv=vyukve';
+                        end
                         temvctn=temvctn;
                         temvhtn=temvhtn;
                         tepvtn=tepvtn;
                         ktpn=ktpn;
                         tsn=tsn;
-                    end
-                    q=length(tsn); d=1; k=1; cfp=tepvt(k); 
-                    for k=(d+1):q
-                        cft=tepvt(k); 
-                        if ((cft<=cfp) && (d>0))
-                            d=-1; break;
-                        end
-                            cfp=cft;
-                    end
-						if (d>0)
-                            for w=1:q 
-                                tf=tsn(w); cf=tepvtn(w)*tf;
-							for k=1:n
-							if (abs(tf-efte(k))<=hf)
-								temvs(k)=temvs(k)+tf;
-								temhq(k)=temhq(k)+tf*temvhtn(w); 
-                                temcq(k)=temcq(k)+tf*temvctn(w); 
-                                ktpq(k)=ktpq(k)+tf*ktpn(w);
-								tepv(k)=tepv(k)+cf; 
-                                cemt(k)=cemt(k)+hf; 
-								break; 
-                            end
-                            end
-                            end
-                        end
-                end
-            end
-        end
     end
-		for k=1:n
-			cf=temvs(k); 
-            if (cf>e)
-				temhq(k)=temhq(k)/cf; 
-                temcq(k)=temcq(k)/cf; 
-                ktpq(k)=ktpq(k)/cf; 
-                tepv(k)=tepv(k)/cf;
-            end
-			cf=cemt(k); 
-            if (cf>e) 
-                temvs(k)=temvs(k)/cf; 
-            else
-                temvs(k)=0;
-            end
-        end
-        if ((fla>0) && (flag>0) && (fl1>0) && (fl2>0) && (fl3>0))
-        temcq;
-        temhq;
-        tepv;
-        ktpq;
-        temvs;
-        end
 switch (v)
     case (0)
-        mv=temcq;
+        vymas=temcq;
     case (1)
-        mv=temhq;
+        vymas=temhq;
     case (2)
-        mv=tepv;
+        vymas=tepv;
     case (3)
-        mv=ktpq;
+        vymas=ktpq;
     case (4)
-        mv=temvs;
+        vymas=temvs;
 end
+vyma=vymas;
 end
-%----------------
-function [ oa ] = opredtemphc(effktp, efftem, tgv, thv, qon, h, qob, tgor, thol, v) %n=3 - длина массива коэффициентов приближающего многочлена, tgv - температура горячей стенки, thv - температура холодной стенки, dlma - длина массива ЭКТП
-	k=0; j=0; ts=0; g=0; p=0; hf=1e0; r=0; s=0; tego=0; teho=0;
-	tesr=(tgv+thv)/2e0;
-	kq=koefPribSha(qon, tesr);
-	kgo=koefPribSha(tgv, tesr);
-	kho=koefPribSha(thv, tesr);
-    dlma=length(effktp);
-	for k=1:dlma
-		ts=efftem(k);
-		g=0; p=0; 
-        for j=1:n
-            g=g+(ts^p)*kq(j);
-            p=p+hf;
+%-----
+function u = usrmas(mv, temvs, temhq, temcq, ktpq, tepv, efte, v)
+hf=1;
+n=length(efte);
+s=0;
+t=0;
+e=1e-6;
+for i=1:n
+    for j=1:n
+        if (mv(i,j)>e)
+            switch (v)
+    case (0)
+        s=s+temcq(i,j);
+    case (1)
+        s=s+temhq(i,j);
+    case (2)
+        s=s+tepv(i,j);
+    case (3)
+        s=s+ktpq(i,j);
+    case (4)
+        s=s+temvs(i,j);
+            end
         end
-if (g<0) 
-            g=0; 
-end
-        qob(k)=g;
-		p=effktp(k);
-		g=fabs(g*h/p); 
-		tego=ts+g/2e0; teho=ts-g/2e0;
-if ((tego<0) || (teho<0)) 
-if (tego<0)
-			r=0; s=0; 
-            for j=1:n
-                r=r+(ts^s)*kgo(j); 
-                s=s+hf;
-            end
-if (r<0) 
-                r=0; tego=r; 
-end
-end
-if (teho<0)
-			r=0; s=0; 
-            for j=1:n
-            r=r+(ts^s)*kho(j); 
-            s=s+hf;
-            end
-			if (r<0) 
-                r=0; 
-            end
-            teho=r; 
-end
-end
-	tgor(k)=tego; thol(k)=teho;
     end
-switch (v)
-        case (0)
-            oa=thol;
-        case (1)
-            oa=tgor;
-        case (2)
-            oa=qob;
+end
+for i=1:n
+    for j=1:n
+        if (mv(i,j)>e)
+            if (v<4)
+            t=t+temvs(i,j);
+            else
+                t=t+hf;
+            end
+        end
+    end
+end
+if (t>e) 
+    u=s/t;
+else
+    u=0;
 end
 end
-%----------------
-function [ oa ] = opredTempHolGor(ektp, ete, h0, v, efte, fl, f, fla) %моделирование процесса теплообмена в образце %n - длина массива ektp, l - длина массивов temvs, qob, ktp, temvh, temvc, ni - длина efte, qob - плотность теплового потока, которую может создать лабораторная установка 
-	nit=1e10; hf=1e0; ep=1e-3; d=1e-4; te0=273.15; tn=22+te0; Thna=tn; dt=hf;
-	k=2; fn=1; fln=1; qon=PoiskZavVelTem(k, efte, h0, fn, fln, f, fl, fla);
-	k=4; fn=-fn; fln=-fln; tena=PoiskZavVelTem(k, efte, h0, fn, fln, f, fl, fla);
-	nf=length(qon); ni=length(efte);
+%------
+function [ oa ] = opredTempHolGor(ektp, ete, h0, v, efte) %моделирование процесса теплообмена в образце %n - длина массива ektp, l - длина массивов temvs, qob, ktp, temvh, temvc, ni - длина efte, qob - плотность теплового потока, которую может создать лабораторная установка 
+    ektp=ektp;
+    ete=ete;
+	hf=1e0; te0=273.15; tn=22.0+te0;
+    f=1;
+	k=2; qon=PoiskZavVelTem(k, efte, h0, f);
+    f=-1;
+	k=4; tena=PoiskZavVelTem(k, efte, h0, f);
+	ni=length(efte); e=1e-10; 
 	koeq=koefPribSha(qon, tena);
     dmkoef=length(koeq);
-    n=length(ete);
-		for k=1:n
-			ts=ete(k); g=0; p=g;
+    temvc=zeros(1,ni);
+    qob=zeros(1,ni);
+    temvh=zeros(1,ni);
+    temvs=zeros(1,ni);
+    ktp=zeros(1,ni);
+		for k=1:ni
+			ts=efte(k); g=0; p=g;
 			for j=1:dmkoef
                 g=g+(ts^p)*koeq(j); 
                 p=p+hf;
             end
 			qob(k)=g;
-            temvc(k)=0; 
-            temvh(k)=0; 
-            temvs(k)=0; 
-            ktp(k)=0;
+            temvc(k)=0; temvh(k)=0; temvs(k)=0; ktp(k)=0;
         end
-        g=0;
-        for k=1:n
-            laef=ektp(k); 
-			if (qob(k)>ep)
-				p=0; Thnac=Thna+g*dt; del=hf; etem=ete(k); ktp(k)=laef;
-				while ((del>ep) && (p<nit))
-					thol=Thnac+p*d; %Tg - массив температур горячих стенок, Th - массив температур холодных стенок
-					tgor=thol+qob(k)*h0/laef;
-					del=abs(2e0*etem-(thol+tgor));
-					p=p+hf;
-                end
-				g=g+hf;
-            else
-                thol=0; tgor=0; qob(k)=0; ktp(k)=0; 
-            end
-			 temvs(k)=(tgor+thol)/2e0; temvc(k)=thol; temvh(k)=tgor;
-        end
-        vybvesch=1;
-    k=0; j=1; temvcn=vydelPol(temvc, temvh, qob, ktp, ete, k, j, vybvesch);
-    k=1; temvhn=vydelPol(temvc, temvh, qob, ktp, ete, k, j, vybvesch);
-    k=2; qobn=vydelPol(temvc, temvh, qob, ktp, ete, k, j, vybvesch);
-    k=3; ktpn=vydelPol(temvc, temvh, qob, ktp, ete, k, j, vybvesch);
-    k=4; temvsn=vydelPol(temvc, temvh, qob, ktp, ete, k, j, vybvesch);
-        if ((fl>0) && (f>0) && (fla>0))
-        qon=qon;
-        tena=tena;
-		ktp=ktp;
-        qob=qob;
         ete=ete;
-            temvcn=temvcn;
-            temvhn=temvhn;
-            qobn=qobn;
-            ktpn=ktpn;
-            temvsn=temvsn;
+        ektp=ektp;
+        for k=1:ni
+            qo=qob(k); laef=0.0;
+			if (qo>e)
+                etem=efte(k); laef=opredKTPTKTochSha(ektp,ete,etem); 
+                dt=qo*h0/laef;
+                thol=etem-dt/2e0;
+                tgor=thol+dt;
+            else
+                thol=0.0; tgor=0.0; qob(k)=0.0; ktp(k)=0.0; 
+            end
+             temvs(k)=(tgor+thol)/2e0; temvc(k)=thol; temvh(k)=tgor; ktp(k)=laef; qob(k)=qo;
         end
+        ktp=ktp;
+        temvs=temvs;
+    vybvesch=1; j=-1; 
+    k=0; temvcn=vydelPol(temvc, temvh, qob, ktp, temvs, k, j, vybvesch);
+    k=k+1; temvhn=vydelPol(temvc, temvh, qob, ktp, temvs, k, j, vybvesch);
+    k=k+1; qobn=vydelPol(temvc, temvh, qob, ktp, temvs, k, j, vybvesch);
+    k=k+1; ktpn=vydelPol(temvc, temvh, qob, ktp, temvs, k, j, vybvesch);
+    k=k+1; temvsn=vydelPol(temvc, temvh, qob, ktp, temvs, k, j, vybvesch);
         switch (v)
             case (0)
                 vm=temvcn;
@@ -350,27 +290,28 @@ function [ oa ] = opredTempHolGor(ektp, ete, h0, v, efte, fl, f, fla) %моделиров
             case (4)
                 vm=temvsn;
         end
+        vm=vm;
 	oa=vm;
 end
 %----------------
-function [ oa ] = napMasEKTP(vyfrve, vysove, vymeizvemafr, te, ident, h, vyukve, fl)
-	F=13.85*1e-4; hf=1e0;
+function [ oa ] = napMasEKTP(vyfrve, vysove, vymeizvemafr, te, ident, h, vyukve)
+	ko=1e-4; F=13.85*ko; hf=1e0;
 	if ((vyfrve==0) || (vyfrve==2)) %фракция 2-0,7 мм или фракция 1,6-0,35 мм
 		th207=arrTemHigh207(); temvh=th207;
 		tc207=arrTemCold207(); temvc=tc207;
 		tp207=arrTepPot207(); tepv=tp207/F;
-		n207=length(th207); temvs=(temvh+temvc)/2e0; 
+		n207=length(th207); temvs=(temvh+temvc)/2e0;
 		for k=1:n207
 		ktp(k)=abs(temvh(k)-temvc(k))/h; 
         ktp(k)=tepv(k)/ktp(k);
         end
         if (vysove==0) %если выбран исходный вермикулит
 		if (vymeizvemafr==0) %нестационарный метод - установка Netzsch
-		k=0; f=1; koefc=oprkoefKTPiskhchao(vymeizvemafr, k, te, h, f, fl);
-        k=1; f=-f; koefh=oprkoefKTPiskhchao(vymeizvemafr, k, te, h, f, fl); 
-        k=2; koefq=oprkoefKTPiskhchao(vymeizvemafr, k, te, h, f, fl);
-		k=3; koeft=oprkoefKTPiskhchao(vymeizvemafr, k, te, h, f, fl);
-        k=4; koefs=oprkoefKTPiskhchao(vymeizvemafr, k, te, h, f, fl);
+		k=0; koefc=oprkoefKTPiskhchao(k, te, h);
+        k=1; koefh=oprkoefKTPiskhchao(k, te, h); 
+        k=2; koefq=oprkoefKTPiskhchao(k, te, h);
+		k=3; koeft=oprkoefKTPiskhchao(k, te, h);
+        k=4; koefs=oprkoefKTPiskhchao(k, te, h);
         elseif (vymeizvemafr==1) %данные 2020 года - ГОСТ 12170 - стационарный метод
 		ktp=arrKTP_2020();
         temvh=arrTem1_2020();
@@ -486,7 +427,8 @@ function [ oa ] = napMasEKTP(vyfrve, vysove, vymeizvemafr, te, ident, h, vyukve,
         case (4)
             vm=koefs;
     end
-    nt=length(te); nvm=length(vm);
+    nt=length(te); nvm=length(vm); 
+    ma=zeros(1,nt);
     for k=1:nt
         t=te(k); s=0; r=s;
 	for j=1:nvm
@@ -498,33 +440,43 @@ function [ oa ] = napMasEKTP(vyfrve, vysove, vymeizvemafr, te, ident, h, vyukve,
 	oa=ma;
 end
 %----------------
-function [ oa ] = oprkoefKTPiskhchao(vmiv, v, efte, h, f, fl) %vmiv - выбор метода измерений
-	if (vmiv==0) %0 - установка Netzsch - нестационарный метод
-		mt=arrTem_Netzsch();
+function [ oa ] = oprkoefKTPiskhchao(v, efte, h) %vmiv - выбор метода измерений %0 - установка Netzsch - нестационарный метод
+        mt=arrTem_Netzsch();
 		ktpv=arrKTP_Netzsch();
-		m=1; k=0; thvn=opredTempHolGor(ktpv, mt, h, k, efte, m, f, fl);
-        m=-m; k=1; tgvn=opredTempHolGor(ktpv, mt, h, k, efte, m, f, fl);   
-		k=2; qovn=opredTempHolGor(ktpv, mt, h, k, efte, m, f, fl);
-        k=3; ktpvn=opredTempHolGor(ktpv, mt, h, k, efte, m, f, fl);
-        k=4; tsvn=opredTempHolGor(ktpv, mt, h, k, efte, m, f, fl);
-		koefc=koefPribSha(thvn, tsvn);
-        koefh=koefPribSha(tgvn, tsvn);
-		koefq=koefPribSha(qovn, tsvn);
-        koeft=koefPribSha(ktpvn, tsvn); 
-		koefs=koefPribSha(tsvn, tsvn); 
-    end
+		k=0; thvn=opredTempHolGor(ktpv, mt, h, k, efte);
+        k=k+1; tgvn=opredTempHolGor(ktpv, mt, h, k, efte); 
+		k=k+1; qovn=opredTempHolGor(ktpv, mt, h, k, efte);
+        k=k+1; ktpvn=opredTempHolGor(ktpv, mt, h, k, efte);
+        k=k+1; tsvn=opredTempHolGor(ktpv, mt, h, k, efte);
+            f=-1;
+            vybvesch=1;
+    k=0; thvnn=vydelPol(thvn, tgvn, qovn, ktpvn, tsvn, k, f, vybvesch);
+    k=k+1; tgvnn=vydelPol(thvn, tgvn, qovn, ktpvn, tsvn, k, f, vybvesch);
+    k=k+1; qovnn=vydelPol(thvn, tgvn, qovn, ktpvn, tsvn, k, f, vybvesch);
+    k=k+1; ktpvnn=vydelPol(thvn, tgvn, qovn, ktpvn, tsvn, k, f, vybvesch);
+    k=k+1; tsvnn=vydelPol(thvn, tgvn, qovn, ktpvn, tsvn, k, f, vybvesch);
+        thvnn=thvnn;
+        tsvnn=tsvnn;
+		koefc=koefPribSha(thvnn, tsvnn);
+        %le=length(thvnn);
+        %koefc=koefPribVer(thvn, tsvn);
+        koefh=koefPribSha(tgvnn, tsvnn);
+		koefq=koefPribSha(qovnn, tsvnn);
+        koeft=koefPribSha(ktpvnn, tsvnn); 
+		koefs=koefPribSha(tsvnn, tsvnn); 
     switch (v)
         case (0)
-            oa=koefc;
+            vm=koefc;
         case (1)
-            oa=koefh;
+            vm=koefh;
         case (2)
-            oa=koefq;
+            vm=koefq;
         case (3)
-            oa=koeft;
+            vm=koeft;
         case (4)
-            oa=koefs;
+            vm=koefs;
     end
+    oa=vm;
 end
 %----------------
 function [ oa ] = danIskh207(ma, x)
@@ -564,7 +516,7 @@ a=[377, 396, 383.5, 548, 703, 697.25]+te0;
 end
 %---------
 function [ isdan ] = danPoTemTepl840(temvs, temvh) %Засыпка плоско-параллельная, исходный
-	e=1e-4;
+	e=1e-6;
 	p=15; q=17; tem1=temvs(p)+temvs(q);
 	p=16; q=18; tem2=temvs(p)+temvs(q);
 	p=15; q=17; tho1=(temvh(p)*temvs(p)+temvh(q)*temvs(q))/tem1;
@@ -578,7 +530,7 @@ function [ isdan ] = danPoTemTepl840(temvs, temvh) %Засыпка плоско-параллельная,
 	isdan=[k2, k1]; 
 end
 function [ isdan ] = danPoTemTepl841(temvs, temvh) %Засыпка вертикальная, исходный
-	tc1=0; tc2=0; e=1e-4;
+	tc1=0; tc2=0; e=1e-6;
 	p=5; q=7; r=11; tem1=temvs(p)+temvs(q)+temvs(r);
 	p=6; q=8; r=12; tem2=temvs(p)+temvs(q)+temvs(r);
 	p=5; q=7; r=11; 
@@ -598,7 +550,7 @@ function [ isdan ] = danPoTemTepl841(temvs, temvh) %Засыпка вертикальная, исходн
 	isdan=[k2, k1]; 
 end
 function [ isdan ] = danPoTemTepl842(temvs, temvh) %Засыпка плоско-параллельная, повторы
-	e=1e-4;
+	e=1e-6;
 	p=19; q=21; r=23; tem1=temvs(p)+temvs(q)+temvs(r);
 	p=20; q=22; r=24; tem2=temvs(p)+temvs(q)+temvs(r);
 	p=19; q=21; r=23; 
@@ -619,7 +571,7 @@ function [ isdan ] = danPoTemTepl842(temvs, temvh) %Засыпка плоско-параллельная,
     isdan=[k2,k1];
 end
 function [ isdan ] = danPoTemTepl843(temvs, temvh) %Засыпка вертикальная, после обжига при 1000 °С
-	e=1e-4;
+	e=1e-6;
 	p=1; q=3; tem1=temvs(p)+temvs(q);
 	p=2; q=4; tem2=temvs(p)+temvs(q);
 	p=1; q=3; tc1=0;
@@ -640,7 +592,7 @@ function [ isdan ] = danPoTemTepl843(temvs, temvh) %Засыпка вертикальная, после 
 	isdan=[k2,k1]; 
 end
 function [ isdan ] = danPoTemTepl844(temvs, temvh) %Засыпка вертикальная, повторы
-	e=1e-3;
+	e=1e-6;
 	p=9; q=13; tem1=temvs(p)+temvs(q);
 	p=10; q=14; tem2=temvs(p)+temvs(q);
 	p=9; q=13; tc1=0;
@@ -660,7 +612,7 @@ function [ isdan ] = danPoTemTepl844(temvs, temvh) %Засыпка вертикальная, повтор
 	isdan=[k2,k1];
 end
 function [ isdan ] = danPoTemTepl845(temvs, temvh) %Засыпка плоско-параллельная, после обжига при 1000 °С
-	e=1e-3;
+	e=1e-6;
 	k=25; tem1=temvs(k);
 	k=26; tem2=temvs(k);
 	k=25; tc1=0;
@@ -680,7 +632,7 @@ function [ isdan ] = danPoTemTepl845(temvs, temvh) %Засыпка плоско-параллельная,
 end
 %---------
 function [ isdan ] = danPoTemTepl2071(temvs, tepv) %Засыпка исходная, фракция 2-0,7 мм
-    tepv1=0; tepv2=0; e=1e-3;
+    tepv1=0; tepv2=0; e=1e-6;
 	k=1; tem1=temvs(k);
 	k=2; tem2=temvs(k);
 	k=1; 
@@ -699,7 +651,7 @@ function [ isdan ] = danPoTemTepl2071(temvs, tepv) %Засыпка исходная, фракция 2-
 	isdan=[k2,k1];
 end
 function [ isdan ] = danPoTemTepl2072(temvs, tepv) %Фракция 2-0,7 мм (повторные измерения)
-	e=1e-3;
+	e=1e-6;
 	p=3; q=5; tem1=temvs(p)+temvs(q);
 	p=4; q=6; tem2=temvs(p)+temvs(q);
 	p=3; q=5; tepv1=0; 
@@ -719,7 +671,7 @@ function [ isdan ] = danPoTemTepl2072(temvs, tepv) %Фракция 2-0,7 мм (повторные 
 	isdan=[k2,k1]; 
 end
 function [ isdan ] = danPoTemTepl2073(temvs, tepv) %Фракция 2-0,7 мм, после обжига при 1000 °С
-	e=1e-3;
+	e=1e-6;
 	p=7; q=9; tem1=temvs(p)+temvs(q);
 	p=8; q=10; tem2=temvs(p)+temvs(q);
 	p=7; q=9; tepv1=0;
@@ -739,7 +691,7 @@ function [ isdan ] = danPoTemTepl2073(temvs, tepv) %Фракция 2-0,7 мм, после обжи
 	isdan=[k2,k1]; 
 end
 function [ isdan ] = danPoTemTepl2074(temvs, tepv) %Фракция 2-0,7 мм, после повторного обжига при 1000 °С
-	tepv1=0; tepv2=0; e=1e-3;
+	tepv1=0; tepv2=0; e=1e-6;
 	p=3; tem1=temvs(p);
 	p=4; tem2=temvs(p);
 	p=3; 
@@ -786,25 +738,141 @@ end
 function [ tepot ] = arrTepPot207()
 tepot=[3.9596, 8.6377, 2.3003, 5.3674, 3.56149, 7.123, 2.12992, 7.6956, 2.3003, 6.9009];
 end
-
-function [ vm ] = vydelPol(thol, tgor, qob, ektpv, ete, v, fl, vyve)
-te0=273.15; 
+%---------
+function [ vyma ] = vydelPol(temvcs, temvhs, qos, ektpvs, temvss, v, f, vybves)
+tev0 = 273.15; ko=1e2; n=length(qos); e=1e-6; q=0;
+switch (vybves)
+    case (0)
+matepr=11.5*ko;
+    case (1)
+matepr = 11.0*ko;
+end
+matepr=matepr + tev0;
+if (f>0)
+for k = 1:n
+if ((temvcs(k)>e) && (temvhs(k)>e) && (qos(k)>e) && (ektpvs(k)>e) && (temvss(k)>e) && (temvhs(k)<matepr) && (temvcs(k)<matepr) && (temvss(k)<matepr)) 
+        q=q+1; 
+end
+end
+qn = q;
+if (qn==0)
+    temvcs=temvcs;
+    temvhs=temvhs;
+    qos=qos;
+    ektpvs=ektpvs;
+    temvss=temvss;
+end
+q = 1; vm=zeros(1, qn);
+if (qn>0)
+for k=1:n
+if ((temvcs(k)>e) && (temvhs(k)>e) && (qos(k)>e) && (ektpvs(k)>e) && (temvss(k)>e) && (temvhs(k)<matepr) && (temvcs(k)<matepr) && (temvss(k)<matepr)) 
+                switch (v)
+                case (0) 
+                    vm(q) = temvcs(k);
+                case (1) 
+                    vm(q) = temvhs(k);
+                case (2) 
+                    vm(q) = qos(k);
+                case (3) 
+                    vm(q) = ektpvs(k);
+                case (4) 
+                    vm(q) = temvss(k);
+                end
+            q=q+1;
+end
+end
+else
+switch (v)
+                case (0) 
+                    vm = temvcs;
+                case (1) 
+                    vm = temvhs;
+                case (2) 
+                    vm = qos;
+                case (3) 
+                    vm = ektpvs;
+                case (4) 
+                    vm = temvss;
+end
+end
+else
+for k = 1:n
+if ((temvcs(k)>e) && (temvhs(k)>e) && (qos(k)>e) && (ektpvs(k)>e) && (temvss(k)>e)) 
+        q=q+1; 
+end
+end
+qn = q;
+if (qn==0)
+    temvcs=temvcs;
+    temvhs=temvhs;
+    qos=qos;
+    ektpvs=ektpvs;
+    temvss=temvss;
+end
+q = 1; vm=zeros(1, qn);
+if (qn>0)
+for k=1:n
+if ((temvcs(k)>e) && (temvhs(k)>e) && (qos(k)>e) && (ektpvs(k)>e) && (temvss(k)>e)) 
+                switch (v)
+                case (0) 
+                    vm(q) = temvcs(k);
+                case (1) 
+                    vm(q) = temvhs(k);
+                case (2) 
+                    vm(q) = qos(k);
+                case (3) 
+                    vm(q) = ektpvs(k);
+                case (4) 
+                    vm(q) = temvss(k);
+                end
+            q=q+1;
+end
+end
+else
+switch (v)
+                case (0) 
+                    vm = temvcs;
+                case (1) 
+                    vm = temvhs;
+                case (2) 
+                    vm = qos;
+                case (3) 
+                    vm = ektpvs;
+                case (4) 
+                    vm = temvss;
+end
+end    
+end
+	vyma=vm;
+end
+%---------
+function [ vm ] = vydelPolN(thol, tgor, qob, ektpv, ete, v, fl, vyve)
+te0=273.15; matepr=0.0; ko=1e2; vybmar=0;
     switch (vyve)
         case (0)
-            templa=175*1e1+te0;     
+            if ((vybmar>=4) && (vybmar<=6)) matepr=11.5*ko;
+            elseif ((vybmar>=7) && (vybmar<=8)) matepr=13.0*ko;
+            elseif ((vybmar>=9) && (vybmar<=10)) matepr=12.7*ko;
+            elseif ((vybmar>=11) && (vybmar<=13)) matepr=13.0*ko;
+            end
         case (1)
-            templa=134*1e1+te0; 
+            matepr=11.0*ko; 
         case (2)
-            templa=1750+te0;
+            matepr=11.0*ko; 
         case (3)
-            templa=1750+te0;
+            if (vybmar==4) matepr=1e1*ko; 
+            elseif (vybmar==5) matepr=10.5*ko; 
+            elseif ((vybmar>=6) && (vybmar<=7)) matepr=11.0*ko; 
+            elseif ((vybmar>=8) && (vybmar<=10)) matepr=11.5*ko;
+            end
     end
-    t=-1; tholn=podvydelPol(thol, fl, t, templa);
-    t=-t; tgorn=podvydelPol(tgor, fl, t, templa);
-    t=-t; qobn=podvydelPol(qob, fl, t, templa);
-    ektpvn=podvydelPol(ektpv, fl, t, templa);
-    eten=podvydelPol(ete, fl, t, templa);
-    nk=length(tholn);
+    matepr=matepr+te0;
+    t=-1; tholn=podvydelPol(thol, fl, t, matepr);
+    t=-t; tgorn=podvydelPol(tgor, fl, t, matepr);
+    t=-t; qobn=podvydelPol(qob, fl, t, matepr);
+    ektpvn=podvydelPol(ektpv, fl, t, matepr);
+    eten=podvydelPol(ete, fl, t, matepr);
+    nk=length(ete);
     nom=0;
     for k=1:nk
         nom(k)=tholn(k)*tgorn(k)*qobn(k)*ektpvn(k)*eten(k);
@@ -815,7 +883,7 @@ te0=273.15;
     q=1; tho=0; tgo=0; qo=0; ektp=0; et=0;
     for k=1:nk
         x=nom(k);
-        if (x>0)
+        if (x==1)
             tho(q)=thol(k);
             tgo(q)=tgor(k);
             qo(q)=qob(k);
@@ -838,7 +906,7 @@ te0=273.15;
     end
     vm=vyma;
 end
-
+%---------
 function [ vm ] = podvydelPol(po, fl, t, templa)
 e=1e-6; nk=length(po);
 for k=1:nk
@@ -859,7 +927,7 @@ end
 vm=nom;
 end
 function [ ko ] = koefPribSha(ktp, te)
-	yx2=0; yx=0; x4=0; x3=0; x2=0; x=0; y=0; le=length(ktp); p=le;
+	yx2=0.0; yx=0.0; x4=0.0; x3=0.0; x2=0.0; x=0.0; y=0.0; le=length(ktp); p=le;
 	for k=1:le
 		yx2=yx2+ktp(k)*(te(k)^2e0); 
 		yx=yx+ktp(k)*te(k); 
@@ -880,129 +948,87 @@ function [ ko ] = koefPribSha(ktp, te)
 	de3 = det(A3);
 	ko=[de3/de, de2/de, de1/de];
 end
-function [ kti ] = podpoisMasKoefItom(ktp1, ktp2, t1, t2)
-ktpitom(2) = (ktp2 - ktp1) / (te2 - te1); 
-ktpitom(1) = ktp1 - ktpitom(2) * te1;
-kti=ktpitom;		
+function [ ko ] = koefPribVer(ktp, te)
+	yx2=0; yx=0; x4=0; x3=0; x2=0; x=0; y=0; le=length(ktp); p=le;
+	for k=1:le
+		yx2=yx2+ktp(k)*(te(k)^2e0); 
+		yx=yx+ktp(k)*te(k); 
+		y=y+ktp(k);
+		x4=x4+(te(k)^4e0); 
+		x3=x3+(te(k)^3e0); 
+		x2=x2+(te(k)^2e0); 
+		x=x+te(k);
+    end %применение метода наименьших квадратов
+	b=[yx2, yx, y]'; 
+    A = [x4, x3, x2; x3, x2, x; x2, x, p];
+	ko=fliplr((inv(A)*b)');
 end
-function [ vm ] = poisMasKoefItom(no, kti)
-	f=length(kti); k=0; tei0=273.15; t1=2e2; t2=38e1; kk=1e-2; km=kk/1e1; te200=t1+tei0; te380=t2+tei0;
-    switch (no)
-        case (0)
-		ktpit = [9e0, 12e0]*kk;
-		vm=podpoisMasKoefItom(ktpit(1), ktpit(2), te200, te380);
-        case (1)
-		ktpit = [120, 139]*km; %из Диссертации
-		ktpit = [18, 19]*kk; %Данные 2017 года	
-        case (2) 
-		ktpit = [18.3,19.4]*kk; %из Диссертации
-		ktpit = [26, 37]*kk; %Данные 2017 года
-        case (3)
-        ktpit = [23, 25]*kk; %из Диссертации
-		ktpit = [42, 52]*kk; %Данные 2017 года
-        otherwise
-	disp('Net takoy marki ITOM!');
-    end
-	vm=podpoisMasKoefItom(ktpit(1), ktpit(2), te200, te380);
+function ktpo = opredKTPTKTochToch(ktptks, te, temp)
+f = 1; p = 0; ep=1e-6; ktp = 0.0; n=length(te); nn=1;
+if ((temp>=te(nn)) && (temp<=te(n)))
+for k = 1:n
+if ((te(k) >= temp) && (f>0))
+        p = k; f = 0; break;
 end
-function [ vm ] = poisMasKoefkvi(vyb, kktp)
-	f=length(kktp); t1=25e0; t2=5e2; dt=t2-t1; kn=0.0;
-    switch (vyb)
-    case (3)
-    kktp=[0.068,0.00015]; %350
-    case (4) %400
-    kktp = [0.082,0.000125]; %1
-	kn=(0.156-0.087)/dt; kktp(2)=kn; kn=kn*t2; kktp(1) = 0.156-kn; %2
-	kn=(0.155-0.087)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.155-kn; %3 
-	kktp = [0.14, 0.00016]; %4 Spirina выбор
-	%kn=(0.146-0.087)/dt; kktp(2)=kn; kn=kn*t2; kktp(1) = 0.146-kn; %к вопросу о стандартизации КВИ
-    case (5) %500
-    kktp = [0.103, 0.0001]; %из Ахтямова, 1991
-	kn=(0.165-0.105)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.165-kn; %выбор
-	%kn=(0.178-0.105)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.178-kn; %Двухслойные
-	%kn=(0.152-0.105)/dt; kktp(2)=kn; kn=kn*t2; kktp(1) = 0.152-kn; //к вопросу о стандартизации КВИ
-    case (6) %600
-	kktp = [0.116, 0.00015]; %выбор
-	kn=(0.201-0.12)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.201-kn;
-	kn=(0.195-0.12)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.195-kn;
-	kktp = [0.17, 0.00015]; %Spirina
-	kn=(0.196-0.12)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.196-kn; %Двухслойные выбор
-	%kn=(0.178-0.12)/dt; kktp[1]=kn; kn=kn*t2; kktp[0] = 0.178-kn; %к вопросу о стандартизации КВИ
-    case (7) %700
-    kktp = [0.146, 0.00017];
-	kn=(0.216-0.15)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.216-kn; 
-	kn=(0.235-0.15)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.235-kn; %к вопросу о стандартизации КВИ
-	kn=(0.251-0.16)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.251-kn; %Двухслойные //выбор
-    case (8) %800
-    kktp =[0.156, 0.00018];
-	kn=(0.226-0.16)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.226-kn; %выбор
-	%kn=(0.25-0.16)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.25-kn;
-	%kktp = [0.21, 0.00014]; %Spirina
-	%kn=(0.23-0.16)/dt; kktp(2)=kn; kn=kn*t2; kktp(1) = 0.23-kn; %к вопросу о стандартизации КВИ
-    case (9) %900
-    kktp = [0.185, 0.00019];
-	kn=(0.23-0.195)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.23-kn; %выбор
-	%kn=(0.29-0.195)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.29-kn;
-    case (10) %1000
-    kktp = [0.246, 0.00025];
-	kn=(0.287-0.25)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.287-kn; %выбор
-	%kn=(0.36-0.25)/dt; kktp(2) = kn; kn=kn*t2; kktp(1) = 0.36-kn;
-	%kn=(0.35-0.25)/dt; kktp(2)=kn; kn=kn*t2; kktp(1) = 0.35-kn; //к вопросу о стандартизации КВИ
-    end
-	vm=kktp;
 end
-function [ vm ] = poisMasKoefsha(vrsh)
-sfeosha=0; smgosha=0; salosha=0; ssiosha=0;
-ko=1e-2; p20=2e1*ko; p24=24.0*ko; p30=3e1*ko; p33=33.0*ko; p16=16.0*ko; p10=1e1*ko;
-	switch (vrsh)
-        case (0)
-            sfeosha = 1.24*ko; smgosha = 0.29*ko; salosha = 41.9*ko; ssiosha = 54.0*ko; porsha=21.8*ko; %Роучка
-        case (1)
-            sfeosha = 1.21*ko; smgosha = 0.29*ko; salosha = 42.6*ko; ssiosha = 1e0-salosha-sfeosha-smgosha; porsha=11.0144*ko; %ШПД-41
-        case (2)
-            sfeosha = 1.64*ko; smgosha = 0.36*ko; salosha = 35.9*ko; ssiosha = 59.1e-2;  porsha=25.2*ko; %ШБ-1 2-1
-        case (3)
-            sfeosha = 1.66*ko; smgosha = 0.4*ko; salosha = 37.3*ko; ssiosha = 57.4*ko;  porsha=26.5*ko; %ШВ-1 1-1
-        case (4)
-            sfeosha = 1.24*ko; smgosha = 0.29*ko; salosha = 41.9*ko; ssiosha = 54*ko;  porsha=11.5*ko; %ШПД
-        case (5)
-            sfeosha = 1.54*ko; smgosha = 0.3*ko; salosha = 38.6*ko; ssiosha = 56.5*ko;  porsha=16.5*ko; %ШКУ-32 3-1
-    end
-	if ((salosha >= 28e-2) && (salosha <= 38e-2))
-		if ((porsha >= p20) && (porsha < p24)) 
-            vybsha = 0; vystsha = 0; 
-		kektp = [-0.435e-9, 0.685e-6, 0.134e-3, 0.725]; 
-        elseif ((porsha >= p24) && (porsha < p30))
-                vybsha = 0; vystsha = 1; 
-		kektp = [-0.867e-9, 1.77e-6, -0.523e-3, 0.806]; %задание коэффициентов - шамот средней пористости
-        elseif ((porsha >= p16) && (porsha < p20))
-            vybsha = 1; 
-		kektp = [-0.397e-9, 0.71e-6, 0.011e-3, 0.851]; %уплотненный шамот
-        elseif ((porsha >= p30) && (porsha <= p33))
-            vybsha = 2; 
-		kektp = [-0.377e-9, 0.918e-6, -0.338e-3, 0.77]; %низкоплотный шамот
-        elseif ((porsha >= p10) && (porsha<p16))
-            vybsha = 3; 
-		kektp = [0.0, -0.607e-6, 1.14e-3, 0.641]; %повышенной плотности шамот
+elseif (temp>=te(n))
+    p=n; f=0;
+elseif (temp<=te(1))
+    p=2; f=0;
+end
+if ((f==0) && (p>1))
+    x2=te(p);
+    x1=te(p-1);
+	dt = x2 - x1;
+if (abs(dt) > ep)
+    y2=ktptks(p);
+    y1=ktptks(p - 1);
+    b=y1;
+			ko = (y2 - y1) / dt;
+            if (p==n)
+                b=y2;
+            end
+			ktp = b + ko*(temp - x1);
+else 
+    ktp=0;
+end
+end
+ktpo=ktp;
+end
+%---
+function ktpo = opredKTPTKTochSha(ktptks, te, temp)
+	ce=length(te); n=ce; f=1; p=0; k=0; nn=1; nk=n; u=-1; d=2;
+	e=1e-6; ktp=0.0; ko=0.0; x1=0.0; x2=0.0; y1=0.0; y2=0.0; b=0.0; dt=0.0; 
+	if (temp<te(nn)) 
+        p=d; f=u;
+    elseif (temp>=te(nk)) 
+        p=nk; f=u;
+    elseif ((temp>=te(nn)) && (temp<te(nk-1)))
+	for k = nn:(nk-1)
+		if ((te(k+1)>=temp) && (f>0) && (te(k)<temp)) 
+            p = k+1; f = u; break;
         end
     end
-	if ((salosha>38e-2) && (salosha <= 45e-2))
-		if ((porsha >= p20) && (porsha < p24))
-            vybsha = 0; vystsha = 0; 
-		kektp = [-0.124e-9, 0.215e-6, 0.125e-3, 1.01];
-        elseif ((porsha >= p24) && (porsha < p30))
-            vybsha = 0; vystsha = 1; 
-		kektp = [-0.333e-9, 0.805e-6, -0.289e-3, 0.903]; %задание коэффициентов - шамот средней пористости
-        elseif ((porsha >= p16) && (porsha < p20))
-            vybsha = 1; 
-		kektp = [0.0, -0.154e-6, 0.369e-3, 1.03]; %уплотненный шамот
-        elseif ((porsha >= p30) && (porsha < p33))
-                vybsha = 2; 
-		kektp = [-0.377e-9, 0.918e-6, -0.338e-3, 0.77]; %низкоплотный шамот
-        elseif ((porsha >= p10) && (porsha < p16))
-            vybsha = 3; 
-		kektp = [0, -0.141e-6, 0.437e-3, 1.32]; %повышенной плотности шамот
+	elseif ((temp>=te(nk-1)) && (temp<te(nk))) 
+        p=nk; f=u;
+    end
+    f=f';
+    temp=temp;
+    te=te;
+	if ((f==u) && (p>nn))
+		x2=te(p);
+		x1=te(p - 1);
+		dt = x2 - x1;
+		if (abs(dt) > e)
+			y2=ktptks(p);
+			y1=ktptks(p - 1);
+			b=y1;
+			if (temp>te(nk)) 
+                b=y2;
+            end
+			ko = (y2 - y1) / dt;
+			ktp = b + ko*(temp - x1);
         end
     end
-    vm=fliplr(kektp);
+	ktpo=ktp;
 end
