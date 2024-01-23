@@ -11,12 +11,12 @@
 using namespace std;
 //----------------------------------------
 void zadrktNac(int);
-//double **opredSredKTPTK();
+double **opredSredKTPTK();
 //----------------------------------------
 void main()
 {
-int vybves=1, k=0;
-zadrktNac(vybves);
-//double **mu=opredSredKTPTK();
+int vybves=2, k=0;
+zadrktNac(vybves); 
+double **mu=opredSredKTPTK();
 k=getchar();
 }
